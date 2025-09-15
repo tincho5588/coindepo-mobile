@@ -1,0 +1,161 @@
+<!--
+  ~     CoinDepo Unofficial Mobile App for Android and iOS
+  ~     Copyright (C) 2025  Martin Leon Bouchet
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <string name="coin_depo">CoinDepo</string>
+
+    <!-- Common -->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="submit">Submit</string>
+    <string name="email">Email</string>
+    <string name="no_connectivity">No Connectivity</string>
+    <string name="no_connectivity_description">Seems like we can not reach CoinDepo. Check your internet connection and try again.</string>
+    <string name="unknown_error">Unknown Error</string>
+    <string name="unknown_error_description">Seems like something went wrong. Please try again later.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <!-- Login Screen -->
+    <string name="log_in">Log In</string>
+    <string name="password">Password</string>
+    <string name="hide_password">Hide password</string>
+    <string name="show_password">Show password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="wrong_email_or_password_error">Wrong email or password. Please try again</string>
+    <string name="dont_have_account">Don’t have an account yet?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="security_verification">Security Verification</string>
+    <string name="security_verification_description">To secure your CoinDepo account, please complete verification by entering the code received on %1$s</string>
+    <string name="email_verification_code">8-digit Email Verification Code</string>
+    <string name="invalid_email_verification_code_error">Email Verification Code is invalid. Please try again</string>
+    <string name="invalid_email_verification_limit_reached_error">Limit of incorrectly entered Email Verification Codes is reached. Please try again in 10 minutes</string>
+    <string name="verify_your_identity">Verify Your Identity</string>
+    <string name="verify_your_identity_description">To secure your CoinDepo account, please complete verification by entering your 2FA code.</string>
+    <string name="invalid_2fa">2FA Verification Code is invalid. Please try again</string>
+    <string name="twofa">6-digit code from the Authenticator App</string>
+    <string name="resend_code">Resend code</string>
+    <string name="code_sent">Code sent</string>
+    <string name="verification_code_note">If you haven't received the code, </string>
+    <string name="click_here">click here</string>
+    <string name="verification_code_note_dialog_title">Didn't receive Email Verification Code?</string>
+    <string name="verification_code_note_dialog_text_1">CoinDepo sent a code to your email. If you do not see our message in the INBOX folder after several attempts, please try:\n</string>
+    <string name="verification_code_note_dialog_text_2">1. Check the SPAM folder in your email. Messages could be considered as spam in rare cases.\n\n
+                                2. Please ensure your email address is %1$s\n\n
+                                3. Click \"Resend code\" after 30 seconds. If you still have not received the code, please contact our Support Team at support@coindepo.com</string>
+
+    <!-- Reset Password -->
+    <string name="reset_your_password">Reset your password</string>
+    <string name="reset_your_password_description">Enter your registered email address and we will send you instructions to reset your password.</string>
+    <string name="invalid_email_error">Please enter a valid email address</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="check_your_email">Check your email</string>
+    <string name="check_your_email_description_line_1">You will receive instructions to</string>
+    <string name="check_your_email_description_line_2">if this email is registered.</string>
+    <string name="resend_email">Resend email</string>
+    <string name="check_email_note_line_1">If you do not see our message in the INBOX folder, please check the SPAM folder in your email</string>
+    <string name="check_email_note_line_2">Messages could end up there in rare cases.</string>
+    <string name="too_soon">Too Soon!</string>
+    <string name="too_soon_description">Seems like you are trying to recover your password too frequently. Try again later.</string>"
+
+    <!-- Main Screen -->
+    <string name="dashboard">Dashboard</string>
+    <string name="earn">Earn</string>
+    <string name="borrow">Borrow</string>
+    <string name="tokens">Tokens</string>
+    <string name="transactions">Transactions</string>
+
+    <!-- User Details -->
+    <string name="verification">Verification</string>
+    <string name="profile">Profile</string>
+    <string name="security">Security</string>
+    <string name="referrals">Referrals</string>
+    <string name="bonuses">Bonuses</string>
+    <string name="help_center">Help Center</string>
+    <string name="log_out">Log Out</string>
+
+    <!-- Dashboard -->
+    <string name="portfolio_balance">Portfolio Balance</string>
+    <string name="portfolio_balance_info">The Portfolio Balance represents the current USD/EUR/GBP value of all assets in your Interest Accounts and is for informational purposes only. Actual account balances are denominated in stablecoins and cryptocurrencies.</string>
+    <string name="available_to_withdraw">Available to Withdraw</string>
+    <string name="available_to_withdraw_info">The amount available for withdrawal may differ from the Portfolio Balance in three cases: \n1) You have already initiated a withdrawal from one or more of your Interest Accounts and it is in the "Pending" status. Until processing is completed, this amount is included in the Portfolio Balance; and/or\n2) The Portfolio Balance includes bonuses that are not available for withdrawal during a certain period, based on the terms of the promotion under which they were received; and/or \n3) Part of the Portfolio Balance is not available for withdrawal, as it is used as collateral to maintain the level of 50% LTV (Loan-to-Value) ratio for loans you have already received, along with accrued interest for using the loan.</string>
+    <string name="total_interest_paid">Total Interest Paid</string>
+    <string name="total_interest_paid_info">Total Interest Paid represents the current USD/EUR/GBP value of all interest payments that have been made to your Interest Accounts to date. The USD/EUR/GBP value is for informational purposes only. As you may be earning interest in various assets, actual account balances are denominated in stablecoins and cryptocurrencies.</string>
+    <string name="total_interest_accrued">Total Interest Accrued</string>
+    <string name="total_interest_accrued_info">Total Interest Accrued represents the current USD/EUR/GBP value of all expected interest payments to your accounts on the next Payout Dates. Actual interest payments are made in stablecoins and cryptocurrencies, so the USD/EUR/GBP value may differ based on the exchange rate on the Payout Date.</string>
+    <string name="tokens_portfolio_balance">Token Portfolio Balance</string>
+    <string name="tokens_portfolio_balance_info">The Token Portfolio Balance represents the current USD/EUR/GBP value of all tokens in your Rewards Accounts and is for informational purposes only. Actual account balances are denominated in tokens.</string>
+    <string name="available_to_withdraw_tokens_info">The amount available for withdrawal may differ from the Token Portfolio Balance in two cases:\n1) Part of the Token Portfolio Balance is not available for withdrawal, as it is locked for a certain period, based on the conditions of the Private Sale/Pre-sale/Promotion/Airdrop of tokens; and/or\n2) You have already initiated a withdrawal of tokens from one or more of your Rewards Accounts and it is in the "Pending" status. Until processing is completed, this amount is included in the Token Portfolio Balance."</string>
+    <string name="total_rewards_paid">Total Rewards Paid</string>
+    <string name="total_rewards_paid_info">Total Rewards Paid represents the current USD/EUR/GBP value of all interest rewards payments that have been made to your Rewards Accounts to date. The USD/EUR/GBP value is for informational purposes only. As you may be earning rewards in various tokens, actual account balances are denominated in these tokens.</string>
+    <string name="total_rewards_accrued">Total Rewards Accrued</string>
+    <string name="total_rewards_accrued_info">Total Rewards Accrued represents the current USD/EUR/GBP value of all expected interest rewards payments to your accounts on the next Payout Dates. Actual rewards payments are made in tokens, so the USD/EUR/GBP value may differ based on the exchange rate on the Payout Date.</string>
+    <string name="credit_line_limit">Credit Line Limit</string>
+    <string name="credit_line_limit_info">Your Credit Line Limit is always 50% of the current value of your Available Portfolio Balance (Portfolio Balance minus the sum of all withdrawals in "Pending" status). You can receive loans in stablecoins or cryptocurrency to your Current Interest Account at any time within the Available Credit Limit. Transferring your assets to a collateral account is not required to obtain a loan. You will continue to earn interest as all of your assets will remain in Interest Accounts.</string>
+    <string name="available_credit_limit">Available Credit Limit</string>
+    <string name="available_credit_limit_info">Your Available Credit Limit is the difference between your Credit Line Limit and the amount of your Current Loans. At the moment, you can get an instant loan in stablecoins or cryptocurrency for an amount not exceeding the Available Credit Limit.</string>
+    <string name="show_empty">Show empty</string>
+    <string name="hide_empty">Hide empty</string>
+    <string name="balance">Balance</string>
+    <string name="price_24h_change">Price/24hr Change</string>
+    <string name="interest_paid">Interest Paid</string>
+    <string name="interest_paid_info">Interest Paid represents the amount of all interest payments that have been made to your account to date. The displayed current value in USD/EUR/GBP is for informational purposes only.</string>
+    <string name="buy">Buy</string>
+    <string name="total_value_of_your_assets">Total value of your assets </string>
+    <string name="stablecoins">Stablecoins</string>
+    <string name="gold">Gold</string>
+    <string name="crypto">Crypto</string>
+
+    <!-- Deposit Screen -->
+    <string name="coin_deposit">%1$s Deposit</string>
+    <string name="current_interest_account_balance">Current Interest Account Balance</string>
+    <string name="deposit_note_part_1">*Once you deposit funds to your Current Interest Account, you can instantly transfer them to any of your %1$s Interest Accounts using the </string>
+    <string name="deposit_note_part_2">"Transfer Between Accounts"</string>
+    <string name="deposit_note_part_3"> function.</string>
+    <string name="deposit_address">Deposit Address</string>
+    <string name="tag_memo_warning">WARNING! Please enter both Deposit Address and Tag/MEMO, which are required to deposit %1$s to your CoinDepo account successfully.</string>
+    <string name="tag_memo">Tag/MEMO</string>
+    <string name="deposit_rules">Deposit Rules</string>
+    <string name="deposit_network_warning_part_1">Send only %1$s to this deposit address using the %2$s network.</string>
+    <string name="deposit_network_warning_part_2">Sending other asset to this address may result in the total loss of your funds.</string>
+
+    <!-- Earn Screen -->
+    <string name="close_account">Close Account</string>
+    <string name="close_account_description">Are you sure you want to close this Interest Account?</string>
+    <string name="cant_close_account_description">You can perform this action only with a zero account balance.\n\nPlease, first withdraw all funds from the Interest Account you want to close using the "Withdraw" or "Transfer Between Accounts" function.\n\nAfter that, the Interest Account will be automatically closed.</string>
+    <string name="i_understand">I understand</string>
+    <string name="interest_accounts">Interest Accounts</string>
+    <string name="accrued_interest">Accrued Interest</string>
+    <string name="accrued_interest_info">Accrued Interest represents the amount of the expected interest payment to your account on the next Interest Payout Date below at 14:00 UTC. The displayed current value in USD/EUR/GBP is for informational purposes only.</string>
+    <string name="interest_payout_date">Interest Payout Date</string>
+    <string name="interest_payout_date_info">This is the next date the Accrued Interest is paid to the account. When the specified date comes, at 14:00 UTC, the Accrued Interest is credited to the account, and the date is automatically changed to the next one. The Account Balance is increased by the amount of the interest paid. The Accrued Interest amount in the next compounding period also increases, as it is calculated based on the updated Account Balance.</string>
+    <string name="compund_interest_pediod">Compound interest is paid out every %1$s days</string>
+    <string name="interest_account_rules">Interest Account Rules</string>
+    <string name="add_new_account">Add New Account</string>
+    <string name="select_interest_account_type">Select Interest Account Type</string>
+    <string name="period_placeholder">%1$s: </string>
+    <string name="apr_placeholder">%1$s% APR </string>
+    <string name="compound_interest_payout_frequency">Compound interest is paid out every %1$s days</string>
+    <string name="daily">Current</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="quarterly">Quarterly</string>
+    <string name="semi_annual">Semi-Annual</string>
+    <string name="annual">Annual</string>
+
+</resources>

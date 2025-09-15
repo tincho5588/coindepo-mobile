@@ -1,0 +1,42 @@
+<!--
+  ~     CoinDepo Unofficial Mobile App for Android and iOS
+  ~     Copyright (C) 2025  Martin Leon Bouchet
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="36dp"
+    android:height="36dp"
+    android:viewportWidth="36"
+    android:viewportHeight="36">
+  <path
+      android:pathData="M18,0L18,0A18,18 0,0 1,36 18L36,18A18,18 0,0 1,18 36L18,36A18,18 0,0 1,0 18L0,18A18,18 0,0 1,18 0z">
+    <aapt:attr name="android:fillColor">
+      <gradient
+          android:startX="36"
+          android:startY="0"
+          android:endX="-10.5"
+          android:endY="36"
+          android:type="linear">
+        <item android:offset="0" android:color="#FF0056EB"/>
+        <item android:offset="1" android:color="#FF25ADFB"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+  <path
+      android:pathData="M17.449,21.628C17.01,22.132 16.469,22.533 15.825,22.832C15.181,23.121 14.439,23.266 13.599,23.266C12.834,23.266 12.124,23.14 11.471,22.888C10.827,22.636 10.267,22.281 9.791,21.824C9.315,21.357 8.942,20.802 8.671,20.158C8.4,19.514 8.265,18.805 8.265,18.03C8.265,17.237 8.4,16.518 8.671,15.874C8.951,15.23 9.334,14.684 9.819,14.236C10.304,13.779 10.874,13.429 11.527,13.186C12.18,12.943 12.885,12.822 13.641,12.822C14.341,12.822 15.027,12.948 15.699,13.2C16.38,13.443 16.931,13.802 17.351,14.278L15.727,15.902C15.503,15.594 15.209,15.365 14.845,15.216C14.481,15.067 14.108,14.992 13.725,14.992C13.305,14.992 12.918,15.071 12.563,15.23C12.218,15.379 11.919,15.589 11.667,15.86C11.415,16.131 11.219,16.453 11.079,16.826C10.939,17.19 10.869,17.591 10.869,18.03C10.869,18.478 10.939,18.889 11.079,19.262C11.219,19.635 11.41,19.957 11.653,20.228C11.905,20.489 12.204,20.695 12.549,20.844C12.894,20.993 13.272,21.068 13.683,21.068C14.159,21.068 14.574,20.975 14.929,20.788C15.284,20.601 15.568,20.359 15.783,20.06L17.449,21.628ZM27.729,18.016C27.729,18.884 27.566,19.635 27.239,20.27C26.922,20.895 26.497,21.413 25.965,21.824C25.442,22.225 24.85,22.524 24.187,22.72C23.524,22.907 22.853,23 22.171,23H18.475V13.088H22.059C22.759,13.088 23.45,13.172 24.131,13.34C24.813,13.499 25.419,13.769 25.951,14.152C26.483,14.525 26.913,15.029 27.239,15.664C27.566,16.299 27.729,17.083 27.729,18.016ZM25.237,18.016C25.237,17.456 25.144,16.994 24.957,16.63C24.78,16.257 24.537,15.963 24.229,15.748C23.931,15.524 23.585,15.365 23.193,15.272C22.81,15.179 22.414,15.132 22.003,15.132H20.813V20.928H21.947C22.376,20.928 22.787,20.881 23.179,20.788C23.58,20.685 23.931,20.522 24.229,20.298C24.537,20.074 24.78,19.775 24.957,19.402C25.144,19.029 25.237,18.567 25.237,18.016Z"
+      android:fillColor="#ffffff"/>
+</vector>

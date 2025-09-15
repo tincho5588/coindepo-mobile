@@ -1,0 +1,1281 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "7fb9eaebf3b6dfc6d27951d0420db541",
+    "entities": [
+      {
+        "tableName": "user_session_data",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` INTEGER NOT NULL, `email` TEXT NOT NULL, `userName` TEXT NOT NULL, `accessToken` TEXT NOT NULL, PRIMARY KEY(`userId`))",
+        "fields": [
+          {
+            "fieldPath": "userId",
+            "columnName": "userId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "email",
+            "columnName": "email",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userName",
+            "columnName": "userName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accessToken",
+            "columnName": "accessToken",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "userId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_user_session_data_userId",
+            "unique": true,
+            "columnNames": [
+              "userId"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_user_session_data_userId` ON `${TABLE_NAME}` (`userId`)"
+          }
+        ]
+      },
+      {
+        "tableName": "user_details_data",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` INTEGER NOT NULL, `status` TEXT NOT NULL, `totp` INTEGER NOT NULL, `email` TEXT NOT NULL, `firstName` TEXT, `lastName` TEXT, `dateOfBirth` TEXT, `phone` TEXT, `country` TEXT, `address1` TEXT, `city` TEXT, `state` TEXT, `zip` TEXT, `documentCrc` TEXT, `documentCountry` TEXT, `documentType` TEXT, `documentNumber` TEXT, `documentExpiryDate` TEXT, `documentPhoto1` TEXT, `documentPhoto2` TEXT, `userType` TEXT NOT NULL, `sourceOfFunds` TEXT, `language` TEXT NOT NULL, `emailPromo` TEXT NOT NULL, `emailActivities` TEXT NOT NULL, `emailTrx` TEXT NOT NULL, `emailNews` TEXT NOT NULL, `emailSystem` TEXT NOT NULL, `avatar` TEXT NOT NULL, `creditLineActive` TEXT NOT NULL, `isAffiliate` TEXT NOT NULL, `regCountry` TEXT NOT NULL, `hasPassword` TEXT NOT NULL, `ipLock` TEXT NOT NULL, `referralCodes` TEXT NOT NULL, `affiliateCodes` TEXT NOT NULL, PRIMARY KEY(`userId`))",
+        "fields": [
+          {
+            "fieldPath": "userId",
+            "columnName": "userId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totp",
+            "columnName": "totp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "email",
+            "columnName": "email",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "firstName",
+            "columnName": "firstName",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "lastName",
+            "columnName": "lastName",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "dateOfBirth",
+            "columnName": "dateOfBirth",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "phone",
+            "columnName": "phone",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "country",
+            "columnName": "country",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "address1",
+            "columnName": "address1",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "city",
+            "columnName": "city",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "state",
+            "columnName": "state",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "zip",
+            "columnName": "zip",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "documentCrc",
+            "columnName": "documentCrc",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "documentCountry",
+            "columnName": "documentCountry",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "documentType",
+            "columnName": "documentType",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "documentNumber",
+            "columnName": "documentNumber",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "documentExpiryDate",
+            "columnName": "documentExpiryDate",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "documentPhoto1",
+            "columnName": "documentPhoto1",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "documentPhoto2",
+            "columnName": "documentPhoto2",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "userType",
+            "columnName": "userType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceOfFunds",
+            "columnName": "sourceOfFunds",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "language",
+            "columnName": "language",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "emailPromo",
+            "columnName": "emailPromo",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "emailActivities",
+            "columnName": "emailActivities",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "emailTrx",
+            "columnName": "emailTrx",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "emailNews",
+            "columnName": "emailNews",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "emailSystem",
+            "columnName": "emailSystem",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "avatar",
+            "columnName": "avatar",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "creditLineActive",
+            "columnName": "creditLineActive",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isAffiliate",
+            "columnName": "isAffiliate",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "regCountry",
+            "columnName": "regCountry",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hasPassword",
+            "columnName": "hasPassword",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ipLock",
+            "columnName": "ipLock",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "referralCodes",
+            "columnName": "referralCodes",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "affiliateCodes",
+            "columnName": "affiliateCodes",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "userId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_user_details_data_userId",
+            "unique": true,
+            "columnNames": [
+              "userId"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_user_details_data_userId` ON `${TABLE_NAME}` (`userId`)"
+          }
+        ]
+      },
+      {
+        "tableName": "account_balance_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` INTEGER NOT NULL, `totalAccruedInterestCurrency` TEXT NOT NULL, `totalInterestPaidCurrency` TEXT NOT NULL, `totalBalance` TEXT NOT NULL, `totalAvailableBalance` TEXT NOT NULL, `totalTokensBalanceCurrency` TEXT NOT NULL, `totalTokensAccruedInterestCurrency` TEXT NOT NULL, `totalTokensInterestPaidCurrency` TEXT NOT NULL, `totalTokensBalanceAvailable` TEXT NOT NULL, PRIMARY KEY(`userId`))",
+        "fields": [
+          {
+            "fieldPath": "userId",
+            "columnName": "userId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalAccruedInterestCurrency",
+            "columnName": "totalAccruedInterestCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalInterestPaidCurrency",
+            "columnName": "totalInterestPaidCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalBalance",
+            "columnName": "totalBalance",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalAvailableBalance",
+            "columnName": "totalAvailableBalance",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalTokensBalanceCurrency",
+            "columnName": "totalTokensBalanceCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalTokensAccruedInterestCurrency",
+            "columnName": "totalTokensAccruedInterestCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalTokensInterestPaidCurrency",
+            "columnName": "totalTokensInterestPaidCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalTokensBalanceAvailable",
+            "columnName": "totalTokensBalanceAvailable",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "userId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_account_balance_table_userId",
+            "unique": true,
+            "columnNames": [
+              "userId"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_account_balance_table_userId` ON `${TABLE_NAME}` (`userId`)"
+          }
+        ]
+      },
+      {
+        "tableName": "borrow_balance_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` INTEGER NOT NULL, `availablePortfolioBalance` TEXT NOT NULL, `creditLineLimitCurrency` TEXT NOT NULL, `currentLoansCurrency` TEXT NOT NULL, `availableCreditLimitCurrency` TEXT NOT NULL, `ltv` TEXT NOT NULL, `apr` TEXT NOT NULL, `aprs` TEXT NOT NULL, PRIMARY KEY(`userId`), FOREIGN KEY(`userId`) REFERENCES `account_balance_table`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "userId",
+            "columnName": "userId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "availablePortfolioBalance",
+            "columnName": "availablePortfolioBalance",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "creditLineLimitCurrency",
+            "columnName": "creditLineLimitCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "currentLoansCurrency",
+            "columnName": "currentLoansCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "availableCreditLimitCurrency",
+            "columnName": "availableCreditLimitCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ltv",
+            "columnName": "ltv",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "apr",
+            "columnName": "apr",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "aprs",
+            "columnName": "aprs",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "userId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_borrow_balance_table_userId",
+            "unique": true,
+            "columnNames": [
+              "userId"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_borrow_balance_table_userId` ON `${TABLE_NAME}` (`userId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "account_balance_table",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "userId"
+            ],
+            "referencedColumns": [
+              "userId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "coin_details_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`coinId` INTEGER NOT NULL, `userId` INTEGER NOT NULL, `coinName` TEXT NOT NULL, `logoUrl` TEXT NOT NULL, `production` INTEGER NOT NULL, `precision` INTEGER NOT NULL, `limit24h` TEXT NOT NULL, `explorerUrl` TEXT NOT NULL, `withdrawLimit` TEXT NOT NULL, `binanceTicker` TEXT NOT NULL, `description` TEXT NOT NULL, `descriptionTicker` TEXT NOT NULL, `isStableCoin` INTEGER NOT NULL, `network` TEXT NOT NULL, `depName` TEXT NOT NULL, `wthName` TEXT NOT NULL, `isActive` INTEGER NOT NULL, `isToken` INTEGER NOT NULL, `apy` TEXT NOT NULL, `apr` TEXT NOT NULL, `fee` TEXT NOT NULL, `privatePrice` TEXT NOT NULL, `listingPrice` TEXT NOT NULL, `privateDiscount` TEXT NOT NULL, `displayOrder` INTEGER NOT NULL, PRIMARY KEY(`coinId`), FOREIGN KEY(`userId`) REFERENCES `account_balance_table`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "coinId",
+            "columnName": "coinId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "userId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coinName",
+            "columnName": "coinName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "logoUrl",
+            "columnName": "logoUrl",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "production",
+            "columnName": "production",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "precision",
+            "columnName": "precision",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "limit24h",
+            "columnName": "limit24h",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "explorerUrl",
+            "columnName": "explorerUrl",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "withdrawLimit",
+            "columnName": "withdrawLimit",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "binanceTicker",
+            "columnName": "binanceTicker",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descriptionTicker",
+            "columnName": "descriptionTicker",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isStableCoin",
+            "columnName": "isStableCoin",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "network",
+            "columnName": "network",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "depName",
+            "columnName": "depName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "wthName",
+            "columnName": "wthName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isActive",
+            "columnName": "isActive",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isToken",
+            "columnName": "isToken",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "apy",
+            "columnName": "apy",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "apr",
+            "columnName": "apr",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fee",
+            "columnName": "fee",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "privatePrice",
+            "columnName": "privatePrice",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "listingPrice",
+            "columnName": "listingPrice",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "privateDiscount",
+            "columnName": "privateDiscount",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "displayOrder",
+            "columnName": "displayOrder",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "coinId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_coin_details_table_coinId",
+            "unique": true,
+            "columnNames": [
+              "coinId"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_coin_details_table_coinId` ON `${TABLE_NAME}` (`coinId`)"
+          },
+          {
+            "name": "index_coin_details_table_userId",
+            "unique": false,
+            "columnNames": [
+              "userId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_coin_details_table_userId` ON `${TABLE_NAME}` (`userId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "account_balance_table",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "userId"
+            ],
+            "referencedColumns": [
+              "userId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "coin_balance_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`coinId` INTEGER NOT NULL, `accruedInterest` TEXT NOT NULL, `accruedInterestCurrency` TEXT NOT NULL, `balance` TEXT NOT NULL, `balanceAvailable` TEXT NOT NULL, `balanceAvailableCurrency` TEXT NOT NULL, `balanceCurrency` TEXT NOT NULL, `binance24h` TEXT NOT NULL, `binance24hCurrency` TEXT NOT NULL, `freezedTrxBalance` TEXT NOT NULL, `freezedTrxBalanceCurrency` TEXT NOT NULL, `inTransit` TEXT NOT NULL, `inTransitCurrency` TEXT NOT NULL, `interest` TEXT NOT NULL, `interestCurrency` TEXT NOT NULL, `interestCurrencyCurrency` TEXT NOT NULL, `newTrxBalance` TEXT NOT NULL, `newTrxBalanceCurrency` TEXT NOT NULL, `pendingTrxBalance` TEXT NOT NULL, `pendingTrxBalanceCurrency` TEXT NOT NULL, `precision` INTEGER NOT NULL, `processingTrxBalance` TEXT NOT NULL, `processingTrxBalanceCurrency` TEXT NOT NULL, `queuedTrxBalance` TEXT NOT NULL, `queuedTrxBalanceCurrency` TEXT NOT NULL, `summaryBalance` TEXT NOT NULL, `summaryBalanceCurrency` TEXT NOT NULL, `displayOrder` INTEGER NOT NULL, PRIMARY KEY(`coinId`), FOREIGN KEY(`coinId`) REFERENCES `coin_details_table`(`coinId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "coinId",
+            "columnName": "coinId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accruedInterest",
+            "columnName": "accruedInterest",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accruedInterestCurrency",
+            "columnName": "accruedInterestCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "balance",
+            "columnName": "balance",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "balanceAvailable",
+            "columnName": "balanceAvailable",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "balanceAvailableCurrency",
+            "columnName": "balanceAvailableCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "balanceCurrency",
+            "columnName": "balanceCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "binance24h",
+            "columnName": "binance24h",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "binance24hCurrency",
+            "columnName": "binance24hCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "freezedTrxBalance",
+            "columnName": "freezedTrxBalance",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "freezedTrxBalanceCurrency",
+            "columnName": "freezedTrxBalanceCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "inTransit",
+            "columnName": "inTransit",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "inTransitCurrency",
+            "columnName": "inTransitCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "interest",
+            "columnName": "interest",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "interestCurrency",
+            "columnName": "interestCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "interestCurrencyCurrency",
+            "columnName": "interestCurrencyCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "newTrxBalance",
+            "columnName": "newTrxBalance",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "newTrxBalanceCurrency",
+            "columnName": "newTrxBalanceCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pendingTrxBalance",
+            "columnName": "pendingTrxBalance",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pendingTrxBalanceCurrency",
+            "columnName": "pendingTrxBalanceCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "precision",
+            "columnName": "precision",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "processingTrxBalance",
+            "columnName": "processingTrxBalance",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "processingTrxBalanceCurrency",
+            "columnName": "processingTrxBalanceCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "queuedTrxBalance",
+            "columnName": "queuedTrxBalance",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "queuedTrxBalanceCurrency",
+            "columnName": "queuedTrxBalanceCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "summaryBalance",
+            "columnName": "summaryBalance",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "summaryBalanceCurrency",
+            "columnName": "summaryBalanceCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "displayOrder",
+            "columnName": "displayOrder",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "coinId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_coin_balance_table_coinId",
+            "unique": true,
+            "columnNames": [
+              "coinId"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_coin_balance_table_coinId` ON `${TABLE_NAME}` (`coinId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "coin_details_table",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "coinId"
+            ],
+            "referencedColumns": [
+              "coinId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "deposit_plan_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `depositPlanId` INTEGER NOT NULL, `coinId` INTEGER NOT NULL, `userAccountId` INTEGER NOT NULL, `accountTypeId` INTEGER NOT NULL, `accountName` TEXT NOT NULL, `walletName` TEXT NOT NULL, `openDate` TEXT NOT NULL, `lastPayout` TEXT NOT NULL, `payoutDate` TEXT NOT NULL, `period` TEXT NOT NULL, `apr` TEXT NOT NULL, `precision` INTEGER NOT NULL, `balance` TEXT NOT NULL, `balanceCurrency` TEXT NOT NULL, `inTransit` TEXT NOT NULL, `balanceAvailable` TEXT NOT NULL, `summaryBalance` TEXT NOT NULL, `summaryBalanceCurrency` TEXT NOT NULL, `accruedInterest` TEXT NOT NULL, `accruedInterestCurrency` TEXT NOT NULL, `paidInterest` TEXT NOT NULL, `paidInterestCurrency` TEXT NOT NULL, `canDelete` INTEGER NOT NULL, `isAllowedToTransfer` INTEGER NOT NULL, `apy` TEXT NOT NULL, `pendingBonus` INTEGER NOT NULL, `bonusList` TEXT NOT NULL, `isVisible` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`coinId`) REFERENCES `coin_details_table`(`coinId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "depositPlanId",
+            "columnName": "depositPlanId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coinId",
+            "columnName": "coinId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userAccountId",
+            "columnName": "userAccountId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accountTypeId",
+            "columnName": "accountTypeId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accountName",
+            "columnName": "accountName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "walletName",
+            "columnName": "walletName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "openDate",
+            "columnName": "openDate",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastPayout",
+            "columnName": "lastPayout",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "payoutDate",
+            "columnName": "payoutDate",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "period",
+            "columnName": "period",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "apr",
+            "columnName": "apr",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "precision",
+            "columnName": "precision",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "balance",
+            "columnName": "balance",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "balanceCurrency",
+            "columnName": "balanceCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "inTransit",
+            "columnName": "inTransit",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "balanceAvailable",
+            "columnName": "balanceAvailable",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "summaryBalance",
+            "columnName": "summaryBalance",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "summaryBalanceCurrency",
+            "columnName": "summaryBalanceCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accruedInterest",
+            "columnName": "accruedInterest",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accruedInterestCurrency",
+            "columnName": "accruedInterestCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paidInterest",
+            "columnName": "paidInterest",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paidInterestCurrency",
+            "columnName": "paidInterestCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "canDelete",
+            "columnName": "canDelete",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isAllowedToTransfer",
+            "columnName": "isAllowedToTransfer",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "apy",
+            "columnName": "apy",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pendingBonus",
+            "columnName": "pendingBonus",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bonusList",
+            "columnName": "bonusList",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isVisible",
+            "columnName": "isVisible",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_deposit_plan_table_coinId",
+            "unique": false,
+            "columnNames": [
+              "coinId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_deposit_plan_table_coinId` ON `${TABLE_NAME}` (`coinId`)"
+          },
+          {
+            "name": "index_deposit_plan_table_depositPlanId",
+            "unique": false,
+            "columnNames": [
+              "depositPlanId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_deposit_plan_table_depositPlanId` ON `${TABLE_NAME}` (`depositPlanId`)"
+          },
+          {
+            "name": "index_deposit_plan_table_id",
+            "unique": true,
+            "columnNames": [
+              "id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_deposit_plan_table_id` ON `${TABLE_NAME}` (`id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "coin_details_table",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "coinId"
+            ],
+            "referencedColumns": [
+              "coinId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "available_loans_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`coinId` INTEGER NOT NULL, `available` TEXT NOT NULL, `rate` TEXT NOT NULL, PRIMARY KEY(`coinId`), FOREIGN KEY(`coinId`) REFERENCES `coin_details_table`(`coinId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "coinId",
+            "columnName": "coinId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "available",
+            "columnName": "available",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rate",
+            "columnName": "rate",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "coinId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_available_loans_table_coinId",
+            "unique": true,
+            "columnNames": [
+              "coinId"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_available_loans_table_coinId` ON `${TABLE_NAME}` (`coinId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "coin_details_table",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "coinId"
+            ],
+            "referencedColumns": [
+              "coinId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "transactions_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `entryId` TEXT NOT NULL, `trxId` INTEGER NOT NULL, `title` TEXT NOT NULL, `firstTxt` TEXT NOT NULL, `secondTxt` TEXT NOT NULL, `foreignTrxId` TEXT NOT NULL, `amount` TEXT NOT NULL, `coinName` TEXT NOT NULL, `coinBinanceTicker` TEXT NOT NULL, `coinLogoUrl` TEXT NOT NULL, `userFrom` INTEGER NOT NULL, `userTo` INTEGER NOT NULL, `trxType` TEXT NOT NULL, `trxStatus` TEXT NOT NULL, `operation` TEXT NOT NULL, `sourceAddress` TEXT, `destinationAddress` TEXT, `destinationTag` TEXT, `txHash` TEXT, `createDate` INTEGER NOT NULL, `lastUpdate` INTEGER NOT NULL, `isToken` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "entryId",
+            "columnName": "entryId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "trxId",
+            "columnName": "trxId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "firstTxt",
+            "columnName": "firstTxt",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "secondTxt",
+            "columnName": "secondTxt",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "foreignTrxId",
+            "columnName": "foreignTrxId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "amount",
+            "columnName": "amount",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coinName",
+            "columnName": "coinName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coinBinanceTicker",
+            "columnName": "coinBinanceTicker",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coinLogoUrl",
+            "columnName": "coinLogoUrl",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userFrom",
+            "columnName": "userFrom",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userTo",
+            "columnName": "userTo",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "trxType",
+            "columnName": "trxType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "trxStatus",
+            "columnName": "trxStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "operation",
+            "columnName": "operation",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceAddress",
+            "columnName": "sourceAddress",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "destinationAddress",
+            "columnName": "destinationAddress",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "destinationTag",
+            "columnName": "destinationTag",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "txHash",
+            "columnName": "txHash",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "createDate",
+            "columnName": "createDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastUpdate",
+            "columnName": "lastUpdate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isToken",
+            "columnName": "isToken",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_transactions_table_id",
+            "unique": true,
+            "columnNames": [
+              "id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_transactions_table_id` ON `${TABLE_NAME}` (`id`)"
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7fb9eaebf3b6dfc6d27951d0420db541')"
+    ]
+  }
+}
