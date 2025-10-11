@@ -72,8 +72,8 @@ import coil3.compose.AsyncImage
 import coindepo.app.composeapp.generated.resources.Res
 import coindepo.app.composeapp.generated.resources.cancel
 import com.coindepo.app.feature.common.CoinDepoElevatedCard
-import com.coindepo.app.feature.common.ExposedDropDownMenu
 import com.coindepo.app.feature.common.InformationTooltip
+import com.coindepo.app.feature.common.MyExposedDropDownMenu
 import com.coindepo.app.feature.common.WarningBanner
 import com.coindepo.app.feature.common.WarningBannerColor
 import com.coindepo.app.feature.common.formatCrypto
@@ -508,7 +508,7 @@ fun AccountSelectionDropDownMenu(
         maxLines = 1,
         overflow = TextOverflow.Ellipsis
     )
-    ExposedDropDownMenu(
+    MyExposedDropDownMenu(
         modifier = Modifier.border(
             1.dp,
             MaterialTheme.colorScheme.outlineVariant,

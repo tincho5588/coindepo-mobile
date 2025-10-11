@@ -118,8 +118,8 @@ import coindepo.app.composeapp.generated.resources.yes
 import com.coindepo.app.browser.openUrlInBrowser
 import com.coindepo.app.feature.common.BalanceIndicator
 import com.coindepo.app.feature.common.CoinDepoElevatedCard
-import com.coindepo.app.feature.common.ExposedDropDownMenu
 import com.coindepo.app.feature.common.InformationTooltip
+import com.coindepo.app.feature.common.MyExposedDropDownMenu
 import com.coindepo.app.feature.common.formatCrypto
 import com.coindepo.app.feature.common.formatCurrency
 import com.coindepo.app.feature.mainscreen.AccountStatsViewModel
@@ -367,7 +367,7 @@ fun CoinSelector(
         modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(horizontal = 16.dp)
     ) {
         val expanded = remember { mutableStateOf(false) }
-        ExposedDropDownMenu(
+        MyExposedDropDownMenu(
             modifier = Modifier.padding(horizontal = 4.dp, vertical = 16.dp),
             expanded = expanded,
             buttonContent = {
@@ -556,7 +556,7 @@ fun AddNewAccountDropDown(
     val expanded = remember { mutableStateOf(false) }
     Text(stringResource(Res.string.add_new_account), style = MaterialTheme.typography.titleMedium.copy(color = Color(0xFFa19ead), fontWeight = FontWeight.Medium))
     Spacer(Modifier.height(8.dp))
-    ExposedDropDownMenu(
+    MyExposedDropDownMenu(
         modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outlineVariant, shape = RoundedCornerShape(8.dp)),
         expanded = expanded,
         buttonContent = {

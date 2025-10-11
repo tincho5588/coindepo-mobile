@@ -33,7 +33,7 @@ import androidx.compose.ui.Modifier
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExposedDropDownMenu(
+fun MyExposedDropDownMenu(
     modifier: Modifier = Modifier,
     expanded: MutableState<Boolean>,
     enabled: Boolean = true,
