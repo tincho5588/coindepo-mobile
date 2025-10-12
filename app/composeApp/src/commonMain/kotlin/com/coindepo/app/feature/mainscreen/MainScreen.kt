@@ -210,10 +210,13 @@ fun MainScreen(
                             navController.navigate(DepositNavigationRoute(coinId), false)
                         },
                         goToWithdrawScreen = { coinId, depositPlanId ->
-                            navController.navigate(
-                                WithdrawNavigationRoute(coinId, depositPlanId),
-                                false
-                            )
+                            // TODO: Show a dialog stating you can not withdraw without 2FA
+                            if (userDetailsViewModel.userDetails.value?.totp ?: false) {
+                                navController.navigate(
+                                    WithdrawNavigationRoute(coinId, depositPlanId),
+                                    false
+                                )
+                            }
                         },
                         goToEarnScreen = {
                             navController.navigate(EarnScreenNavigationRoute(it), true)
@@ -236,10 +239,13 @@ fun MainScreen(
                             navController.navigate(DepositNavigationRoute(it), false)
                         },
                         goToWithdrawScreen = { coinId, depositPlanId ->
-                            navController.navigate(
-                                WithdrawNavigationRoute(coinId, depositPlanId),
-                                false
-                            )
+                            // TODO: Show a dialog stating you can not withdraw without 2FA
+                            if (userDetailsViewModel.userDetails.value?.totp ?: false) {
+                                navController.navigate(
+                                    WithdrawNavigationRoute(coinId, depositPlanId),
+                                    false
+                                )
+                            }
                         },
                         goToTransferScreen = {
                             navController.navigate(TransferNavigationRoute(it), false)
@@ -319,7 +325,6 @@ fun MainScreen(
                         koinViewModel<WithdrawViewModel>(),
                         route.coinId,
                         route.fromPlanId,
-                        userDetailsViewModel.userDetails.value?.totp ?: false,
                         { message, duration ->
                             scope.launch {
                                 snackbarHostState.showSnackbar(message = message, duration = duration)

@@ -99,7 +99,6 @@ fun WithdrawScreen(
     withdrawViewModel: WithdrawViewModel,
     coinId: CoinId,
     depositPlanId: DepositPlanId?,
-    hasTwoFA: Boolean,
     showSnackBar: (String, SnackbarDuration) -> Unit,
     onCancelled: () -> Unit
 ) {
@@ -108,7 +107,6 @@ fun WithdrawScreen(
         coin,
         depositPlanId,
         withdrawViewModel.withdrawProcessState.collectAsState().value,
-        hasTwoFA,
         withdrawViewModel.resendVerificationCodeState.collectAsState().value,
         showSnackBar,
         {
@@ -137,7 +135,6 @@ fun WithdrawScreenContent(
     coin: Coin,
     initialFromPlanId: DepositPlanId?,
     withdrawProcessState: WithdrawProcessState,
-    hasTwoFA: Boolean,
     resendVerificationCodeState: ResendVerificationCodeState?,
     showSnackBar: (String, SnackbarDuration) -> Unit,
     sendEmailVerificationCode: () -> Unit,
@@ -414,7 +411,7 @@ fun WithdrawScreenContent(
         }
     }
 
-    WithdrawStateHandler(coin, withdrawProcessState, hasTwoFA, resendVerificationCodeState, showSnackBar, sendEmailVerificationCode,onCancelled, resetWithdrawState, onConfirm)
+    WithdrawStateHandler(coin, withdrawProcessState, resendVerificationCodeState, showSnackBar, sendEmailVerificationCode,onCancelled, resetWithdrawState, onConfirm)
 }
 
 @Composable
@@ -450,7 +447,6 @@ fun FeeIndicator(
 fun WithdrawStateHandler(
     coin: Coin,
     withdrawProcessState: WithdrawProcessState,
-    hasTwoFA: Boolean,
     resendVerificationCodeState: ResendVerificationCodeState?,
     showSnackBar: (String, SnackbarDuration) -> Unit,
     sendEmailVerificationCode: () -> Unit,
@@ -490,7 +486,6 @@ fun WithdrawStateHandler(
             WithdrawConfirmationBottomSheet(
                 coin,
                 withdrawProcessState,
-                hasTwoFA,
                 resendVerificationCodeState,
                 sendEmailVerificationCode,
                 resetWithdrawState,
@@ -514,7 +509,6 @@ fun WithdrawStateHandler(
 fun WithdrawConfirmationBottomSheet(
     coin: Coin,
     withdrawProcessState: WithdrawProcessState,
-    hasTwoFA: Boolean,
     resendVerificationCodeState: ResendVerificationCodeState?,
     sendEmailVerificationCode: () -> Unit,
     resetWithdrawState: (WithdrawProcessState) -> Unit,
@@ -632,34 +626,32 @@ fun WithdrawConfirmationBottomSheet(
                 label = { Text(stringResource(Res.string.email_verification_code)) },
                 enabled = withdrawProcessState is WithdrawProcessState.WithdrawRequestSuccess
             )
-            if (hasTwoFA) {
-                Spacer(Modifier.height(16.dp))
-                Text(
-                    text = "2FA Verification Code",
-                    style = MaterialTheme.typography.titleMedium.copy(Color(0xFFa19ead), fontWeight = FontWeight.Bold),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = twoFACode.value ?: "",
-                    onValueChange = {
-                        if (it.length <= 6) twoFACode.value = it
-                    },
-                    singleLine = true,
-                    isError = false,
-                    supportingText = {},
-                    shape = RoundedCornerShape(16.dp),
-                    label = {
-                        Text(
-                            stringResource(Res.string.twofa),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    },
-                    enabled = withdrawProcessState is WithdrawProcessState.WithdrawRequestSuccess
-                )
-            }
+            Spacer(Modifier.height(16.dp))
+            Text(
+                text = "2FA Verification Code",
+                style = MaterialTheme.typography.titleMedium.copy(Color(0xFFa19ead), fontWeight = FontWeight.Bold),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = twoFACode.value ?: "",
+                onValueChange = {
+                    if (it.length <= 6) twoFACode.value = it
+                },
+                singleLine = true,
+                isError = false,
+                supportingText = {},
+                shape = RoundedCornerShape(16.dp),
+                label = {
+                    Text(
+                        stringResource(Res.string.twofa),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                },
+                enabled = withdrawProcessState is WithdrawProcessState.WithdrawRequestSuccess
+            )
             Spacer(Modifier.height(16.dp))
             Row(
                 Modifier.fillMaxWidth()
@@ -680,7 +672,7 @@ fun WithdrawConfirmationBottomSheet(
                     onClick = {
                         if (withdrawProcessState is WithdrawProcessState.WithdrawRequestSuccess) onConfirm(emailVerificationCode.value, twoFACode.value)
                     },
-                    enabled = emailVerificationCode.value.length == 8 && (!hasTwoFA || twoFACode.value?.length == 6)
+                    enabled = emailVerificationCode.value.length == 8 && twoFACode.value?.length == 6
                 ) {
                     if (withdrawProcessState is WithdrawProcessState.WithdrawRequestSuccess) {
                         Text("Submit")
@@ -798,7 +790,6 @@ fun WithdrawScreenPreview() {
             ),
             "0_145",
             WithdrawProcessState.NotStarted,
-            true,
             ResendVerificationCodeState(true, 0),
             {_,_ ->},
             {},
@@ -925,7 +916,6 @@ fun WithdrawStateModalPreview() {
                         BigNum("1.23")
                     )
                 ),
-                true,
                 null,
                 {_,_ ->},
                 {},
