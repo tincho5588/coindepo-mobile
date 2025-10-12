@@ -23,6 +23,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.RemoteMediator
 import com.coindepo.domain.entities.transactions.Transaction
+import com.coindepo.domain.entities.transactions.TransactionStatus
 import kotlinx.coroutines.flow.Flow
 
 interface RemoteTransactionsDataSource {
@@ -54,4 +55,6 @@ interface LocalTransactionsDataSource {
     suspend fun saveTransactions(list: List<Transaction>, clean: Boolean = true)
 
     suspend fun getAllTransactions(): List<Transaction>
+
+    suspend fun updateTransactionStatus(transactionId: Int, newStatus: TransactionStatus)
 }

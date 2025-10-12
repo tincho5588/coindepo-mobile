@@ -54,6 +54,9 @@ interface TransactionsDao {
     @Query("SELECT * FROM transactions_table ORDER BY createDate DESC")
     suspend fun getAllTransactions(): List<TransactionEntity>
 
+    @Query("UPDATE transactions_table SET trxStatus = :newStatus WHERE id = :transactionId")
+    suspend fun updateTransactionStatus(transactionId: Int, newStatus: TransactionStatus)
+
     @Query("DELETE FROM transactions_table")
     suspend fun nuke()
 }

@@ -61,6 +61,7 @@ import com.coindepo.domain.entities.stats.balance.AccountBalance
 import com.coindepo.domain.entities.stats.balance.BorrowBalance
 import com.coindepo.domain.entities.stats.coin.Coin
 import com.coindepo.domain.entities.transactions.Transaction
+import com.coindepo.domain.entities.transactions.TransactionStatus
 import com.coindepo.domain.entities.userdetails.UserDetails
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -171,6 +172,10 @@ abstract class CoinDepoDataBase : RoomDatabase() {
     }
 
     suspend fun getAllTransactions(): List<Transaction> = transactionsDao.getAllTransactions().map { it.asTransaction }
+
+    suspend fun updateTransactionStatus(transactionId: Int, newStatus: TransactionStatus) {
+        transactionsDao.updateTransactionStatus(transactionId, newStatus)
+    }
 
     suspend fun nuke() {
         userSessionDao.nuke()

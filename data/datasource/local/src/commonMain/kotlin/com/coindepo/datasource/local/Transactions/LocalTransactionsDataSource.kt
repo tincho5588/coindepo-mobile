@@ -29,6 +29,7 @@ import com.coindepo.datasource.local.database.CoinDepoDataBase
 import com.coindepo.datasource.local.database.dao.asTransaction
 import com.coindepo.datasource.local.utils.RemoteMediatorConverter
 import com.coindepo.domain.entities.transactions.Transaction
+import com.coindepo.domain.entities.transactions.TransactionStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -57,4 +58,8 @@ class LocalTransactionsDataSourceImpl(
 
     override suspend fun getAllTransactions(): List<Transaction> =
         coinDepoDatabase.getAllTransactions()
+
+    override suspend fun updateTransactionStatus(transactionId: Int, newStatus: TransactionStatus) {
+        coinDepoDatabase.updateTransactionStatus(transactionId, newStatus)
+    }
 }

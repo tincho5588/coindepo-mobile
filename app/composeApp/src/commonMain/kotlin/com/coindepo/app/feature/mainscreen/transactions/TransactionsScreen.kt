@@ -288,6 +288,14 @@ fun TransactionCancellationDialog(
                     }
                 }
             }
+        },
+        title = {
+            Text(modifier = Modifier.fillMaxWidth(), text = "Cancellation Request", textAlign = TextAlign.Center)
+        },
+        text = {
+            Text("This withdrawal request is currently in progress. While the withdrawal is in the \"Pending\" status you can cancel it.\n\n" +
+            "You will receive an email notification when the cancellation process is completed. This withdrawal will be displayed on the \"Transactions\" page as \"Cancelled\".\n\n" +
+            "Are you sure you want to cancel this withdrawal?", textAlign = TextAlign.Center)
         }
     )
 }
@@ -460,6 +468,74 @@ fun TransactionScreenPreview() {
                 )
             ) }.collectAsLazyPagingItems(),
             null,
+            {},
+            {},
+            {},
+            {_,_,_,_ -> }
+        )
+    }
+}
+
+@Preview
+@Composable
+fun TransactionCancelPreview() {
+    CoinDepoTheme {
+        TransactionsScreenContent(
+            items = flow<PagingData<Transaction>> {
+                PagingData.Companion.from(
+                    listOf(
+                        Transaction(
+                            "eeb21042-ae43-49e9-b240-1a25f31f033f",
+                            3560781,
+                            "Withdrawal",
+                            "Withdrawal from Current Interest Account ",
+                            "",
+                            "ecba7af2-c165-4758-bf3a-77415a6167c7",
+                            "-500",
+                            "USDT_BSC",
+                            "USDT",
+                            "${COIN_LOGO_URL}usdt_bsc.svg",
+                            19502,
+                            19502,
+                            TransactionType.WITHDRAWAL,
+                            TransactionStatus.PENDING,
+                            Operation.CREDIT,
+                            "0x39303C730904BE7C7ECFF1C5C2c6F6dC58B3B18C",
+                            "0x64e72c6ccbedf7088c35ae5876bac4049da7550d",
+                            "",
+                            "0x78c888e60898cfab9558571d77234a65c421c33edccbc039f221976ef7f7314e",
+                            Clock.System.now(),
+                            Clock.System.now(),
+                            false
+                        )
+                    )
+                ) }.collectAsLazyPagingItems(),
+            TransactionCancellationNotConfirmed(
+                Transaction(
+                    "eeb21042-ae43-49e9-b240-1a25f31f033f",
+                    3560781,
+                    "Withdrawal",
+                    "Withdrawal from Current Interest Account ",
+                    "",
+                    "ecba7af2-c165-4758-bf3a-77415a6167c7",
+                    "-500",
+                    "USDT_BSC",
+                    "USDT",
+                    "${COIN_LOGO_URL}usdt_bsc.svg",
+                    19502,
+                    19502,
+                    TransactionType.WITHDRAWAL,
+                    TransactionStatus.PENDING,
+                    Operation.CREDIT,
+                    "0x39303C730904BE7C7ECFF1C5C2c6F6dC58B3B18C",
+                    "0x64e72c6ccbedf7088c35ae5876bac4049da7550d",
+                    "",
+                    "0x78c888e60898cfab9558571d77234a65c421c33edccbc039f221976ef7f7314e",
+                    Clock.System.now(),
+                    Clock.System.now(),
+                    false
+                )
+            ),
             {},
             {},
             {},

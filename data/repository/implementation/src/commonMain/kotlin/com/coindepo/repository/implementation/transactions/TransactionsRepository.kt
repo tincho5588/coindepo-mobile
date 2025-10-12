@@ -27,6 +27,7 @@ import com.coindepo.domain.entities.CoinDepoException
 import com.coindepo.domain.entities.OperationResult
 import com.coindepo.domain.entities.OtherErrorException
 import com.coindepo.domain.entities.transactions.Transaction
+import com.coindepo.domain.entities.transactions.TransactionStatus
 import com.coindepo.repository.contracts.transactions.TransactionsRepository
 import kotlinx.coroutines.flow.Flow
 
@@ -50,7 +51,15 @@ class TransactionsRepositoryImpl(
         clientToken: String,
         transactionId: Int
     ): OperationResult = remoteTransactionsDataSource.cancelTransaction(userName, clientToken, transactionId).fold(
-        onSuccess = { OperationResult.Success(Unit) },
-        onFailure = { OperationResult.Failure(it as? CoinDepoException ?: OtherErrorException())}
-    )
+            onSuccess = { OperationResult.Success(Unit) },
+            onFailure = {
+                OperationResult.Failure(
+                    it as? CoinDepoException ?: OtherErrorException()
+                )
+            }
+        ).also { result ->
+            if (result is OperationResult.Success<*>) {
+                localTransactionsDataSource.updateTransactionStatus(transactionId, TransactionStatus.CANCELLED)
+            }
+        }
 }
