@@ -46,4 +46,10 @@ class RemoteTransactionsDataSourceImpl internal constructor(
             totalTrx
         )
     }
+
+    override suspend fun cancelTransaction(
+        userName: String,
+        clientToken: String,
+        transactionId: Int
+    ): Result<Unit> = transactionsService.cancelTransaction(userName, clientToken, transactionId).asResult {}
 }

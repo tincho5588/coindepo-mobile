@@ -19,6 +19,7 @@
 package com.coindepo.datasource.remote.transactions.service
 
 import com.coindepo.datasource.remote.httpClient
+import com.coindepo.datasource.remote.transactions.data.CancelTransactionResponseDTO
 import com.coindepo.datasource.remote.transactions.data.TransactionsResponseDTO
 import com.coindepo.datasource.remote.utils.ApiResult
 import com.coindepo.datasource.remote.utils.safePost
@@ -35,6 +36,12 @@ interface TransactionsService {
         page: Int,
         pageSize: Int
     ): ApiResult<TransactionsResponseDTO>
+
+    suspend fun cancelTransaction(
+        userName: String,
+        clientToken: String,
+        transactionId: Int
+    ): ApiResult<CancelTransactionResponseDTO>
 }
 
 class TransactionsServiceImpl(
@@ -59,6 +66,26 @@ class TransactionsServiceImpl(
                             append("desc", 1)
                             append("page", page)
                             append("per_page", pageSize)
+                        }
+                    )
+                )
+            }
+        }
+
+    override suspend fun cancelTransaction(
+        userName: String,
+        clientToken: String,
+        transactionId: Int
+    ): ApiResult<CancelTransactionResponseDTO> =
+        client.safePost<CancelTransactionResponseDTO> {
+            url {
+                path("cancel_withdrawal")
+                setBody(
+                    MultiPartFormDataContent(
+                        formData {
+                            append("username", userName)
+                            append("client_token", clientToken)
+                            append("trxid", transactionId)
                         }
                     )
                 )

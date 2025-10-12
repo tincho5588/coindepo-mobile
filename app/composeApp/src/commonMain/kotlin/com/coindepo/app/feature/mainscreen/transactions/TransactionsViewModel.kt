@@ -22,13 +22,55 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.coindepo.domain.entities.CoinDepoException
+import com.coindepo.domain.entities.OperationResult
 import com.coindepo.domain.entities.transactions.Transaction
+import com.coindepo.domain.usecases.transactions.CancelTransactionUseCase
 import com.coindepo.domain.usecases.transactions.GetTransactionsListPaged
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class TransactionsViewModel(
-    private val getTransactionsListPaged: GetTransactionsListPaged
+    private val getTransactionsListPaged: GetTransactionsListPaged,
+    private val cancelTransactionUseCase: CancelTransactionUseCase
 ) : ViewModel() {
 
     val transactionsFlow: Flow<PagingData<Transaction>> = getTransactionsListPaged.getTransactionsListPaged().cachedIn(viewModelScope)
+
+    private val _transactionCancellationState = MutableStateFlow<TransactionCancellationState?>(null)
+    val transactionCancellationState: StateFlow<TransactionCancellationState?> = _transactionCancellationState
+
+    fun startTransactionCancellation(transaction: Transaction) {
+        _transactionCancellationState.value = TransactionCancellationNotConfirmed(transaction)
+    }
+
+    fun performTransactionCancellation(transaction: Transaction) {
+        viewModelScope.launch {
+            _transactionCancellationState.value = TransactionCancellationLoading
+
+            val result = cancelTransactionUseCase.performTransactionCancellation(transaction)
+
+            _transactionCancellationState.value = when(result) {
+                is OperationResult.Failure -> TransactionCancellationFailure(result.e)
+                is OperationResult.Success<*> -> TransactionCancellationSuccess
+            }
+        }
+    }
+
+    fun clearTransactionCancellationState() {
+        _transactionCancellationState.value = null
+    }
 }
+
+sealed interface TransactionCancellationState
+
+data class TransactionCancellationNotConfirmed(
+    val transaction: Transaction
+) : TransactionCancellationState
+data object TransactionCancellationLoading : TransactionCancellationState
+data object TransactionCancellationSuccess : TransactionCancellationState
+data class TransactionCancellationFailure(
+    val e: CoinDepoException
+) : TransactionCancellationState

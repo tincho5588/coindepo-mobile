@@ -21,6 +21,7 @@
 package com.coindepo.app.feature.mainscreen.transactions
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -43,12 +44,17 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.outlined.Cancel
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -67,6 +73,9 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import coil3.compose.AsyncImage
+import coindepo.app.composeapp.generated.resources.Res
+import coindepo.app.composeapp.generated.resources.no
+import coindepo.app.composeapp.generated.resources.yes
 import com.coindepo.app.feature.common.CoinDepoElevatedCard
 import com.coindepo.app.feature.common.LoadingSpinner
 import com.coindepo.app.ui.theme.CoinDepoTheme
@@ -83,6 +92,7 @@ import kotlinx.datetime.format
 import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -90,14 +100,27 @@ import kotlin.time.Instant
 
 @Composable
 fun TransactionsScreen(
-    transactionsViewModel: TransactionsViewModel
+    transactionsViewModel: TransactionsViewModel,
+    showSnackBar: (String, SnackbarDuration, String?, () -> Unit) -> Unit
 ) {
-    TransactionsScreenContent(transactionsViewModel.transactionsFlow.collectAsLazyPagingItems())
+    TransactionsScreenContent(
+        transactionsViewModel.transactionsFlow.collectAsLazyPagingItems(),
+        transactionsViewModel.transactionCancellationState.value,
+        transactionsViewModel::startTransactionCancellation,
+        transactionsViewModel::performTransactionCancellation,
+        transactionsViewModel::clearTransactionCancellationState,
+        showSnackBar
+    )
 }
 
 @Composable
 fun TransactionsScreenContent(
-    items: LazyPagingItems<Transaction>
+    items: LazyPagingItems<Transaction>,
+    transactionCancellationState: TransactionCancellationState?,
+    requestCancellation: (Transaction) -> Unit,
+    cancelTransaction: (Transaction) -> Unit,
+    clearTransactionCancellationState: () -> Unit,
+    showSnackBar: (String, SnackbarDuration, String?, () -> Unit) -> Unit
 ) {
     val scope = rememberCoroutineScope()
     Box(
@@ -144,7 +167,9 @@ fun TransactionsScreenContent(
                         }
                     ) { index ->
                         items[index]?.let {
-                            TransactionItem(it)
+                            TransactionItem(it) { transaction ->
+                                requestCancellation(transaction)
+                            }
                             Spacer(Modifier.height(8.dp))
                             HorizontalDivider()
                             Spacer(Modifier.height(8.dp))
@@ -163,9 +188,23 @@ fun TransactionsScreenContent(
                     }
                 }
 
+                if (items.loadState.mediator?.append is LoadState.Error) {
+                    showSnackBar(
+                        "Failed to load transactions.",
+                        SnackbarDuration.Short,
+                        "Retry",
+                        { items.retry() }
+                    )
+                }
+
                 when(items.loadState.mediator?.refresh) {
                     is LoadState.Error -> {
-                        // TODO: Show a snackbar
+                        showSnackBar(
+                            "Failed to load transactions.",
+                            SnackbarDuration.Short,
+                            "Retry",
+                            { items.retry() }
+                        )
                     }
                     is LoadState.Loading -> { }
                     is LoadState.NotLoading -> if (items.itemCount == 0) {
@@ -179,12 +218,84 @@ fun TransactionsScreenContent(
                 }
             }
         }
+
+        when(transactionCancellationState) {
+            is TransactionCancellationNotConfirmed,
+            is TransactionCancellationLoading -> {
+                TransactionCancellationDialog(
+                    transactionCancellationState,
+                    cancelRequest = { clearTransactionCancellationState() },
+                    confirmTransactionCancellation = { cancelTransaction(it) }
+                )
+            }
+            is TransactionCancellationSuccess -> {
+                showSnackBar("Transaction cancelled", SnackbarDuration.Short, null, {})
+                clearTransactionCancellationState()
+            }
+            is TransactionCancellationFailure -> {
+                showSnackBar(
+                    "Failed while trying to cancel transaction. Try again later.",
+                    SnackbarDuration.Short,
+                    null,
+                    {}
+                )
+                clearTransactionCancellationState()
+            }
+            null -> {}
+        }
     }
 }
 
 @Composable
+fun TransactionCancellationDialog(
+    transactionCancellationState: TransactionCancellationState,
+    cancelRequest: () -> Unit,
+    confirmTransactionCancellation: (Transaction) -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = { },
+        confirmButton = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                TextButton(
+                    modifier = Modifier.weight(1f),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                    onClick = {
+                        cancelRequest()
+                    },
+                    enabled = transactionCancellationState is TransactionCancellationNotConfirmed
+                ) {
+                    Text(stringResource(Res.string.no))
+                }
+                Spacer(Modifier.width(8.dp))
+                Button(
+                    modifier = Modifier.weight(1f),
+                    onClick = {
+                        if (transactionCancellationState is TransactionCancellationNotConfirmed) {
+                            confirmTransactionCancellation(transactionCancellationState.transaction)
+                        }
+                    }
+                ) {
+                    if (transactionCancellationState is TransactionCancellationNotConfirmed) {
+                        Text(stringResource(Res.string.yes))
+                    } else {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .size(24.dp),
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
+                }
+            }
+        }
+    )
+}
+
+@Composable
 fun TransactionItem(
-    transaction: Transaction
+    transaction: Transaction,
+    requestCancellation: (Transaction) -> Unit
 ) {
     val isExpandable = !transaction.sourceAddress.isNullOrEmpty() || !transaction.destinationAddress.isNullOrEmpty() || !transaction.txHash.isNullOrEmpty()
 
@@ -264,13 +375,15 @@ fun TransactionItem(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(text = "Pending", style = MaterialTheme.typography.bodyLarge.copy(color = Color(0xFFFFAA33), fontWeight = FontWeight.SemiBold), textAlign = TextAlign.Center)
-                        Spacer(Modifier.width(8.dp))
-                        Icon(
-                            modifier = Modifier.size(24.dp).clip(CircleShape).clickable(enabled = true, onClick = {}),
-                            imageVector = Icons.Outlined.Cancel,
-                            contentDescription = null,
-                            tint = Color(0xFFFFAA33)
-                        )
+                        if (transaction.trxType == TransactionType.WITHDRAWAL) {
+                            Spacer(Modifier.width(8.dp))
+                            Icon(
+                                modifier = Modifier.size(24.dp).clip(CircleShape).clickable(enabled = true, onClick = { requestCancellation(transaction) }),
+                                imageVector = Icons.Outlined.Cancel,
+                                contentDescription = null,
+                                tint = Color(0xFFFFAA33)
+                            )
+                        }
                     }
                 }
                 TransactionStatus.COMPLETED -> Text(modifier = Modifier.background(Color(0xFFdfffec), shape = CircleShape).padding(horizontal = 16.dp, vertical = 4.dp), text = "Completed", style = MaterialTheme.typography.bodyLarge.copy(color = Color(0xFF1e7e34), fontWeight = FontWeight.SemiBold), textAlign = TextAlign.Center)
@@ -345,7 +458,12 @@ fun TransactionScreenPreview() {
                         false
                     )
                 )
-            ) }.collectAsLazyPagingItems()
+            ) }.collectAsLazyPagingItems(),
+            null,
+            {},
+            {},
+            {},
+            {_,_,_,_ -> }
         )
     }
 }
@@ -382,7 +500,7 @@ fun TransactionItemPreview() {
                     Clock.System.now(),
                     false
                 )
-            )
+            ) {}
         }
 
     }

@@ -32,6 +32,12 @@ interface RemoteTransactionsDataSource {
         page: Int,
         pageSize: Int
     ): Result<TransactionsPage>
+
+    suspend fun cancelTransaction(
+        userName: String,
+        clientToken: String,
+        transactionId: Int
+    ): Result<Unit>
 }
 
 data class TransactionsPage(

@@ -26,6 +26,7 @@ import com.coindepo.domain.usecases.login.LoginUseCase
 import com.coindepo.domain.usecases.login.ResendVerificationCodeUseCase
 import com.coindepo.domain.usecases.resetpassword.ResetPasswordUseCase
 import com.coindepo.domain.usecases.stats.GetAccountStatsUseCase
+import com.coindepo.domain.usecases.transactions.CancelTransactionUseCase
 import com.coindepo.domain.usecases.transactions.GetTransactionsListPaged
 import com.coindepo.domain.usecases.userdetails.GetUserDetailsUseCase
 import com.coindepo.domain.usecases.wallet.GetWalletDataUseCase
@@ -55,5 +56,6 @@ val useCaseModule = module {
         scoped<ConfirmWithdrawUseCase> { ConfirmWithdrawUseCase(get(), get(), get()) }
         scoped<SendWithdrawEmailVerificationCodeUseCase> { SendWithdrawEmailVerificationCodeUseCase(get(), get(), get()) }
         scoped<GetTransactionsListPaged> { GetTransactionsListPaged(get(), get(), get()) }
+        scoped<CancelTransactionUseCase> { CancelTransactionUseCase(get(), get(), get()) }
     }
 }

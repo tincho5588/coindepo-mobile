@@ -16,23 +16,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.coindepo.repository.contracts.transactions
+package com.coindepo.datasource.remote.transactions.data
 
-import androidx.paging.PagingData
-import com.coindepo.domain.entities.OperationResult
-import com.coindepo.domain.entities.transactions.Transaction
-import kotlinx.coroutines.flow.Flow
+import com.coindepo.datasource.remote.stats.data.BaseResponseDTO
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-interface TransactionsRepository {
-    fun getTransactionsListPaged(
-        userName: String,
-        clientToken: String,
-        pageSize: Int
-    ): Flow<PagingData<Transaction>>
-
-    suspend fun cancelTransaction(
-        userName: String,
-        clientToken: String,
-        transactionId: Int
-    ): OperationResult
-}
+@Serializable
+data class CancelTransactionResponseDTO(
+    override val status: String?,
+    override val code: String?,
+    @SerialName("error_code") override val errorCode: String?
+): BaseResponseDTO

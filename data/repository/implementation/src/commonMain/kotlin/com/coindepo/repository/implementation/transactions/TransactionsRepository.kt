@@ -23,6 +23,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.coindepo.datasource.contracts.transactions.LocalTransactionsDataSource
 import com.coindepo.datasource.contracts.transactions.RemoteTransactionsDataSource
+import com.coindepo.domain.entities.CoinDepoException
+import com.coindepo.domain.entities.OperationResult
+import com.coindepo.domain.entities.OtherErrorException
 import com.coindepo.domain.entities.transactions.Transaction
 import com.coindepo.repository.contracts.transactions.TransactionsRepository
 import kotlinx.coroutines.flow.Flow
@@ -40,5 +43,14 @@ class TransactionsRepositoryImpl(
     ): Flow<PagingData<Transaction>> = localTransactionsDataSource.getTransactionsPager(
         config = PagingConfig(pageSize),
         remoteMediator = TransactionsRemoteMediator(userName, clientToken, localTransactionsDataSource, remoteTransactionsDataSource)
+    )
+
+    override suspend fun cancelTransaction(
+        userName: String,
+        clientToken: String,
+        transactionId: Int
+    ): OperationResult = remoteTransactionsDataSource.cancelTransaction(userName, clientToken, transactionId).fold(
+        onSuccess = { OperationResult.Success(Unit) },
+        onFailure = { OperationResult.Failure(it as? CoinDepoException ?: OtherErrorException())}
     )
 }
