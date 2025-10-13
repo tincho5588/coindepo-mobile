@@ -386,8 +386,14 @@ fun CoinBalancesSection(
         with(
             when {
                 !expanded.value -> emptyList()
-                hideEmptyBalances.value -> coinsList.filter { it.coinBalance?.balance?.compareTo(BigNum.ZERO) != 0 }.sortedBy { it.coinBalance?.displayOrder }
-                else -> coinsList.sortedBy { it.coinBalance?.displayOrder }
+                hideEmptyBalances.value -> coinsList.filter { (it.coinBalance?.balance ?: BigNum.ZERO).compareTo(BigNum.ZERO) != 0 }.sortedBy { (it.coinBalance?.balance ?: BigNum.ZERO).toString().toDouble() * (-1) }
+                else -> coinsList.sortedBy {
+                    if ((it.coinBalance?.balance ?: BigNum.ZERO).compareTo(BigNum.ZERO) != 0) {
+                        (it.coinBalance?.balance ?: BigNum.ZERO).toString().toDouble() * (-1)
+                    } else {
+                        it.order.toDouble()
+                    }
+                }
             }
         ) {
             forEach {
