@@ -59,7 +59,7 @@ class LocalTransactionsDataSourceImpl(
     override suspend fun getAllTransactions(): List<Transaction> =
         coinDepoDatabase.getAllTransactions()
 
-    override suspend fun updateTransactionStatus(transactionId: Int, newStatus: TransactionStatus) {
-        coinDepoDatabase.updateTransactionStatus(transactionId, newStatus)
+    override suspend fun updateTransactionStatus(entryId: String, newStatus: TransactionStatus) {
+        coinDepoDatabase.updateTransactionStatus(entryId, newStatus)
     }
 }

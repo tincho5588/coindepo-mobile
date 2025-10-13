@@ -18,6 +18,7 @@
 
 package com.coindepo.app.feature.common
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -102,17 +103,21 @@ fun WarningBanner(
                 )
             }
         }
-        if (expanded.value && description != null) {
-            Text(
-                modifier = Modifier.fillMaxWidth().padding(start = 72.dp),
-                text = description,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = when (warningBannerColor) {
-                        WarningBannerColor.BLUE -> Color.Unspecified
-                        WarningBannerColor.RED -> MaterialTheme.colorScheme.error
-                    }
+        if (description != null) {
+            AnimatedVisibility(
+                expanded.value
+            ) {
+                Text(
+                    modifier = Modifier.fillMaxWidth().padding(start = 72.dp),
+                    text = description,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = when (warningBannerColor) {
+                            WarningBannerColor.BLUE -> Color.Unspecified
+                            WarningBannerColor.RED -> MaterialTheme.colorScheme.error
+                        }
+                    )
                 )
-            )
+            }
         }
     }
 }

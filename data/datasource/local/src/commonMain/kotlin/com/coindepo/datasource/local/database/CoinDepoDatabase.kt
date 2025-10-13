@@ -173,8 +173,8 @@ abstract class CoinDepoDataBase : RoomDatabase() {
 
     suspend fun getAllTransactions(): List<Transaction> = transactionsDao.getAllTransactions().map { it.asTransaction }
 
-    suspend fun updateTransactionStatus(transactionId: Int, newStatus: TransactionStatus) {
-        transactionsDao.updateTransactionStatus(transactionId, newStatus)
+    suspend fun updateTransactionStatus(entryId: String, newStatus: TransactionStatus) {
+        transactionsDao.updateTransactionStatus(entryId, newStatus)
     }
 
     suspend fun nuke() {

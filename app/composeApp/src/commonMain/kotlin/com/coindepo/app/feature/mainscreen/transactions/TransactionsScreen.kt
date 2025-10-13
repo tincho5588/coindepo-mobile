@@ -42,8 +42,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
+import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.FilterAlt
-import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -57,6 +57,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -105,7 +106,7 @@ fun TransactionsScreen(
 ) {
     TransactionsScreenContent(
         transactionsViewModel.transactionsFlow.collectAsLazyPagingItems(),
-        transactionsViewModel.transactionCancellationState.value,
+        transactionsViewModel.transactionCancellationState.collectAsState().value,
         transactionsViewModel::startTransactionCancellation,
         transactionsViewModel::performTransactionCancellation,
         transactionsViewModel::clearTransactionCancellationState,
@@ -387,9 +388,9 @@ fun TransactionItem(
                             Spacer(Modifier.width(8.dp))
                             Icon(
                                 modifier = Modifier.size(24.dp).clip(CircleShape).clickable(enabled = true, onClick = { requestCancellation(transaction) }),
-                                imageVector = Icons.Outlined.Cancel,
+                                imageVector = Icons.Filled.Cancel,
                                 contentDescription = null,
-                                tint = Color(0xFFFFAA33)
+                                tint = Color.Red
                             )
                         }
                     }

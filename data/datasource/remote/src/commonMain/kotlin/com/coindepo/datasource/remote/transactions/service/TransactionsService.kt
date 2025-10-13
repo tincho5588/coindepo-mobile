@@ -40,7 +40,7 @@ interface TransactionsService {
     suspend fun cancelTransaction(
         userName: String,
         clientToken: String,
-        transactionId: Int
+        entryId: String
     ): ApiResult<CancelTransactionResponseDTO>
 }
 
@@ -75,7 +75,7 @@ class TransactionsServiceImpl(
     override suspend fun cancelTransaction(
         userName: String,
         clientToken: String,
-        transactionId: Int
+        entryId: String
     ): ApiResult<CancelTransactionResponseDTO> =
         client.safePost<CancelTransactionResponseDTO> {
             url {
@@ -85,7 +85,7 @@ class TransactionsServiceImpl(
                         formData {
                             append("username", userName)
                             append("client_token", clientToken)
-                            append("trxid", transactionId)
+                            append("trxid", entryId)
                         }
                     )
                 )

@@ -37,7 +37,7 @@ class CancelTransactionUseCase(
         if (transaction.trxStatus != TransactionStatus.PENDING) {
             OperationResult.Failure(OtherErrorException())
         } else {
-            transactionsRepository.cancelTransaction(userName, clientToken, transaction.trxId)
+            transactionsRepository.cancelTransaction(userName, clientToken, transaction.entryId)
         }
     }
 }

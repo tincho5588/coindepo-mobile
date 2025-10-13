@@ -43,13 +43,13 @@ class RemoteTransactionsDataSourceImpl internal constructor(
             transactions.map { it.asTransaction },
             page,
             pageSize,
-            totalTrx
+            totalTrx ?: 0
         )
     }
 
     override suspend fun cancelTransaction(
         userName: String,
         clientToken: String,
-        transactionId: Int
-    ): Result<Unit> = transactionsService.cancelTransaction(userName, clientToken, transactionId).asResult {}
+        entryId: String
+    ): Result<Unit> = transactionsService.cancelTransaction(userName, clientToken, entryId).asResult {}
 }

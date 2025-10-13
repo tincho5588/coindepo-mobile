@@ -24,7 +24,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CancelTransactionResponseDTO(
-    override val status: String?,
-    override val code: String?,
-    @SerialName("error_code") override val errorCode: String?
+    override val status: String? = null,
+    override val code: String? = null,
+    @SerialName("error_code") override val errorCode: String? = null
 ): BaseResponseDTO

@@ -37,7 +37,7 @@ interface RemoteTransactionsDataSource {
     suspend fun cancelTransaction(
         userName: String,
         clientToken: String,
-        transactionId: Int
+        entryId: String
     ): Result<Unit>
 }
 
@@ -56,5 +56,5 @@ interface LocalTransactionsDataSource {
 
     suspend fun getAllTransactions(): List<Transaction>
 
-    suspend fun updateTransactionStatus(transactionId: Int, newStatus: TransactionStatus)
+    suspend fun updateTransactionStatus(entryId: String, newStatus: TransactionStatus)
 }

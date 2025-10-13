@@ -36,8 +36,8 @@ import kotlin.time.Instant
 
 @Serializable
 data class TransactionsResponseDTO(
-    @SerialName("total_trx") val totalTrx: Int,
-    @SerialName("transactions") val transactions: List<TransactionDTO>,
+    @SerialName("total_trx") val totalTrx: Int? = null,
+    @SerialName("transactions") val transactions: List<TransactionDTO> = emptyList(),
     override val status: String? = null,
     override val code: String? = null,
     @SerialName("error_code") override val errorCode: String? = null
@@ -120,6 +120,7 @@ val Int.asTransactionType: TransactionType
 
 val Int.asTransactionStatus: TransactionStatus
     get() = when(this) {
+        1 -> TransactionStatus.PENDING
         2 -> TransactionStatus.PROCESSING
         3 -> TransactionStatus.PENDING
         4 -> TransactionStatus.COMPLETED

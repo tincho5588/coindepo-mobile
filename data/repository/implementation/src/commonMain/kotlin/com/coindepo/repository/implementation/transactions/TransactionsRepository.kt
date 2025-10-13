@@ -49,8 +49,8 @@ class TransactionsRepositoryImpl(
     override suspend fun cancelTransaction(
         userName: String,
         clientToken: String,
-        transactionId: Int
-    ): OperationResult = remoteTransactionsDataSource.cancelTransaction(userName, clientToken, transactionId).fold(
+        entryId: String
+    ): OperationResult = remoteTransactionsDataSource.cancelTransaction(userName, clientToken, entryId).fold(
             onSuccess = { OperationResult.Success(Unit) },
             onFailure = {
                 OperationResult.Failure(
@@ -59,7 +59,7 @@ class TransactionsRepositoryImpl(
             }
         ).also { result ->
             if (result is OperationResult.Success<*>) {
-                localTransactionsDataSource.updateTransactionStatus(transactionId, TransactionStatus.CANCELLED)
+                localTransactionsDataSource.updateTransactionStatus(entryId, TransactionStatus.CANCELLED)
             }
         }
 }

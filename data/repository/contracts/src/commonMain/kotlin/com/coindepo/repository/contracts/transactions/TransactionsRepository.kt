@@ -33,6 +33,6 @@ interface TransactionsRepository {
     suspend fun cancelTransaction(
         userName: String,
         clientToken: String,
-        transactionId: Int
+        entryId: String
     ): OperationResult
 }
