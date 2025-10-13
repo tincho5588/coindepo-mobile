@@ -211,9 +211,10 @@ fun TransactionsScreenContent(
                     is LoadState.NotLoading -> if (items.itemCount == 0) {
                         // TODO: Show no items view
                     } else {
-                        scope.launch {
-                            listState.animateScrollToItem(0)
-                        }
+                        // TODO: inspect this, it's acting weirdly
+                        //scope.launch {
+                            //listState.animateScrollToItem(0)
+                        //}
                     }
                     null -> { }
                 }
