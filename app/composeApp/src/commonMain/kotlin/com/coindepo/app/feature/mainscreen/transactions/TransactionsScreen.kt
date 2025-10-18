@@ -23,7 +23,10 @@ package com.coindepo.app.feature.mainscreen.transactions
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,34 +42,49 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DateRangePicker
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.ModalBottomSheetProperties
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.rememberDateRangePickerState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -75,18 +93,24 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import coil3.compose.AsyncImage
 import coindepo.app.composeapp.generated.resources.Res
+import coindepo.app.composeapp.generated.resources.cancel
 import coindepo.app.composeapp.generated.resources.no
 import coindepo.app.composeapp.generated.resources.yes
 import com.coindepo.app.feature.common.CoinDepoElevatedCard
 import com.coindepo.app.feature.common.LoadingSpinner
+import com.coindepo.app.feature.common.MyExposedDropDownMenu
+import com.coindepo.app.feature.mainscreen.AccountStatsViewModel
 import com.coindepo.app.ui.theme.CoinDepoTheme
 import com.coindepo.datasource.remote.stats.data.COIN_LOGO_URL
+import com.coindepo.domain.entities.stats.coin.Coin
 import com.coindepo.domain.entities.transactions.Operation
 import com.coindepo.domain.entities.transactions.Transaction
 import com.coindepo.domain.entities.transactions.TransactionStatus
 import com.coindepo.domain.entities.transactions.TransactionType
+import com.coindepo.domain.entities.transactions.TransactionsDateRange
+import com.coindepo.domain.entities.transactions.TransactionsFilters
+import com.coindepo.domain.entities.transactions.hasFilters
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
@@ -101,12 +125,16 @@ import kotlin.time.Instant
 
 @Composable
 fun TransactionsScreen(
+    accountStatsViewModel: AccountStatsViewModel,
     transactionsViewModel: TransactionsViewModel,
     showSnackBar: (String, SnackbarDuration, String?, () -> Unit) -> Unit
 ) {
     TransactionsScreenContent(
         transactionsViewModel.transactionsFlow.collectAsLazyPagingItems(),
         transactionsViewModel.transactionCancellationState.collectAsState().value,
+        transactionsViewModel.transactionsFilters.collectAsState().value,
+        accountStatsViewModel.coins.collectAsState().value,
+        transactionsViewModel::setFilters,
         transactionsViewModel::startTransactionCancellation,
         transactionsViewModel::performTransactionCancellation,
         transactionsViewModel::clearTransactionCancellationState,
@@ -118,15 +146,18 @@ fun TransactionsScreen(
 fun TransactionsScreenContent(
     items: LazyPagingItems<Transaction>,
     transactionCancellationState: TransactionCancellationState?,
+    selectedFilters: TransactionsFilters,
+    coinsList: Collection<Coin>,
+    onFiltersChanged: (TransactionsFilters) -> Unit,
     requestCancellation: (Transaction) -> Unit,
     cancelTransaction: (Transaction) -> Unit,
     clearTransactionCancellationState: () -> Unit,
     showSnackBar: (String, SnackbarDuration, String?, () -> Unit) -> Unit
 ) {
-    val scope = rememberCoroutineScope()
     Box(
         modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceContainerLow)
     ) {
+        val showFilters = remember { mutableStateOf(false) }
         CoinDepoElevatedCard(
             modifier = Modifier.fillMaxSize().padding(16.dp)
         ) {
@@ -135,13 +166,29 @@ fun TransactionsScreenContent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(modifier = Modifier.weight(1f), text = "Transaction History", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold))
-                IconButton(
-                    onClick = {}
+
+                BadgedBox(
+                    badge = {
+                        if (selectedFilters.hasFilters) {
+                            Badge(
+                                modifier = Modifier.size(8.dp),
+                                containerColor = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
                 ) {
-                    Icon(
-                        imageVector = Icons.Filled.FilterAlt,
-                        contentDescription = ""
-                    )
+                    IconButton(
+                        onClick = {
+                            if (items.loadState.mediator?.refresh !is LoadState.Loading) {
+                                showFilters.value = true
+                            }
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.FilterAlt,
+                            contentDescription = ""
+                        )
+                    }
                 }
             }
 
@@ -152,6 +199,7 @@ fun TransactionsScreenContent(
                         items.refresh()
                     }
                 },
+                contentAlignment = Alignment.Center,
                 modifier = Modifier.fillMaxSize()
             ) {
                 val listState = rememberLazyListState()
@@ -209,7 +257,25 @@ fun TransactionsScreenContent(
                     }
                     is LoadState.Loading -> { }
                     is LoadState.NotLoading -> if (items.itemCount == 0) {
-                        // TODO: Show no items view
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            AsyncImage(
+                                modifier = Modifier.size(48.dp),
+                                model = "https://app.coindepo.com/assets/images/Union.svg",
+                                contentDescription = null
+                            )
+                            Spacer(Modifier.height(8.dp))
+                            Text(
+                                modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+                                text = "No transactions found",
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.headlineLarge.copy(
+                                    Color(0xFFa19ead),
+                                    fontWeight = FontWeight.Bold
+                                )
+                            )
+                        }
                     } else {
                         // TODO: inspect this, it's acting weirdly
                         //scope.launch {
@@ -244,6 +310,21 @@ fun TransactionsScreenContent(
                 clearTransactionCancellationState()
             }
             null -> {}
+        }
+
+        if (showFilters.value) {
+            FiltersBottomSheet(
+                selectedFilters,
+                coinsList,
+                { newFilters ->
+                    if (selectedFilters != newFilters) {
+                        onFiltersChanged(newFilters)
+                        items.refresh()
+                    }
+                }
+            ) {
+                showFilters.value = false
+            }
         }
     }
 }
@@ -410,6 +491,256 @@ fun TransactionItem(
     }
 }
 
+@Composable
+fun FiltersBottomSheet(
+    selectedFilters: TransactionsFilters,
+    coinsList: Collection<Coin>,
+    onFiltersChanged: (TransactionsFilters) -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    ModalBottomSheet(
+        sheetState = sheetState,
+        properties = ModalBottomSheetProperties(shouldDismissOnBackPress = false),
+        onDismissRequest = onDismissRequest) {
+        FilterBottomSheetContent(selectedFilters, coinsList, onDismissRequest, onFiltersChanged)
+    }
+}
+
+@Composable
+fun FilterBottomSheetContent(
+    selectedFilters: TransactionsFilters,
+    coinsList: Collection<Coin>,
+    onDismissRequest: () -> Unit,
+    onFiltersChanged: (TransactionsFilters) -> Unit
+) {
+    val newFilters = remember { mutableStateOf(selectedFilters) }
+    Column(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp)
+    ) {
+        FilterDateComponent(newFilters.value.dateRange) {
+            newFilters.value = newFilters.value.copy(dateRange = it)
+        }
+        Spacer(Modifier.height(8.dp))
+        AssetsSelectionComponent(
+            newFilters.value.selectedAsset,
+            coinsList
+        ) {
+            newFilters.value = newFilters.value.copy(selectedAsset = it)
+        }
+        Spacer(Modifier.height(8.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            TextButton(
+                modifier = Modifier.weight(1f),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                onClick = {
+                    onFiltersChanged(TransactionsFilters())
+                    onDismissRequest()
+                }
+            ) {
+                Text("Clear All")
+            }
+            Spacer(Modifier.width(8.dp))
+            Button(
+                modifier = Modifier.weight(1f),
+                onClick = {
+                    onFiltersChanged(newFilters.value)
+                    onDismissRequest()
+                }
+            ) {
+                Text("Confirm")
+            }
+        }
+        Spacer(Modifier.height(8.dp))
+    }
+}
+
+@Composable
+fun FilterDateComponent(
+    selectedDateRange: TransactionsDateRange?,
+    onDateRangeSelected: (TransactionsDateRange) -> Unit
+) {
+    val datePickerState = rememberDateRangePickerState(
+        initialSelectedStartDateMillis = selectedDateRange?.startDateMillis,
+        initialSelectedEndDateMillis = selectedDateRange?.endDateMillis,
+        selectableDates = object : SelectableDates {
+            override fun isSelectableYear(year: Int): Boolean {
+                return year <= Clock.System.now().toLocalDateTime(TimeZone.UTC).year
+            }
+
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                return Instant.fromEpochMilliseconds(utcTimeMillis) <= Clock.System.now()
+            }
+        }
+    )
+    val showCalendar = remember { mutableStateOf(false) }
+    Text(
+        text = "Period",
+        style = MaterialTheme.typography.titleMedium.copy(
+            Color(0xFFa19ead),
+            fontWeight = FontWeight.Bold
+        ),
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis)
+    OutlinedTextField(
+        modifier = Modifier.fillMaxWidth().focusProperties { canFocus = false },
+        value = if (selectedDateRange != null) {
+            val customFormat = LocalDateTime.Format {
+                monthName(MonthNames.ENGLISH_ABBREVIATED)
+                char(' ')
+                day()
+                chars(", ")
+                year()
+            }
+            "${Instant.fromEpochMilliseconds(selectedDateRange.startDateMillis).toLocalDateTime(
+                TimeZone.UTC).format(customFormat)} - ${Instant.fromEpochMilliseconds(selectedDateRange.endDateMillis).toLocalDateTime(
+                TimeZone.UTC).format(customFormat)}"
+        } else "Select Dates",
+        onValueChange = {},
+        singleLine = true,
+        readOnly = true,
+        shape = RoundedCornerShape(16.dp),
+        trailingIcon = {
+            Icon(
+                imageVector = Icons.Filled.EditCalendar,
+                contentDescription = ""
+            )
+        },
+        interactionSource = remember { MutableInteractionSource() }.also { interactionSource ->
+            LaunchedEffect(interactionSource) {
+                interactionSource.interactions.collect {
+                    if (it is PressInteraction.Release) {
+                        showCalendar.value = true
+                    }
+                }
+            }
+        }
+    )
+    if (showCalendar.value) {
+        DatePickerDialog(
+            onDismissRequest = {
+                showCalendar.value = false
+                datePickerState.setSelection(
+                    selectedDateRange?.startDateMillis,
+                    selectedDateRange?.endDateMillis
+                )
+            },
+            confirmButton = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    TextButton(
+                        modifier = Modifier.weight(1f),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                        onClick = {
+                            showCalendar.value = false
+                            datePickerState.setSelection(
+                                selectedDateRange?.startDateMillis,
+                                selectedDateRange?.endDateMillis
+                            )
+                        }
+                    ) {
+                        Text(stringResource(Res.string.cancel))
+                    }
+                    Spacer(Modifier.width(8.dp))
+                    Button(
+                        modifier = Modifier.weight(1f),
+                        onClick = {
+                            showCalendar.value = false
+                            onDateRangeSelected(
+                                TransactionsDateRange(
+                                    datePickerState.selectedStartDateMillis!!,
+                                    datePickerState.selectedEndDateMillis!!
+                                )
+                            )
+                        },
+                        enabled = datePickerState.selectedStartDateMillis != null && datePickerState.selectedEndDateMillis != null
+                    ) {
+                        Text("Confirm")
+                    }
+                }
+            },
+            content = {
+                DateRangePicker(
+                    state = datePickerState,
+                    title = {},
+                    //headline = {},
+                    showModeToggle = false
+                )
+            }
+        )
+    }
+}
+
+@Composable
+fun AssetsSelectionComponent(
+    selectedAsset: Coin?,
+    assetsList: Collection<Coin>,
+    onAssetSelected: (Coin?) -> Unit
+) {
+    val expanded = remember { mutableStateOf(false) }
+    Text(
+        text = "Asset",
+        style = MaterialTheme.typography.titleMedium.copy(
+            Color(0xFFa19ead),
+            fontWeight = FontWeight.Bold
+        ),
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis)
+    MyExposedDropDownMenu(
+        modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(16.dp)),
+        expanded = expanded,
+        buttonContent = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (selectedAsset == null) {
+                    Text("All Assets")
+                } else {
+                    Text("${selectedAsset.description} (${selectedAsset.binanceTicker})")
+                }
+                Icon(imageVector = if (expanded.value) Icons.Filled.ArrowDropUp else Icons.Filled.ArrowDropDown, contentDescription = null)
+            }
+        },
+        items = {
+            DropdownMenuItem(
+                text = {
+                    Text("All Assets")
+                },
+                onClick = {
+                    onAssetSelected(null)
+                    expanded.value = false
+                }
+            )
+
+            assetsList.forEachIndexed { index, asset ->
+                DropdownMenuItem(
+                    text = {
+                        Text("${asset.description} (${asset.binanceTicker})")
+                    },
+                    onClick = {
+                        onAssetSelected(asset)
+                        expanded.value = false
+                    }
+                )
+            }
+        }
+    )
+}
+
+@Preview
+@Composable
+fun FilterTooltipContentPreview() {
+    CoinDepoTheme {
+        FilterBottomSheetContent(TransactionsFilters(), emptyList(), {}) {}
+    }
+}
+
 private val Instant.formattedDate: String
     get() {
         val formater = LocalDateTime.Format {
@@ -470,6 +801,9 @@ fun TransactionScreenPreview() {
                 )
             ) }.collectAsLazyPagingItems(),
             null,
+            TransactionsFilters(),
+            emptyList(),
+            {},
             {},
             {},
             {},
@@ -477,6 +811,7 @@ fun TransactionScreenPreview() {
         )
     }
 }
+
 
 @Preview
 @Composable
@@ -538,6 +873,9 @@ fun TransactionCancelPreview() {
                     false
                 )
             ),
+            TransactionsFilters(),
+            emptyList(),
+            {},
             {},
             {},
             {},

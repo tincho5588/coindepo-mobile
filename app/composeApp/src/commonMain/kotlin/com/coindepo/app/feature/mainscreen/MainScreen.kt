@@ -280,6 +280,7 @@ fun MainScreen(
                 }
                 composable<TransactionsScreenNavigationRoute> {
                     TransactionsScreen(
+                        accountStatsViewModel,
                         koinViewModel<TransactionsViewModel>(),
                         { message, duration, actionLabel, action ->
                             scope.launch {

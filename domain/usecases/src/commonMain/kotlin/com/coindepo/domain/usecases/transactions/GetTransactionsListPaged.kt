@@ -18,13 +18,11 @@
 
 package com.coindepo.domain.usecases.transactions
 
-import androidx.paging.PagingData
-import com.coindepo.domain.entities.transactions.Transaction
+import com.coindepo.domain.entities.transactions.TransactionsPager
 import com.coindepo.domain.usecases.LoggedInUseCase
 import com.coindepo.domain.usecases.login.GetUserSessionUseCase
 import com.coindepo.domain.usecases.login.LogOutUseCase
 import com.coindepo.repository.contracts.transactions.TransactionsRepository
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.runBlocking
 
 class GetTransactionsListPaged(
@@ -35,7 +33,7 @@ class GetTransactionsListPaged(
 
     val userSession = runBlocking { getUserSessionUseCase.getUserSession()!! }
 
-    fun getTransactionsListPaged(): Flow<PagingData<Transaction>> = userSession.let {
+    fun getTransactionsListPager(): TransactionsPager = userSession.let {
         transactionsRepository.getTransactionsListPaged(it.userName, it.accessToken, 10)
     }
 }

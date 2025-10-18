@@ -30,6 +30,7 @@ import com.coindepo.datasource.local.database.dao.asTransaction
 import com.coindepo.datasource.local.utils.RemoteMediatorConverter
 import com.coindepo.domain.entities.transactions.Transaction
 import com.coindepo.domain.entities.transactions.TransactionStatus
+import com.coindepo.domain.entities.transactions.TransactionsPager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

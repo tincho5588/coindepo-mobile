@@ -16,6 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+@file:OptIn(ExperimentalTime::class)
+
 package com.coindepo.datasource.remote.transactions.service
 
 import com.coindepo.datasource.remote.httpClient
@@ -23,18 +25,27 @@ import com.coindepo.datasource.remote.transactions.data.CancelTransactionRespons
 import com.coindepo.datasource.remote.transactions.data.TransactionsResponseDTO
 import com.coindepo.datasource.remote.utils.ApiResult
 import com.coindepo.datasource.remote.utils.safePost
+import com.coindepo.domain.entities.transactions.TransactionsFilters
 import io.ktor.client.HttpClient
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.setBody
 import io.ktor.http.path
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.format
+import kotlinx.datetime.format.char
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 interface TransactionsService {
     suspend fun getTransactions(
         userName: String,
         clientToken: String,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
+        transactionsFilters: TransactionsFilters
     ): ApiResult<TransactionsResponseDTO>
 
     suspend fun cancelTransaction(
@@ -51,7 +62,8 @@ class TransactionsServiceImpl(
         userName: String,
         clientToken: String,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
+        transactionsFilters: TransactionsFilters
     ): ApiResult<TransactionsResponseDTO> =
         client.safePost<TransactionsResponseDTO> {
             url {
@@ -66,6 +78,18 @@ class TransactionsServiceImpl(
                             append("desc", 1)
                             append("page", page)
                             append("per_page", pageSize)
+                            transactionsFilters.dateRange?.let {
+                                val formatter = LocalDateTime.Format {
+                                    year()
+                                    char('-')
+                                    monthNumber()
+                                    char('-')
+                                    day()
+                                }
+                                append("from_date", Instant.fromEpochMilliseconds(it.startDateMillis).toLocalDateTime(TimeZone.UTC).format(formatter))
+                                append("to_date", Instant.fromEpochMilliseconds(it.endDateMillis).toLocalDateTime(TimeZone.UTC).format(formatter))
+                            }
+                            transactionsFilters.selectedAsset?.let { append("coin_id", it.coinId) }
                         }
                     )
                 )

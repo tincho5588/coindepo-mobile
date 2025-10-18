@@ -26,6 +26,7 @@ import com.coindepo.datasource.contracts.transactions.LocalTransactionsDataSourc
 import com.coindepo.datasource.contracts.transactions.RemoteTransactionsDataSource
 import com.coindepo.datasource.contracts.transactions.TransactionsPage
 import com.coindepo.domain.entities.transactions.Transaction
+import com.coindepo.domain.entities.transactions.TransactionsFilters
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -39,6 +40,8 @@ class TransactionsRemoteMediator(
     private val remoteTransactionsDataSource: RemoteTransactionsDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO.limitedParallelism(1)
 ): RemoteMediator<Int, Transaction>() {
+    private var transactionsFilters = TransactionsFilters()
+
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, Transaction>
@@ -46,7 +49,7 @@ class TransactionsRemoteMediator(
         val existingItems = localTransactionsDataSource.getAllTransactions()
         when(loadType) {
             LoadType.REFRESH -> {
-                remoteTransactionsDataSource.getTransactions(userName, accessToken, 1, state.config.pageSize)
+                remoteTransactionsDataSource.getTransactions(userName, accessToken, 1, state.config.pageSize, transactionsFilters)
             }
             LoadType.PREPEND -> {
                 Result.success(
@@ -60,14 +63,14 @@ class TransactionsRemoteMediator(
             }
             LoadType.APPEND -> {
                 val pageNumber = (existingItems.size / state.config.pageSize) + 1
-                remoteTransactionsDataSource.getTransactions(userName, accessToken, pageNumber, state.config.pageSize)
+                remoteTransactionsDataSource.getTransactions(userName, accessToken, pageNumber, state.config.pageSize, transactionsFilters)
             }
         }.fold(
             onSuccess = {
                 localTransactionsDataSource.saveTransactions(it.transactions, loadType == LoadType.REFRESH)
                 MediatorResult.Success(
                     when(loadType) {
-                        LoadType.REFRESH -> false
+                        LoadType.REFRESH -> it.transactions.size == it.totalTransactions
                         LoadType.PREPEND, LoadType.APPEND -> it.transactions.isEmpty() || (existingItems.size + it.transactions.size) == it.totalTransactions
                     }
                 )
@@ -76,5 +79,9 @@ class TransactionsRemoteMediator(
                 MediatorResult.Error(it)
             }
         )
+    }
+
+    fun setFilters(newFilters: TransactionsFilters) {
+        transactionsFilters = newFilters
     }
 }

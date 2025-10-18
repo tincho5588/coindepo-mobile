@@ -24,6 +24,7 @@ import com.coindepo.datasource.remote.transactions.data.asTransaction
 import com.coindepo.datasource.remote.transactions.service.TransactionsService
 import com.coindepo.datasource.remote.transactions.service.getTransactionsService
 import com.coindepo.datasource.remote.utils.asResult
+import com.coindepo.domain.entities.transactions.TransactionsFilters
 
 class RemoteTransactionsDataSourceImpl internal constructor(
     private val transactionsService: TransactionsService
@@ -35,9 +36,10 @@ class RemoteTransactionsDataSourceImpl internal constructor(
         userName: String,
         clientToken: String,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
+        transactionsFilters: TransactionsFilters
     ): Result<TransactionsPage> = transactionsService.getTransactions(
-        userName, clientToken, page, pageSize
+        userName, clientToken, page, pageSize, transactionsFilters
     ).asResult {
         TransactionsPage(
             transactions.map { it.asTransaction },

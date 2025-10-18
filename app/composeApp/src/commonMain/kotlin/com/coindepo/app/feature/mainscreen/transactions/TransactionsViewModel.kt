@@ -25,6 +25,7 @@ import androidx.paging.cachedIn
 import com.coindepo.domain.entities.CoinDepoException
 import com.coindepo.domain.entities.OperationResult
 import com.coindepo.domain.entities.transactions.Transaction
+import com.coindepo.domain.entities.transactions.TransactionsFilters
 import com.coindepo.domain.usecases.transactions.CancelTransactionUseCase
 import com.coindepo.domain.usecases.transactions.GetTransactionsListPaged
 import kotlinx.coroutines.flow.Flow
@@ -37,10 +38,15 @@ class TransactionsViewModel(
     private val cancelTransactionUseCase: CancelTransactionUseCase
 ) : ViewModel() {
 
-    val transactionsFlow: Flow<PagingData<Transaction>> = getTransactionsListPaged.getTransactionsListPaged().cachedIn(viewModelScope)
+    private val transactionsPager = getTransactionsListPaged.getTransactionsListPager()
+    val transactionsFlow: Flow<PagingData<Transaction>> = transactionsPager.transactions.cachedIn(viewModelScope)
 
     private val _transactionCancellationState = MutableStateFlow<TransactionCancellationState?>(null)
     val transactionCancellationState: StateFlow<TransactionCancellationState?> = _transactionCancellationState
+
+    private val _transactionsFilters = MutableStateFlow(TransactionsFilters())
+    val transactionsFilters: StateFlow<TransactionsFilters> = _transactionsFilters
+
 
     fun startTransactionCancellation(transaction: Transaction) {
         _transactionCancellationState.value = TransactionCancellationNotConfirmed(transaction)
@@ -57,6 +63,11 @@ class TransactionsViewModel(
                 is OperationResult.Success<*> -> TransactionCancellationSuccess
             }
         }
+    }
+
+    fun setFilters(newFilters: TransactionsFilters) {
+        transactionsPager.filtersSetter.setFilters(newFilters)
+        _transactionsFilters.value = newFilters
     }
 
     fun clearTransactionCancellationState() {

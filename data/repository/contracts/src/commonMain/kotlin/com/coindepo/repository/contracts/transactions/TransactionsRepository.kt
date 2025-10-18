@@ -18,17 +18,15 @@
 
 package com.coindepo.repository.contracts.transactions
 
-import androidx.paging.PagingData
 import com.coindepo.domain.entities.OperationResult
-import com.coindepo.domain.entities.transactions.Transaction
-import kotlinx.coroutines.flow.Flow
+import com.coindepo.domain.entities.transactions.TransactionsPager
 
 interface TransactionsRepository {
     fun getTransactionsListPaged(
         userName: String,
         clientToken: String,
         pageSize: Int
-    ): Flow<PagingData<Transaction>>
+    ): TransactionsPager
 
     suspend fun cancelTransaction(
         userName: String,

@@ -24,6 +24,7 @@ import androidx.paging.PagingData
 import androidx.paging.RemoteMediator
 import com.coindepo.domain.entities.transactions.Transaction
 import com.coindepo.domain.entities.transactions.TransactionStatus
+import com.coindepo.domain.entities.transactions.TransactionsFilters
 import kotlinx.coroutines.flow.Flow
 
 interface RemoteTransactionsDataSource {
@@ -31,7 +32,8 @@ interface RemoteTransactionsDataSource {
         userName: String,
         clientToken: String,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
+        transactionsFilters: TransactionsFilters
     ): Result<TransactionsPage>
 
     suspend fun cancelTransaction(

@@ -20,16 +20,14 @@ package com.coindepo.repository.implementation.transactions
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import com.coindepo.datasource.contracts.transactions.LocalTransactionsDataSource
 import com.coindepo.datasource.contracts.transactions.RemoteTransactionsDataSource
 import com.coindepo.domain.entities.CoinDepoException
 import com.coindepo.domain.entities.OperationResult
 import com.coindepo.domain.entities.OtherErrorException
-import com.coindepo.domain.entities.transactions.Transaction
 import com.coindepo.domain.entities.transactions.TransactionStatus
+import com.coindepo.domain.entities.transactions.TransactionsPager
 import com.coindepo.repository.contracts.transactions.TransactionsRepository
-import kotlinx.coroutines.flow.Flow
 
 class TransactionsRepositoryImpl(
     private val localTransactionsDataSource: LocalTransactionsDataSource,
@@ -41,10 +39,22 @@ class TransactionsRepositoryImpl(
         userName: String,
         clientToken: String,
         pageSize: Int
-    ): Flow<PagingData<Transaction>> = localTransactionsDataSource.getTransactionsPager(
-        config = PagingConfig(pageSize),
-        remoteMediator = TransactionsRemoteMediator(userName, clientToken, localTransactionsDataSource, remoteTransactionsDataSource)
-    )
+    ): TransactionsPager {
+        val remoteMediator = TransactionsRemoteMediator(
+            userName,
+            clientToken,
+            localTransactionsDataSource,
+            remoteTransactionsDataSource
+        )
+
+        return TransactionsPager(
+            localTransactionsDataSource.getTransactionsPager(
+                config = PagingConfig(pageSize),
+                remoteMediator = remoteMediator
+            ),
+            remoteMediator::setFilters
+        )
+    }
 
     override suspend fun cancelTransaction(
         userName: String,
