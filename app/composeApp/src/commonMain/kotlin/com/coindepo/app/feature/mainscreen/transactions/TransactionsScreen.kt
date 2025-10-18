@@ -602,7 +602,7 @@ fun FilterDateComponent(
         onValueChange = {},
         singleLine = true,
         readOnly = true,
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(8.dp),
         trailingIcon = {
             Icon(
                 imageVector = Icons.Filled.EditCalendar,
@@ -630,7 +630,7 @@ fun FilterDateComponent(
             },
             confirmButton = {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
                 ) {
                     TextButton(
                         modifier = Modifier.weight(1f),
@@ -691,7 +691,7 @@ fun AssetsSelectionComponent(
         maxLines = 1,
         overflow = TextOverflow.Ellipsis)
     MyExposedDropDownMenu(
-        modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(16.dp)),
+        modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(8.dp)),
         expanded = expanded,
         buttonContent = {
             Row(
