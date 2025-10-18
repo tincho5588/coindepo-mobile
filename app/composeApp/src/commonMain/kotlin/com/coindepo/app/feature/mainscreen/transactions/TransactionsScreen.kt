@@ -529,7 +529,7 @@ fun FilterBottomSheetContent(
         ) {
             newFilters.value = newFilters.value.copy(selectedAsset = it)
         }
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
         ) {
@@ -554,7 +554,7 @@ fun FilterBottomSheetContent(
                 Text("Confirm")
             }
         }
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(16.dp))
     }
 }
 
