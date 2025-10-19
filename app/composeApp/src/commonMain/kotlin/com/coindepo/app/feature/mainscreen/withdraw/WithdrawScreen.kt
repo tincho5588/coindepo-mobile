@@ -221,7 +221,7 @@ fun WithdrawScreenContent(
                         withdrawalAddress.value = it
                     },
                     singleLine = true,
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(16.dp),
                     colors = OutlinedTextFieldDefaults.colors().copy(
                         unfocusedIndicatorColor = Color(0xFFa19ead)
                     ),
@@ -246,7 +246,7 @@ fun WithdrawScreenContent(
                             tag.value = it
                         },
                         singleLine = true,
-                        shape = RoundedCornerShape(8.dp),
+                        shape = RoundedCornerShape(16.dp),
                         colors = OutlinedTextFieldDefaults.colors().copy(
                             unfocusedIndicatorColor = Color(0xFFa19ead)
                         ),

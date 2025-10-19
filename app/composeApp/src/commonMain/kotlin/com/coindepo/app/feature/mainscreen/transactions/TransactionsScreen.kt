@@ -610,7 +610,7 @@ fun FilterDateComponent(
         onValueChange = {},
         singleLine = true,
         readOnly = true,
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(16.dp),
         trailingIcon = {
             Icon(
                 imageVector = Icons.Filled.EditCalendar,
@@ -699,7 +699,7 @@ fun AssetsSelectionComponent(
         maxLines = 1,
         overflow = TextOverflow.Ellipsis)
     MyExposedDropDownMenu(
-        modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(8.dp)),
+        modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(16.dp)),
         expanded = expanded,
         buttonContent = {
             Row(
@@ -756,7 +756,7 @@ fun AccountTypeSelectionComponent(
         maxLines = 1,
         overflow = TextOverflow.Ellipsis)
     MyExposedDropDownMenu(
-        modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(8.dp)),
+        modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(16.dp)),
         expanded = expanded,
         buttonContent = {
             Row(

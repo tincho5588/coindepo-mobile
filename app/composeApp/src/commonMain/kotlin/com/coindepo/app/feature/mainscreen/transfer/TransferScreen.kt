@@ -462,7 +462,7 @@ fun AmountInputText(
             }
         },
         singleLine = true,
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = OutlinedTextFieldDefaults.colors().copy(
             unfocusedIndicatorColor = Color(0xFFa19ead)
         ),
@@ -513,7 +513,7 @@ fun AccountSelectionDropDownMenu(
         modifier = Modifier.border(
             1.dp,
             MaterialTheme.colorScheme.outlineVariant,
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(16.dp)
         ),
         expanded = expanded,
         enabled = enabled,

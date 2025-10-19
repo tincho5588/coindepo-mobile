@@ -527,7 +527,7 @@ fun CoinPlanCard(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            modifier = Modifier.background(Color(0xff0db46e), RoundedCornerShape(8.dp)).padding(12.dp),
+                            modifier = Modifier.background(Color(0xff0db46e), RoundedCornerShape(16.dp)).padding(12.dp),
                             text = "${depositPlan.apr}%",
                             style = MaterialTheme.typography.headlineSmall.copy(color = Color.White, fontWeight = FontWeight.Bold)
                         )
@@ -558,7 +558,7 @@ fun AddNewAccountDropDown(
     Text(stringResource(Res.string.add_new_account), style = MaterialTheme.typography.titleMedium.copy(color = Color(0xFFa19ead), fontWeight = FontWeight.Medium))
     Spacer(Modifier.height(8.dp))
     MyExposedDropDownMenu(
-        modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outlineVariant, shape = RoundedCornerShape(8.dp)),
+        modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outlineVariant, shape = RoundedCornerShape(16.dp)),
         expanded = expanded,
         buttonContent = {
             Row(
@@ -669,7 +669,7 @@ fun DepositPlanButtons(
                 shape = SegmentedButtonDefaults.itemShape(
                     index = index,
                     count = options.size,
-                    baseShape = RoundedCornerShape(8.dp)
+                    baseShape = RoundedCornerShape(16.dp)
                 ),
                 onClick = {
                     onPlanAction(action)
