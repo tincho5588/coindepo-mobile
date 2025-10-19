@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7fb9eaebf3b6dfc6d27951d0420db541",
+    "identityHash": "5b676c7a6abfd6990d0a7c71800aafe9",
     "entities": [
       {
         "tableName": "user_session_data",
@@ -835,7 +835,7 @@
       },
       {
         "tableName": "deposit_plan_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `depositPlanId` INTEGER NOT NULL, `coinId` INTEGER NOT NULL, `userAccountId` INTEGER NOT NULL, `accountTypeId` INTEGER NOT NULL, `accountName` TEXT NOT NULL, `walletName` TEXT NOT NULL, `openDate` TEXT NOT NULL, `lastPayout` TEXT NOT NULL, `payoutDate` TEXT NOT NULL, `period` TEXT NOT NULL, `apr` TEXT NOT NULL, `precision` INTEGER NOT NULL, `balance` TEXT NOT NULL, `balanceCurrency` TEXT NOT NULL, `inTransit` TEXT NOT NULL, `balanceAvailable` TEXT NOT NULL, `summaryBalance` TEXT NOT NULL, `summaryBalanceCurrency` TEXT NOT NULL, `accruedInterest` TEXT NOT NULL, `accruedInterestCurrency` TEXT NOT NULL, `paidInterest` TEXT NOT NULL, `paidInterestCurrency` TEXT NOT NULL, `canDelete` INTEGER NOT NULL, `isAllowedToTransfer` INTEGER NOT NULL, `apy` TEXT NOT NULL, `pendingBonus` INTEGER NOT NULL, `bonusList` TEXT NOT NULL, `isVisible` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`coinId`) REFERENCES `coin_details_table`(`coinId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `depositPlanId` INTEGER NOT NULL, `coinId` INTEGER NOT NULL, `userAccountId` INTEGER NOT NULL, `accountTypeId` TEXT NOT NULL, `accountName` TEXT NOT NULL, `walletName` TEXT NOT NULL, `openDate` TEXT NOT NULL, `lastPayout` TEXT NOT NULL, `payoutDate` TEXT NOT NULL, `period` TEXT NOT NULL, `apr` TEXT NOT NULL, `precision` INTEGER NOT NULL, `balance` TEXT NOT NULL, `balanceCurrency` TEXT NOT NULL, `inTransit` TEXT NOT NULL, `balanceAvailable` TEXT NOT NULL, `summaryBalance` TEXT NOT NULL, `summaryBalanceCurrency` TEXT NOT NULL, `accruedInterest` TEXT NOT NULL, `accruedInterestCurrency` TEXT NOT NULL, `paidInterest` TEXT NOT NULL, `paidInterestCurrency` TEXT NOT NULL, `canDelete` INTEGER NOT NULL, `isAllowedToTransfer` INTEGER NOT NULL, `apy` TEXT NOT NULL, `pendingBonus` INTEGER NOT NULL, `bonusList` TEXT NOT NULL, `isVisible` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`coinId`) REFERENCES `coin_details_table`(`coinId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -864,7 +864,7 @@
           {
             "fieldPath": "accountTypeId",
             "columnName": "accountTypeId",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -1275,7 +1275,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7fb9eaebf3b6dfc6d27951d0420db541')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5b676c7a6abfd6990d0a7c71800aafe9')"
     ]
   }
 }

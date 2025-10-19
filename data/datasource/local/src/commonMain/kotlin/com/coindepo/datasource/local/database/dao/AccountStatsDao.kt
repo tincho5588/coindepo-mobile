@@ -33,6 +33,7 @@ import com.coindepo.domain.entities.stats.AccountStats
 import com.coindepo.domain.entities.stats.balance.AccountBalance
 import com.coindepo.domain.entities.stats.balance.BorrowBalance
 import com.coindepo.domain.entities.stats.balance.LoanApr
+import com.coindepo.domain.entities.stats.coin.AccountType
 import com.coindepo.domain.entities.stats.coin.AvailableLoans
 import com.coindepo.domain.entities.stats.coin.Coin
 import com.coindepo.domain.entities.stats.coin.CoinBalance
@@ -431,7 +432,7 @@ data class DepositPlanEntity(
     val depositPlanId: Int,
     val coinId: Int,
     val userAccountId: Int,
-    val accountTypeId: Int,
+    val accountTypeId: AccountType,
     val accountName: String,
     val walletName: String,
     val openDate: String,
@@ -463,7 +464,7 @@ val DepositPlanEntity.asDepositPlan: DepositPlan
         id = id,
         userAccountId = userAccountId,
         depositPlanId = depositPlanId,
-        accountTypeId = accountTypeId,
+        accountType = accountTypeId,
         accountName = accountName,
         walletName = walletName,
         openDate = openDate,
@@ -495,7 +496,7 @@ fun DepositPlan.asDepositPlanEntity(coinId: Int): DepositPlanEntity = DepositPla
     coinId = coinId,
     userAccountId = userAccountId,
     depositPlanId = depositPlanId,
-    accountTypeId = accountTypeId,
+    accountTypeId = accountType,
     accountName = accountName,
     walletName = walletName,
     openDate = openDate,

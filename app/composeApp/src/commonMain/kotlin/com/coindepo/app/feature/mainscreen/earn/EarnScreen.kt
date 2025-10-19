@@ -128,6 +128,7 @@ import com.coindepo.app.feature.mainscreen.DepositPlanId
 import com.coindepo.app.ui.theme.CoinDepoTheme
 import com.coindepo.domain.entities.currency.Currency
 import com.coindepo.domain.entities.stats.balance.AccountBalance
+import com.coindepo.domain.entities.stats.coin.AccountType
 import com.coindepo.domain.entities.stats.coin.AvailableLoans
 import com.coindepo.domain.entities.stats.coin.Coin
 import com.coindepo.domain.entities.stats.coin.DepositPlan
@@ -437,7 +438,7 @@ fun CoinPlanCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                val walletName = if (depositPlan.accountTypeId != 1) "#${depositPlan.walletName}" else ""
+                val walletName = if (depositPlan.accountType != AccountType.DAILY) "#${depositPlan.walletName}" else ""
                 Text("${depositPlan.accountName} $walletName", style = MaterialTheme.typography.titleMedium)
                 Icon(
                     modifier = Modifier
@@ -465,7 +466,7 @@ fun CoinPlanCard(
                 largeBalance = true
             )
 
-            if (depositPlan.accountTypeId == 1 && coin.depositPlans.any { !it.isVisible }) {
+            if (depositPlan.accountType == AccountType.DAILY && coin.depositPlans.any { !it.isVisible }) {
                 Spacer(Modifier.height(16.dp))
                 AddNewAccountDropDown(coin.depositPlans.filter { !it.isVisible }) {
                     onPlanAction(SetVisibility(it, true))
@@ -531,7 +532,7 @@ fun CoinPlanCard(
                             style = MaterialTheme.typography.headlineSmall.copy(color = Color.White, fontWeight = FontWeight.Bold)
                         )
                         Spacer(Modifier.width(8.dp))
-                        Text(stringResource(Res.string.compund_interest_pediod, depositPlan.accountTypeId.periodDays), style = MaterialTheme.typography.titleMedium.copy(color = Color(0xFFa19ead), fontWeight = FontWeight.Medium))
+                        Text(stringResource(Res.string.compund_interest_pediod, depositPlan.accountType.periodDays), style = MaterialTheme.typography.titleMedium.copy(color = Color(0xFFa19ead), fontWeight = FontWeight.Medium))
                     }
                     TextButton(
                         onClick = {
@@ -574,7 +575,7 @@ fun AddNewAccountDropDown(
                 DropdownMenuItem(
                     text = {
                         Column {
-                            val period = stringResource(plan.accountTypeId.periodStringRes).uppercase()
+                            val period = stringResource(plan.accountType.periodStringRes).uppercase()
                             Text(text = buildAnnotatedString {
                                 withStyle(style = SpanStyle(fontWeight = FontWeight.Medium)) {
                                     append(stringResource(Res.string.period_placeholder, period))
@@ -583,7 +584,7 @@ fun AddNewAccountDropDown(
                                     append(stringResource(Res.string.apr_placeholder, plan.apr))
                                 }
                             })
-                            Text(stringResource(Res.string.compound_interest_payout_frequency, plan.accountTypeId.periodDays))
+                            Text(stringResource(Res.string.compound_interest_payout_frequency, plan.accountType.periodDays))
                             if (index != depositPlans.lastIndexOf(depositPlans.last())) HorizontalDivider()
                         }
                     },
@@ -597,26 +598,24 @@ fun AddNewAccountDropDown(
     )
 }
 
-val Int.periodDays: Int
+val AccountType.periodDays: Int
     get() = when(this) {
-        1 -> 1
-        2 -> 7
-        3 -> 30
-        4 -> 90
-        5 -> 180
-        6 -> 365
-        else -> -1
+        AccountType.DAILY -> 1
+        AccountType.WEEKLY -> 7
+        AccountType.MONTHLY -> 30
+        AccountType.QUARTERLY -> 90
+        AccountType.SEMI_ANNUAL -> 180
+        AccountType.ANNUAL -> 365
     }
 
-val Int.periodStringRes: StringResource
+val AccountType.periodStringRes: StringResource
     get() = when(this) {
-        1 -> Res.string.daily
-        2 -> Res.string.weekly
-        3 -> Res.string.monthly
-        4 -> Res.string.quarterly
-        5 -> Res.string.semi_annual
-        6 -> Res.string.annual
-        else -> throw IllegalArgumentException()
+        AccountType.DAILY -> Res.string.daily
+        AccountType.WEEKLY -> Res.string.weekly
+        AccountType.MONTHLY -> Res.string.monthly
+        AccountType.QUARTERLY -> Res.string.quarterly
+        AccountType.SEMI_ANNUAL -> Res.string.semi_annual
+        AccountType.ANNUAL -> Res.string.annual
     }
 
 @Composable
@@ -658,10 +657,10 @@ fun DepositPlanButtons(
     onPlanAction: (PlanActions) -> Unit
 ) {
     val options = mutableListOf<PlanActions>().also {
-        if (depositPlan.accountTypeId == 1) it.add(Deposit(depositPlan, coinId))
+        if (depositPlan.accountType == AccountType.DAILY) it.add(Deposit(depositPlan, coinId))
         it.add(Withdraw(depositPlan, coinId))
         it.add(Transfer(depositPlan))
-        if (depositPlan.accountTypeId != 1) it.add(SetVisibility(depositPlan, false))
+        if (depositPlan.accountType != AccountType.DAILY) it.add(SetVisibility(depositPlan, false))
     }
 
     SingleChoiceSegmentedButtonRow {
@@ -769,7 +768,7 @@ fun DashboardScreenContentPreview(
                                 id = "0_145",
                                 userAccountId = 0,
                                 depositPlanId = 145,
-                                accountTypeId = 1,
+                                accountType = AccountType.DAILY,
                                 accountName = "Current Compound Interest Account",
                                 walletName = "1",
                                 openDate = "",
@@ -799,7 +798,7 @@ fun DashboardScreenContentPreview(
                                 id = "0_146",
                                 userAccountId = 0,
                                 depositPlanId = 146,
-                                accountTypeId = 2,
+                                accountType = AccountType.WEEKLY,
                                 accountName = "Weekly Compound Interest Account",
                                 walletName = "1",
                                 openDate = "",

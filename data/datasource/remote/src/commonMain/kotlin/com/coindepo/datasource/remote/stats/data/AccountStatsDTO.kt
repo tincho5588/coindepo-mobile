@@ -21,6 +21,7 @@
 package com.coindepo.datasource.remote.stats.data
 
 import com.coindepo.datasource.remote.BigNumSerializer
+import com.coindepo.domain.entities.stats.coin.AccountType
 import korlibs.bignumber.BigNum
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -91,3 +92,14 @@ data class DepositPlanDetailsDTO(
     @SerialName("pending_bonus") var pendingBonus: Boolean,
     @SerialName("bonus_list") var bonusList: String
 )
+
+val Int.asAccountType: AccountType
+    get() = when(this) {
+        1 -> AccountType.DAILY
+        2 -> AccountType.WEEKLY
+        3 -> AccountType.MONTHLY
+        4 -> AccountType.QUARTERLY
+        5 -> AccountType.SEMI_ANNUAL
+        6 -> AccountType.ANNUAL
+        else -> throw IllegalArgumentException()
+    }

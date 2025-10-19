@@ -80,6 +80,7 @@ import com.coindepo.app.feature.common.formatCrypto
 import com.coindepo.app.feature.mainscreen.AccountStatsViewModel
 import com.coindepo.app.feature.mainscreen.earn.periodStringRes
 import com.coindepo.app.ui.theme.CoinDepoTheme
+import com.coindepo.domain.entities.stats.coin.AccountType
 import com.coindepo.domain.entities.stats.coin.AvailableLoans
 import com.coindepo.domain.entities.stats.coin.Coin
 import com.coindepo.domain.entities.stats.coin.DepositPlan
@@ -257,7 +258,7 @@ fun TransferScreenContent(
                     coin.depositPlans.first { it.id == selectedFromPlanId.value }
 
                 val selectedToPlanId = remember { mutableStateOf(
-                    if (selectedFromPlan.accountTypeId != 1) coin.depositPlans.first { it.accountTypeId == 1 }.id else null
+                    if (selectedFromPlan.accountType != AccountType.DAILY) coin.depositPlans.first { it.accountType == AccountType.DAILY }.id else null
                 ) }
                 val selectedToPlan =
                     coin.depositPlans.find { it.id == selectedToPlanId.value }
@@ -295,8 +296,8 @@ fun TransferScreenContent(
                     val newSelectedFromPlan =
                         coin.depositPlans.first { it.id == newPlanId }
 
-                    selectedToPlanId.value = if (newSelectedFromPlan.accountTypeId != 1) {
-                        coin.depositPlans.first { it.accountTypeId == 1 }.id
+                    selectedToPlanId.value = if (newSelectedFromPlan.accountType != AccountType.DAILY) {
+                        coin.depositPlans.first { it.accountType == AccountType.DAILY }.id
                     } else {
                         null
                     }
@@ -309,7 +310,7 @@ fun TransferScreenContent(
                     coin.binanceTicker,
                     coin.precision,
                     selectedToPlan,
-                    if (selectedFromPlan.accountTypeId != 1) coin.depositPlans.filter { it.accountTypeId == 1 } else coin.depositPlans.filter { it.isVisible && it.id != selectedFromPlanId.value && it.isAllowedToTransfer }
+                    if (selectedFromPlan.accountType != AccountType.DAILY) coin.depositPlans.filter { it.accountType == AccountType.DAILY } else coin.depositPlans.filter { it.isVisible && it.id != selectedFromPlanId.value && it.isAllowedToTransfer }
                 ) {
                     selectedToPlanId.value = it
                 }
@@ -628,7 +629,7 @@ fun TransferScreenPreview() {
                         id = "0_145",
                         userAccountId = 0,
                         depositPlanId = 145,
-                        accountTypeId = 1,
+                        accountType = AccountType.DAILY,
                         accountName = "Current Compound Interest Account",
                         walletName = "1",
                         openDate = "",
@@ -658,7 +659,7 @@ fun TransferScreenPreview() {
                         id = "0_146",
                         userAccountId = 0,
                         depositPlanId = 146,
-                        accountTypeId = 2,
+                        accountType = AccountType.WEEKLY,
                         accountName = "Weekly Compound Interest Account",
                         walletName = "1",
                         openDate = "",
@@ -708,6 +709,6 @@ data class TransferData(
 @get:Composable
 private val DepositPlan.dropDownLabel: String
     get() {
-        val walletName = if (accountTypeId != 1) "#${walletName}" else ""
-        return stringResource(accountTypeId.periodStringRes) + " Interest Account $walletName"
+        val walletName = if (accountType != AccountType.DAILY) "#${walletName}" else ""
+        return stringResource(accountType.periodStringRes) + " Interest Account $walletName"
     }

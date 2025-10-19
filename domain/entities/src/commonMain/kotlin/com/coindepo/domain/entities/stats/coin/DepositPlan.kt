@@ -24,7 +24,7 @@ data class DepositPlan(
     val id: String,
     val userAccountId: Int,
     val depositPlanId: Int,
-    val accountTypeId: Int,
+    val accountType: AccountType,
     val accountName: String,
     val walletName: String,
     val openDate: String,
@@ -50,3 +50,12 @@ data class DepositPlan(
     val bonusList: String,
     val isVisible: Boolean
 )
+
+enum class AccountType {
+    DAILY,
+    WEEKLY,
+    MONTHLY,
+    QUARTERLY,
+    SEMI_ANNUAL,
+    ANNUAL
+}

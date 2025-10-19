@@ -74,6 +74,7 @@ import com.coindepo.app.feature.common.formatCrypto
 import com.coindepo.app.feature.mainscreen.AccountStatsViewModel
 import com.coindepo.app.feature.mainscreen.CoinId
 import com.coindepo.app.ui.theme.CoinDepoTheme
+import com.coindepo.domain.entities.stats.coin.AccountType
 import com.coindepo.domain.entities.stats.coin.AvailableLoans
 import com.coindepo.domain.entities.stats.coin.Coin
 import com.coindepo.domain.entities.stats.coin.DepositPlan
@@ -147,7 +148,7 @@ fun DepositScreenContent(
                         modifier = Modifier.size(32.dp),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "${formatCrypto(coin.depositPlans.find { it.accountTypeId == 1 }?.balance ?: BigNum.ZERO, coin.binanceTicker, coin.precision)}*", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold))
+                    Text(text = "${formatCrypto(coin.depositPlans.find { it.accountType == AccountType.DAILY }?.balance ?: BigNum.ZERO, coin.binanceTicker, coin.precision)}*", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold))
                 }
 
                 Spacer(Modifier.height(16.dp))
@@ -278,7 +279,7 @@ fun DepositScreenPreview() {
                         id = "0_145",
                         userAccountId = 0,
                         depositPlanId = 145,
-                        accountTypeId = 1,
+                        accountType = AccountType.DAILY,
                         accountName = "Current Compound Interest Account",
                         walletName = "1",
                         openDate = "",

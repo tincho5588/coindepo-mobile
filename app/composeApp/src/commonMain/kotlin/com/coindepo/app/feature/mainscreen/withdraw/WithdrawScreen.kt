@@ -82,6 +82,7 @@ import com.coindepo.app.feature.mainscreen.transfer.isValidAmount
 import com.coindepo.app.ui.theme.CoinDepoTheme
 import com.coindepo.domain.entities.NoNetworkException
 import com.coindepo.domain.entities.OtherErrorException
+import com.coindepo.domain.entities.stats.coin.AccountType
 import com.coindepo.domain.entities.stats.coin.AvailableLoans
 import com.coindepo.domain.entities.stats.coin.Coin
 import com.coindepo.domain.entities.stats.coin.DepositPlan
@@ -724,7 +725,7 @@ fun WithdrawScreenPreview() {
                         id = "0_145",
                         userAccountId = 0,
                         depositPlanId = 145,
-                        accountTypeId = 1,
+                        accountType = AccountType.DAILY,
                         accountName = "Current Compound Interest Account",
                         walletName = "1",
                         openDate = "",
@@ -754,7 +755,7 @@ fun WithdrawScreenPreview() {
                         id = "0_146",
                         userAccountId = 0,
                         depositPlanId = 146,
-                        accountTypeId = 2,
+                        accountType = AccountType.WEEKLY,
                         accountName = "Weekly Compound Interest Account",
                         walletName = "1",
                         openDate = "",
@@ -840,7 +841,7 @@ fun WithdrawStateModalPreview() {
                             id = "0_145",
                             userAccountId = 0,
                             depositPlanId = 145,
-                            accountTypeId = 1,
+                            accountType = AccountType.DAILY,
                             accountName = "Current Compound Interest Account",
                             walletName = "1",
                             openDate = "",
@@ -870,7 +871,7 @@ fun WithdrawStateModalPreview() {
                             id = "0_146",
                             userAccountId = 0,
                             depositPlanId = 146,
-                            accountTypeId = 2,
+                            accountType = AccountType.WEEKLY,
                             accountName = "Weekly Compound Interest Account",
                             walletName = "1",
                             openDate = "",

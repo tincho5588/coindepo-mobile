@@ -25,6 +25,7 @@ import com.coindepo.datasource.remote.stats.data.BalanceStatsDTO
 import com.coindepo.datasource.remote.stats.data.BorrowStatsDTO
 import com.coindepo.datasource.remote.stats.data.SupportedCoinsDTO
 import com.coindepo.datasource.remote.stats.data.TokensStatsDTO
+import com.coindepo.datasource.remote.stats.data.asAccountType
 import com.coindepo.datasource.remote.stats.data.logoUrl
 import com.coindepo.datasource.remote.stats.service.CoinsService
 import com.coindepo.datasource.remote.stats.service.StatsService
@@ -249,7 +250,7 @@ private fun getAccountStats(
                     id = "${plan.userAccountId}_${plan.depositPlanId}",
                     userAccountId = plan.userAccountId,
                     depositPlanId = plan.depositPlanId,
-                    accountTypeId = plan.accountTypeId,
+                    accountType = plan.accountTypeId.asAccountType,
                     accountName = plan.accountName,
                     walletName = plan.walletName,
                     openDate = plan.openDate,

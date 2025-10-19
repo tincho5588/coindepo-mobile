@@ -22,6 +22,7 @@ import com.coindepo.datasource.contracts.depositplans.RemoteDepositPlansDataSour
 import com.coindepo.datasource.remote.depositplans.service.DepositPlansService
 import com.coindepo.datasource.remote.depositplans.service.getDepositPlansService
 import com.coindepo.datasource.remote.stats.data.DepositPlanDetailsDTO
+import com.coindepo.datasource.remote.stats.data.asAccountType
 import com.coindepo.datasource.remote.stats.service.StatsService
 import com.coindepo.datasource.remote.stats.service.getStatsService
 import com.coindepo.datasource.remote.utils.asBoolean
@@ -101,7 +102,7 @@ val DepositPlanDetailsDTO.asDepositPlan: DepositPlan
         id = "${userAccountId}_$depositPlanId",
         userAccountId = userAccountId,
         depositPlanId = depositPlanId,
-        accountTypeId = accountTypeId,
+        accountType = accountTypeId.asAccountType,
         accountName = accountName,
         walletName = walletName,
         openDate = openDate,
