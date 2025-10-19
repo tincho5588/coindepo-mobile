@@ -151,7 +151,7 @@
     <string name="period_placeholder">%1$s: </string>
     <string name="apr_placeholder">%1$s% APR </string>
     <string name="compound_interest_payout_frequency">Compound interest is paid out every %1$s days</string>
-    <string name="daily">Current</string>
+    <string name="daily">Current (Daily)</string>
     <string name="weekly">Weekly</string>
     <string name="monthly">Monthly</string>
     <string name="quarterly">Quarterly</string>

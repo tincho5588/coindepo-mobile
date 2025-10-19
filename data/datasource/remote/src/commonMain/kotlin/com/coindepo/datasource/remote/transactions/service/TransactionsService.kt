@@ -25,6 +25,7 @@ import com.coindepo.datasource.remote.transactions.data.CancelTransactionRespons
 import com.coindepo.datasource.remote.transactions.data.TransactionsResponseDTO
 import com.coindepo.datasource.remote.utils.ApiResult
 import com.coindepo.datasource.remote.utils.safePost
+import com.coindepo.domain.entities.stats.coin.AccountType
 import com.coindepo.domain.entities.transactions.TransactionsFilters
 import io.ktor.client.HttpClient
 import io.ktor.client.request.forms.MultiPartFormDataContent
@@ -90,6 +91,19 @@ class TransactionsServiceImpl(
                                 append("to_date", Instant.fromEpochMilliseconds(it.endDateMillis).toLocalDateTime(TimeZone.UTC).format(formatter))
                             }
                             transactionsFilters.selectedAsset?.let { append("coin_id", it.coinId) }
+                            transactionsFilters.accountType?.let {
+                                append(
+                                    "account_type",
+                                    when (it) {
+                                        AccountType.DAILY -> "daily"
+                                        AccountType.WEEKLY -> "weekly"
+                                        AccountType.MONTHLY -> "monthly"
+                                        AccountType.QUARTERLY -> "quarterly"
+                                        AccountType.SEMI_ANNUAL -> "half-yearly"
+                                        AccountType.ANNUAL -> "yearly"
+                                    }
+                                )
+                            }
                         }
                     )
                 )

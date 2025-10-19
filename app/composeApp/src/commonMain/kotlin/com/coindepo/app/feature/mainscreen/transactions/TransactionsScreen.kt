@@ -100,8 +100,10 @@ import com.coindepo.app.feature.common.CoinDepoElevatedCard
 import com.coindepo.app.feature.common.LoadingSpinner
 import com.coindepo.app.feature.common.MyExposedDropDownMenu
 import com.coindepo.app.feature.mainscreen.AccountStatsViewModel
+import com.coindepo.app.feature.mainscreen.earn.periodStringRes
 import com.coindepo.app.ui.theme.CoinDepoTheme
 import com.coindepo.datasource.remote.stats.data.COIN_LOGO_URL
+import com.coindepo.domain.entities.stats.coin.AccountType
 import com.coindepo.domain.entities.stats.coin.Coin
 import com.coindepo.domain.entities.transactions.Operation
 import com.coindepo.domain.entities.transactions.Transaction
@@ -530,6 +532,12 @@ fun FilterBottomSheetContent(
             newFilters.value = newFilters.value.copy(selectedAsset = it)
         }
         Spacer(Modifier.height(16.dp))
+        AccountTypeSelectionComponent(
+            newFilters.value.accountType
+        ) {
+            newFilters.value = newFilters.value.copy(accountType = it)
+        }
+        Spacer(Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
         ) {
@@ -725,6 +733,63 @@ fun AssetsSelectionComponent(
                     },
                     onClick = {
                         onAssetSelected(asset)
+                        expanded.value = false
+                    }
+                )
+            }
+        }
+    )
+}
+
+@Composable
+fun AccountTypeSelectionComponent(
+    selectedAccountType: AccountType?,
+    onAccountTypeSelected: (AccountType?) -> Unit
+) {
+    val expanded = remember { mutableStateOf(false) }
+    Text(
+        text = "AccountType",
+        style = MaterialTheme.typography.titleMedium.copy(
+            Color(0xFFa19ead),
+            fontWeight = FontWeight.Bold
+        ),
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis)
+    MyExposedDropDownMenu(
+        modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(8.dp)),
+        expanded = expanded,
+        buttonContent = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (selectedAccountType == null) {
+                    Text("All Accounts")
+                } else {
+                    Text(stringResource(selectedAccountType.periodStringRes))
+                }
+                Icon(imageVector = if (expanded.value) Icons.Filled.ArrowDropUp else Icons.Filled.ArrowDropDown, contentDescription = null)
+            }
+        },
+        items = {
+            DropdownMenuItem(
+                text = {
+                    Text("All Accounts")
+                },
+                onClick = {
+                    onAccountTypeSelected(null)
+                    expanded.value = false
+                }
+            )
+
+            AccountType.entries.forEachIndexed { index, accountType ->
+                DropdownMenuItem(
+                    text = {
+                        Text(stringResource(accountType.periodStringRes))
+                    },
+                    onClick = {
+                        onAccountTypeSelected(accountType)
                         expanded.value = false
                     }
                 )

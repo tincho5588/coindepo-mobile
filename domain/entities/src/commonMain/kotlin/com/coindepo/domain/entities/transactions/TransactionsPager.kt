@@ -1,6 +1,7 @@
 package com.coindepo.domain.entities.transactions
 
 import androidx.paging.PagingData
+import com.coindepo.domain.entities.stats.coin.AccountType
 import com.coindepo.domain.entities.stats.coin.Coin
 import kotlinx.coroutines.flow.Flow
 
@@ -15,7 +16,10 @@ fun interface TransactionsFilterSetter {
 
 data class TransactionsFilters(
     val dateRange: TransactionsDateRange? = null,
-    val selectedAsset: Coin? = null
+    val selectedAsset: Coin? = null,
+    val accountType: AccountType? = null,
+    val transactionType: TransactionType? = null,
+    val transactionStatus: TransactionStatus? = null,
 )
 
 data class TransactionsDateRange(
