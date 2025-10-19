@@ -26,6 +26,7 @@ import com.coindepo.datasource.remote.transactions.data.TransactionsResponseDTO
 import com.coindepo.datasource.remote.utils.ApiResult
 import com.coindepo.datasource.remote.utils.safePost
 import com.coindepo.domain.entities.stats.coin.AccountType
+import com.coindepo.domain.entities.transactions.TransactionType
 import com.coindepo.domain.entities.transactions.TransactionsFilters
 import io.ktor.client.HttpClient
 import io.ktor.client.request.forms.MultiPartFormDataContent
@@ -101,6 +102,27 @@ class TransactionsServiceImpl(
                                         AccountType.QUARTERLY -> "quarterly"
                                         AccountType.SEMI_ANNUAL -> "half-yearly"
                                         AccountType.ANNUAL -> "yearly"
+                                    }
+                                )
+                            }
+                            transactionsFilters.transactionType?.let {
+                                append(
+                                    "trx_type_id",
+                                    when(it) {
+                                        TransactionType.DEPOSIT -> "3"
+                                        TransactionType.WITHDRAWAL -> "4"
+                                        TransactionType.REFERRAL_PAYMENT -> "6"
+                                        TransactionType.LOAN_WITHDRAWAL -> "7"
+                                        TransactionType.LOAN_REPAYMENT -> "9"
+                                        TransactionType.AFFILIATE_PAYMENT -> "10"
+                                        TransactionType.BETWEEN_MY_ACCOUNTS -> "1,8"
+                                        TransactionType.INTEREST_PAYMENT -> "5"
+                                        TransactionType.PROMO_BONUS_PAYMENT -> "11,17"
+                                        TransactionType.REBALANCE_WITHDRAWAL -> "20"
+                                        TransactionType.REWARDS_PAYMENT -> "12"
+                                        TransactionType.INSTANT_SWAP -> "13"
+                                        TransactionType.LOAN_LIQUIDATION -> "50"
+                                        TransactionType.LOAN_INTEREST_REPAYMENT -> "51"
                                     }
                                 )
                             }

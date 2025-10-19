@@ -93,8 +93,22 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import coil3.compose.AsyncImage
 import coindepo.app.composeapp.generated.resources.Res
+import coindepo.app.composeapp.generated.resources.affiliate_payment
+import coindepo.app.composeapp.generated.resources.between_my_accounts
 import coindepo.app.composeapp.generated.resources.cancel
+import coindepo.app.composeapp.generated.resources.deposit
+import coindepo.app.composeapp.generated.resources.instant_swap
+import coindepo.app.composeapp.generated.resources.interest_payment
+import coindepo.app.composeapp.generated.resources.loan_interest_repayment
+import coindepo.app.composeapp.generated.resources.loan_liquidation
+import coindepo.app.composeapp.generated.resources.loan_repayment
+import coindepo.app.composeapp.generated.resources.loan_withdrawal
 import coindepo.app.composeapp.generated.resources.no
+import coindepo.app.composeapp.generated.resources.promo_bonus_payment
+import coindepo.app.composeapp.generated.resources.rebalance_withdrawal
+import coindepo.app.composeapp.generated.resources.referral_payment
+import coindepo.app.composeapp.generated.resources.rewards_payment
+import coindepo.app.composeapp.generated.resources.withdrawal
 import coindepo.app.composeapp.generated.resources.yes
 import com.coindepo.app.feature.common.CoinDepoElevatedCard
 import com.coindepo.app.feature.common.LoadingSpinner
@@ -119,6 +133,7 @@ import kotlinx.datetime.format
 import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Clock
@@ -524,7 +539,7 @@ fun FilterBottomSheetContent(
         FilterDateComponent(newFilters.value.dateRange) {
             newFilters.value = newFilters.value.copy(dateRange = it)
         }
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(16.dp))
         AssetsSelectionComponent(
             newFilters.value.selectedAsset,
             coinsList
@@ -536,6 +551,12 @@ fun FilterBottomSheetContent(
             newFilters.value.accountType
         ) {
             newFilters.value = newFilters.value.copy(accountType = it)
+        }
+        Spacer(Modifier.height(16.dp))
+        TransactionTypeSelectionComponent(
+            newFilters.value.transactionType
+        ) {
+            newFilters.value = newFilters.value.copy(transactionType = it)
         }
         Spacer(Modifier.height(16.dp))
         Row(
@@ -748,7 +769,7 @@ fun AccountTypeSelectionComponent(
 ) {
     val expanded = remember { mutableStateOf(false) }
     Text(
-        text = "AccountType",
+        text = "Account Type",
         style = MaterialTheme.typography.titleMedium.copy(
             Color(0xFFa19ead),
             fontWeight = FontWeight.Bold
@@ -797,6 +818,81 @@ fun AccountTypeSelectionComponent(
         }
     )
 }
+
+@Composable
+fun TransactionTypeSelectionComponent(
+    selectedTransactionType: TransactionType?,
+    onTransactionTypeSelected: (TransactionType?) -> Unit
+) {
+    val expanded = remember { mutableStateOf(false) }
+    Text(
+        text = "Transaction Type",
+        style = MaterialTheme.typography.titleMedium.copy(
+            Color(0xFFa19ead),
+            fontWeight = FontWeight.Bold
+        ),
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis)
+    MyExposedDropDownMenu(
+        modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(16.dp)),
+        expanded = expanded,
+        buttonContent = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (selectedTransactionType == null) {
+                    Text("All Types")
+                } else {
+                    Text(stringResource(selectedTransactionType.stringRes))
+                }
+                Icon(imageVector = if (expanded.value) Icons.Filled.ArrowDropUp else Icons.Filled.ArrowDropDown, contentDescription = null)
+            }
+        },
+        items = {
+            DropdownMenuItem(
+                text = {
+                    Text("All Types")
+                },
+                onClick = {
+                    onTransactionTypeSelected(null)
+                    expanded.value = false
+                }
+            )
+
+            TransactionType.entries.forEachIndexed { index, transactionType ->
+                DropdownMenuItem(
+                    text = {
+                        Text(stringResource(transactionType.stringRes))
+                    },
+                    onClick = {
+                        onTransactionTypeSelected(transactionType)
+                        expanded.value = false
+                    }
+                )
+            }
+        }
+    )
+}
+
+private val TransactionType.stringRes: StringResource
+    get() = when(this) {
+        TransactionType.DEPOSIT -> Res.string.deposit
+        TransactionType.WITHDRAWAL -> Res.string.withdrawal
+        TransactionType.REFERRAL_PAYMENT -> Res.string.referral_payment
+        TransactionType.LOAN_WITHDRAWAL -> Res.string.loan_withdrawal
+        TransactionType.LOAN_REPAYMENT -> Res.string.loan_repayment
+        TransactionType.AFFILIATE_PAYMENT -> Res.string.affiliate_payment
+        TransactionType.BETWEEN_MY_ACCOUNTS -> Res.string.between_my_accounts
+        TransactionType.INTEREST_PAYMENT -> Res.string.interest_payment
+        TransactionType.PROMO_BONUS_PAYMENT -> Res.string.promo_bonus_payment
+        TransactionType.REBALANCE_WITHDRAWAL -> Res.string.rebalance_withdrawal
+        TransactionType.REWARDS_PAYMENT -> Res.string.rewards_payment
+        TransactionType.INSTANT_SWAP -> Res.string.instant_swap
+        TransactionType.LOAN_LIQUIDATION -> Res.string.loan_liquidation
+        TransactionType.LOAN_INTEREST_REPAYMENT -> Res.string.loan_interest_repayment
+    }
 
 @Preview
 @Composable

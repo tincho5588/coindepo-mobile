@@ -158,4 +158,19 @@
     <string name="semi_annual">Semi-Annual</string>
     <string name="annual">Annual</string>
 
+    <!-- Transactions Screen -->
+    <string name="deposit">Deposit</string>
+    <string name="withdrawal">Withdrawal</string>
+    <string name="referral_payment">Referral Payment</string>
+    <string name="loan_withdrawal">Loan Withdrawal</string>
+    <string name="loan_repayment">Loan Repayment</string>
+    <string name="affiliate_payment">Affiliate Payment</string>
+    <string name="between_my_accounts">Between My Accounts</string>
+    <string name="interest_payment">Interest Payment</string>
+    <string name="promo_bonus_payment">Promo Bonus Payment</string>
+    <string name="rebalance_withdrawal">Rebalance Withdrawal</string>
+    <string name="rewards_payment">Rewards Payment</string>
+    <string name="instant_swap">Instant Swap</string>
+    <string name="loan_liquidation">Loan Liquidation</string>
+    <string name="loan_interest_repayment">Loan Interest Repayment</string>
 </resources>
