@@ -25,13 +25,12 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -53,6 +52,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DateRangePicker
@@ -64,7 +64,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalBottomSheetProperties
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
@@ -73,14 +73,12 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -625,40 +623,42 @@ fun FilterDateComponent(
         ),
         maxLines = 1,
         overflow = TextOverflow.Ellipsis)
-    OutlinedTextField(
-        modifier = Modifier.fillMaxWidth().focusProperties { canFocus = false },
-        value = if (selectedDateRange != null) {
-            val customFormat = LocalDateTime.Format {
-                monthName(MonthNames.ENGLISH_ABBREVIATED)
-                char(' ')
-                day()
-                chars(", ")
-                year()
-            }
-            "${Instant.fromEpochMilliseconds(selectedDateRange.startDateMillis).toLocalDateTime(
-                TimeZone.UTC).format(customFormat)} - ${Instant.fromEpochMilliseconds(selectedDateRange.endDateMillis).toLocalDateTime(
-                TimeZone.UTC).format(customFormat)}"
-        } else "Select Dates",
-        onValueChange = {},
-        singleLine = true,
-        readOnly = true,
-        shape = RoundedCornerShape(16.dp),
-        trailingIcon = {
+    TextButton(
+        modifier = Modifier
+            .border(1.dp, MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(16.dp))
+            .defaultMinSize(
+                minWidth = OutlinedTextFieldDefaults.MinWidth,
+                minHeight = OutlinedTextFieldDefaults.MinHeight
+            ),
+        colors = ButtonDefaults.textButtonColors()
+            .copy(contentColor = MaterialTheme.colorScheme.onBackground),
+        onClick = { showCalendar.value = true }
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                modifier = Modifier.weight(1f),
+                text = if (selectedDateRange != null) {
+                    val customFormat = LocalDateTime.Format {
+                        monthName(MonthNames.ENGLISH_ABBREVIATED)
+                        char(' ')
+                        day()
+                        chars(", ")
+                        year()
+                    }
+                    "${Instant.fromEpochMilliseconds(selectedDateRange.startDateMillis).toLocalDateTime(
+                        TimeZone.UTC).format(customFormat)} - ${Instant.fromEpochMilliseconds(selectedDateRange.endDateMillis).toLocalDateTime(
+                        TimeZone.UTC).format(customFormat)}"
+                } else "Select Dates"
+            )
             Icon(
                 imageVector = Icons.Filled.EditCalendar,
                 contentDescription = ""
             )
-        },
-        interactionSource = remember { MutableInteractionSource() }.also { interactionSource ->
-            LaunchedEffect(interactionSource) {
-                interactionSource.interactions.collect {
-                    if (it is PressInteraction.Release) {
-                        showCalendar.value = true
-                    }
-                }
-            }
         }
-    )
+    }
     if (showCalendar.value) {
         DatePickerDialog(
             onDismissRequest = {
