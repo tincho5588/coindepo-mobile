@@ -28,4 +28,4 @@ data class TransactionsDateRange(
 )
 
 val TransactionsFilters.hasFilters: Boolean
-    get() = dateRange != null || selectedAsset != null
+    get() = dateRange != null || selectedAsset != null || accountType != null || transactionType != null || transactionStatus != null
