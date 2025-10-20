@@ -96,7 +96,10 @@ import coindepo.app.composeapp.generated.resources.Res
 import coindepo.app.composeapp.generated.resources.affiliate_payment
 import coindepo.app.composeapp.generated.resources.between_my_accounts
 import coindepo.app.composeapp.generated.resources.cancel
+import coindepo.app.composeapp.generated.resources.canceled
+import coindepo.app.composeapp.generated.resources.completed
 import coindepo.app.composeapp.generated.resources.deposit
+import coindepo.app.composeapp.generated.resources.failed
 import coindepo.app.composeapp.generated.resources.instant_swap
 import coindepo.app.composeapp.generated.resources.interest_payment
 import coindepo.app.composeapp.generated.resources.loan_interest_repayment
@@ -104,6 +107,8 @@ import coindepo.app.composeapp.generated.resources.loan_liquidation
 import coindepo.app.composeapp.generated.resources.loan_repayment
 import coindepo.app.composeapp.generated.resources.loan_withdrawal
 import coindepo.app.composeapp.generated.resources.no
+import coindepo.app.composeapp.generated.resources.pending
+import coindepo.app.composeapp.generated.resources.processing
 import coindepo.app.composeapp.generated.resources.promo_bonus_payment
 import coindepo.app.composeapp.generated.resources.rebalance_withdrawal
 import coindepo.app.composeapp.generated.resources.referral_payment
@@ -394,7 +399,7 @@ fun TransactionCancellationDialog(
         },
         text = {
             Text("This withdrawal request is currently in progress. While the withdrawal is in the \"Pending\" status you can cancel it.\n\n" +
-            "You will receive an email notification when the cancellation process is completed. This withdrawal will be displayed on the \"Transactions\" page as \"Cancelled\".\n\n" +
+            "You will receive an email notification when the cancellation process is completed. This withdrawal will be displayed on the \"Transactions\" page as \"Canceled\".\n\n" +
             "Are you sure you want to cancel this withdrawal?", textAlign = TextAlign.Center)
         }
     )
@@ -495,7 +500,7 @@ fun TransactionItem(
                     }
                 }
                 TransactionStatus.COMPLETED -> Text(modifier = Modifier.background(Color(0xFFdfffec), shape = CircleShape).padding(horizontal = 16.dp, vertical = 4.dp), text = "Completed", style = MaterialTheme.typography.bodyLarge.copy(color = Color(0xFF1e7e34), fontWeight = FontWeight.SemiBold), textAlign = TextAlign.Center)
-                TransactionStatus.CANCELLED -> Text(modifier = Modifier.background(Color(0xffffe1df), shape = CircleShape).padding(horizontal = 16.dp, vertical = 4.dp), text = "Cancelled", style = MaterialTheme.typography.bodyLarge.copy(color = Color.Red, fontWeight = FontWeight.SemiBold), textAlign = TextAlign.Center)
+                TransactionStatus.CANCELLED -> Text(modifier = Modifier.background(Color(0xffffe1df), shape = CircleShape).padding(horizontal = 16.dp, vertical = 4.dp), text = "Canceled", style = MaterialTheme.typography.bodyLarge.copy(color = Color.Red, fontWeight = FontWeight.SemiBold), textAlign = TextAlign.Center)
                 TransactionStatus.FAILED -> Text(modifier = Modifier.background(Color(0xffffe1df), shape = CircleShape).padding(horizontal = 16.dp, vertical = 4.dp), text = "Failed", style = MaterialTheme.typography.bodyLarge.copy(color = Color.Red, fontWeight = FontWeight.SemiBold), textAlign = TextAlign.Center)
             }
             Column(
@@ -557,6 +562,12 @@ fun FilterBottomSheetContent(
             newFilters.value.transactionType
         ) {
             newFilters.value = newFilters.value.copy(transactionType = it)
+        }
+        Spacer(Modifier.height(16.dp))
+        TransactionStatusSelectionComponent(
+            newFilters.value.transactionStatus
+        ) {
+            newFilters.value = newFilters.value.copy(transactionStatus = it)
         }
         Spacer(Modifier.height(16.dp))
         Row(
@@ -875,6 +886,72 @@ fun TransactionTypeSelectionComponent(
         }
     )
 }
+
+@Composable
+fun TransactionStatusSelectionComponent(
+    selectedTransactionStatus: TransactionStatus?,
+    onTransactionStatusSelected: (TransactionStatus?) -> Unit
+) {
+    val expanded = remember { mutableStateOf(false) }
+    Text(
+        text = "Transaction Status",
+        style = MaterialTheme.typography.titleMedium.copy(
+            Color(0xFFa19ead),
+            fontWeight = FontWeight.Bold
+        ),
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis)
+    MyExposedDropDownMenu(
+        modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(16.dp)),
+        expanded = expanded,
+        buttonContent = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (selectedTransactionStatus == null) {
+                    Text("All Statuses")
+                } else {
+                    Text(stringResource(selectedTransactionStatus.stringRes))
+                }
+                Icon(imageVector = if (expanded.value) Icons.Filled.ArrowDropUp else Icons.Filled.ArrowDropDown, contentDescription = null)
+            }
+        },
+        items = {
+            DropdownMenuItem(
+                text = {
+                    Text("All Statuses")
+                },
+                onClick = {
+                    onTransactionStatusSelected(null)
+                    expanded.value = false
+                }
+            )
+
+            TransactionStatus.entries.forEachIndexed { index, transactionStatus ->
+                DropdownMenuItem(
+                    text = {
+                        Text(stringResource(transactionStatus.stringRes))
+                    },
+                    onClick = {
+                        onTransactionStatusSelected(transactionStatus)
+                        expanded.value = false
+                    }
+                )
+            }
+        }
+    )
+}
+
+val TransactionStatus.stringRes: StringResource
+    get() = when(this) {
+        TransactionStatus.PENDING -> Res.string.pending
+        TransactionStatus.PROCESSING -> Res.string.processing
+        TransactionStatus.FAILED -> Res.string.failed
+        TransactionStatus.COMPLETED -> Res.string.completed
+        TransactionStatus.CANCELLED -> Res.string.canceled
+    }
 
 private val TransactionType.stringRes: StringResource
     get() = when(this) {

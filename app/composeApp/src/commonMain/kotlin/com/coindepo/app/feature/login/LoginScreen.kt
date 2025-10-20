@@ -146,7 +146,7 @@ fun LoginScreen(
                     onResendVerificationCode = { email ->
                         loginViewModel.resendVerificationCode(email)
                     },
-                    onCancelled = {
+                    onCanceled = {
                         loginViewModel.logOut()
                     }
                 )
@@ -164,7 +164,7 @@ fun LoginScreenContent(
     onResetPassword: () -> Unit,
     onEmailLogin: (String, String, String?, String?) -> Unit,
     onResendVerificationCode: (String) -> Unit,
-    onCancelled: () -> Unit
+    onCanceled: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -190,14 +190,14 @@ fun LoginScreenContent(
                 loginState.invalidCode,
                 false,
                 resendVerificationCodeState,
-                onCancelled,
+                onCanceled,
                 { onEmailLogin(loginState.email, loginState.password, it, null) },
                 { onResendVerificationCode(loginState.email) }
             )
 
             is OtpRequiredLoginState -> TwoFaCodeInputCard(
                 loginState.invalidCode,
-                onCancelled
+                onCanceled
             ) {
                 onEmailLogin(
                     loginState.email,
@@ -212,7 +212,7 @@ fun LoginScreenContent(
                 false,
                 true,
                 resendVerificationCodeState,
-                onCancelled,
+                onCanceled,
                 { onEmailLogin(loginState.email, loginState.password, it, null) },
                 {}
             )

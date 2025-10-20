@@ -126,6 +126,9 @@ class TransactionsServiceImpl(
                                     }
                                 )
                             }
+                            transactionsFilters.transactionStatus?.let {
+                                append("status_id", it.id)
+                            }
                         }
                     )
                 )

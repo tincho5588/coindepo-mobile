@@ -101,7 +101,7 @@ fun WithdrawScreen(
     coinId: CoinId,
     depositPlanId: DepositPlanId?,
     showSnackBar: (String, SnackbarDuration) -> Unit,
-    onCancelled: () -> Unit
+    onCanceled: () -> Unit
 ) {
     val coin = accountStatsViewModel.coins.collectAsState().value.first { it.coinId == coinId }
     WithdrawScreenContent(
@@ -124,7 +124,7 @@ fun WithdrawScreen(
         { depositPlan, address, tag, amount, requestId ->
             withdrawViewModel.requestWithdraw(coin,depositPlan, amount, address, tag, requestId)
         },
-        onCancelled,
+        onCanceled,
         { emailVerificationCode, twoFACode ->
             withdrawViewModel.confirmWithdraw(emailVerificationCode, twoFACode)
         }
@@ -142,7 +142,7 @@ fun WithdrawScreenContent(
     resetWithdrawState: (WithdrawProcessState) -> Unit,
     onCalculateFeeEstimate: (DepositPlan, String, String?, BigNum) -> Unit,
     onRequestWithdraw: (DepositPlan, String, String?, BigNum, String) -> Unit,
-    onCancelled: () -> Unit,
+    onCanceled: () -> Unit,
     onConfirm: (String, String?) -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -382,7 +382,7 @@ fun WithdrawScreenContent(
                 ) {
                     TextButton(
                         modifier = Modifier.weight(1f),
-                        onClick = onCancelled,
+                        onClick = onCanceled,
                         border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
                     ) {
                         Text("Cancel")
@@ -412,7 +412,7 @@ fun WithdrawScreenContent(
         }
     }
 
-    WithdrawStateHandler(coin, withdrawProcessState, resendVerificationCodeState, showSnackBar, sendEmailVerificationCode,onCancelled, resetWithdrawState, onConfirm)
+    WithdrawStateHandler(coin, withdrawProcessState, resendVerificationCodeState, showSnackBar, sendEmailVerificationCode,onCanceled, resetWithdrawState, onConfirm)
 }
 
 @Composable

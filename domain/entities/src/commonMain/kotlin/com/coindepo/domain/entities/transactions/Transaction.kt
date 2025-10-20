@@ -73,9 +73,9 @@ enum class TransactionType {
 enum class TransactionStatus(
     val id: Int
 ) {
-    PROCESSING(2),
     PENDING(3),
+    PROCESSING(2),
+    FAILED(6),
     COMPLETED(4),
-    CANCELLED(5),
-    FAILED(6)
+    CANCELLED(5)
 }

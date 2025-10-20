@@ -173,4 +173,9 @@
     <string name="instant_swap">Instant Swap</string>
     <string name="loan_liquidation">Loan Liquidation</string>
     <string name="loan_interest_repayment">Loan Interest Repayment</string>
+    <string name="pending">Pending</string>
+    <string name="processing">Processing</string>
+    <string name="failed">Failed</string>
+    <string name="completed">Completed</string>
+    <string name="canceled">Canceled</string>
 </resources>
