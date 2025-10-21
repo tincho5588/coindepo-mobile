@@ -23,6 +23,7 @@ import com.coindepo.domain.entities.stats.AccountStats
 import com.coindepo.domain.entities.stats.balance.AccountBalance
 import com.coindepo.domain.entities.stats.balance.BorrowBalance
 import com.coindepo.domain.entities.stats.coin.Coin
+import com.coindepo.domain.entities.stats.tier.UserTier
 import kotlinx.coroutines.flow.Flow
 
 interface RemoteAccountStatsDataSource {
@@ -39,6 +40,7 @@ interface LocalAccountStatsDataSource {
 
     val accountBalance: Flow<AccountBalance?>
     val borrowBalance: Flow<BorrowBalance?>
+    val userTier: Flow<UserTier?>
     val coins: Flow<List<Coin>>
     val tokens: Flow<List<Coin>>
 

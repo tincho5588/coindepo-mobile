@@ -21,10 +21,12 @@ package com.coindepo.domain.entities.stats
 import com.coindepo.domain.entities.stats.balance.AccountBalance
 import com.coindepo.domain.entities.stats.balance.BorrowBalance
 import com.coindepo.domain.entities.stats.coin.Coin
+import com.coindepo.domain.entities.stats.tier.UserTier
 
 data class AccountStats(
     val accountBalance: AccountBalance,
     val borrowBalance: BorrowBalance,
+    val userTier: UserTier,
     val coins: List<Coin>,
     val tokens: List<Coin>
 )

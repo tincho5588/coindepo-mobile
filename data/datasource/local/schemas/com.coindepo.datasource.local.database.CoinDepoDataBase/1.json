@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5b676c7a6abfd6990d0a7c71800aafe9",
+    "identityHash": "e084eda6992c022e69d0b222790961bb",
     "entities": [
       {
         "tableName": "user_session_data",
@@ -418,6 +418,59 @@
             ],
             "orders": [],
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_borrow_balance_table_userId` ON `${TABLE_NAME}` (`userId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "account_balance_table",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "userId"
+            ],
+            "referencedColumns": [
+              "userId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "user_tier_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` INTEGER NOT NULL, `coinDepoTokenPercentage` TEXT NOT NULL, `tierId` INTEGER, PRIMARY KEY(`userId`), FOREIGN KEY(`userId`) REFERENCES `account_balance_table`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "userId",
+            "columnName": "userId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coinDepoTokenPercentage",
+            "columnName": "coinDepoTokenPercentage",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tierId",
+            "columnName": "tierId",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "userId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_user_tier_table_userId",
+            "unique": true,
+            "columnNames": [
+              "userId"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_user_tier_table_userId` ON `${TABLE_NAME}` (`userId`)"
           }
         ],
         "foreignKeys": [
@@ -1275,7 +1328,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5b676c7a6abfd6990d0a7c71800aafe9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e084eda6992c022e69d0b222790961bb')"
     ]
   }
 }

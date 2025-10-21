@@ -25,6 +25,7 @@ import com.coindepo.domain.entities.stats.AccountStats
 import com.coindepo.domain.entities.stats.balance.AccountBalance
 import com.coindepo.domain.entities.stats.balance.BorrowBalance
 import com.coindepo.domain.entities.stats.coin.Coin
+import com.coindepo.domain.entities.stats.tier.UserTier
 import com.coindepo.domain.usecases.depositplans.SetDepositPlanVisibleUseCase
 import com.coindepo.domain.usecases.stats.GetAccountStatsUseCase
 import kotlinx.coroutines.Dispatchers
@@ -44,6 +45,7 @@ class AccountStatsViewModel(
     val accountStats: StateFlow<AccountStats?> by lazy { getAccountStatsUseCase.accountStats }
     val accountBalance: StateFlow<AccountBalance?> by lazy { getAccountStatsUseCase.accountBalance }
     val borrowBalance: StateFlow<BorrowBalance?> by lazy { getAccountStatsUseCase.borrowBalance }
+    val userTier: StateFlow<UserTier?> by lazy { getAccountStatsUseCase.userTier }
     val coins: StateFlow<List<Coin>> by lazy { getAccountStatsUseCase.coins }
     val tokens: StateFlow<List<Coin>> by lazy { getAccountStatsUseCase.tokens }
 

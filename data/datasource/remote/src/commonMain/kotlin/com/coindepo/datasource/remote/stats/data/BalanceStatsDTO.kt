@@ -21,6 +21,7 @@
 package com.coindepo.datasource.remote.stats.data
 
 import com.coindepo.datasource.remote.BigNumSerializer
+import com.coindepo.domain.entities.stats.tier.UserTier
 import korlibs.bignumber.BigNum
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -35,6 +36,7 @@ data class BalanceStatsDTO(
     @SerialName("earned_referrals") val earnedReferrals: BigNum? = null,
     @SerialName("total_available_balance") val totalAvailableBalance: BigNum? = null,
     @SerialName("total_balance") val totalBalance: BigNum? = null,
+    @SerialName("user_tier") val userTier: UserTierDTO? = null,
     override val status: String? = null,
     override val code: String? = null,
     @SerialName("error_code") override val errorCode: String? = null
@@ -74,3 +76,15 @@ data class BalanceDTO(
     @SerialName("summary_balance_currency") val summaryBalanceCurrency: BigNum,
     @SerialName("ticker") val ticker: String
 )
+
+@Serializable
+data class UserTierDTO(
+    @SerialName("coindepo_percentage") val coindepoPercentage: BigNum? = null,
+    @SerialName("tier_id") val tierId: Int? = null
+)
+
+val UserTierDTO.asUserTier: UserTier
+    get() = UserTier(
+        coinDepoTokenPercentage = coindepoPercentage ?: BigNum.ZERO,
+        tierId = tierId
+    )

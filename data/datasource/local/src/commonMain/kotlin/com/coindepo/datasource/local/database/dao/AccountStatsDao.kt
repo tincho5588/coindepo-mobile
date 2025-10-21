@@ -38,6 +38,7 @@ import com.coindepo.domain.entities.stats.coin.AvailableLoans
 import com.coindepo.domain.entities.stats.coin.Coin
 import com.coindepo.domain.entities.stats.coin.CoinBalance
 import com.coindepo.domain.entities.stats.coin.DepositPlan
+import com.coindepo.domain.entities.stats.tier.UserTier
 import korlibs.bignumber.BigNum
 import kotlinx.coroutines.flow.Flow
 
@@ -61,6 +62,10 @@ interface AccountStatsDao {
     fun getBorrowBalanceFlow(): Flow<List<BorrowBalanceEntity>>
 
     @Transaction
+    @Query("SELECT * FROM user_tier_table")
+    fun getUserTierFlow(): Flow<List<UserTierEntity>>
+
+    @Transaction
     @Query("SELECT * FROM coin_details_table WHERE isToken = 0 ORDER BY displayOrder ASC")
     fun getCoinsFlow(): Flow<List<CoinEntity>>
 
@@ -73,6 +78,7 @@ interface AccountStatsDao {
     suspend fun saveAccountStats(
         accountBalance: AccountBalanceEntity,
         borrowBalance: BorrowBalanceEntity,
+        userTierEntity: UserTierEntity,
         coins: List<CoinDetailsEntity>,
         coinBalances: List<CoinBalanceEntity>,
         depositPlans: List<DepositPlanEntity>,
@@ -91,6 +97,11 @@ data class AccountStatsEntity(
     )
     val borrowBalance: BorrowBalanceEntity,
     @Relation(
+        parentColumn = "userId",
+        entityColumn = "userId"
+    )
+    val userTierEntity: UserTierEntity,
+    @Relation(
         entity = CoinDetailsEntity::class,
         parentColumn = "userId",
         entityColumn = "userId"
@@ -102,6 +113,7 @@ val AccountStatsEntity.asAccountStats: AccountStats
     get() = AccountStats(
         accountBalance = accountBalance.asAccountBalance,
         borrowBalance = borrowBalance.asBorrowBalance,
+        userTier = userTierEntity.asUserTier,
         coins = coins.map { it.asCoin }.filter { !it.isToken },
         tokens = coins.map { it.asCoin }.filter { it.isToken }
     )
@@ -190,6 +202,36 @@ fun BorrowBalance.asBorrowBalanceEntity(userId: Int): BorrowBalanceEntity = Borr
     ltv = ltv,
     apr = apr,
     aprs = aprs
+)
+
+@Entity(
+    tableName = "user_tier_table",
+    foreignKeys = [
+        ForeignKey(
+            entity = AccountBalanceEntity::class,
+            parentColumns = ["userId"],
+            childColumns = ["userId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [Index(value = ["userId"], unique = true)]
+)
+data class UserTierEntity(
+    @PrimaryKey val userId: Int,
+    val coinDepoTokenPercentage: BigNum,
+    val tierId: Int? = null
+)
+
+val UserTierEntity.asUserTier: UserTier
+    get() = UserTier(
+        coinDepoTokenPercentage,
+        tierId
+    )
+
+fun UserTier.asUserTierEntity(userId: Int): UserTierEntity = UserTierEntity(
+    userId,
+    coinDepoTokenPercentage,
+    tierId
 )
 
 data class CoinEntity(

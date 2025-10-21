@@ -28,6 +28,7 @@ import com.coindepo.domain.entities.stats.AccountStats
 import com.coindepo.domain.entities.stats.balance.AccountBalance
 import com.coindepo.domain.entities.stats.balance.BorrowBalance
 import com.coindepo.domain.entities.stats.coin.Coin
+import com.coindepo.domain.entities.stats.tier.UserTier
 import com.coindepo.repository.contracts.stats.AccountStatsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -59,6 +60,12 @@ class AccountStatsRepositoryImpl(
         )
     override val borrowBalance: StateFlow<BorrowBalance?>
         get() = localAccountStatsDataSource.borrowBalance.stateIn(
+            scope = scope,
+            started = SharingStarted.Eagerly,
+            initialValue = null
+        )
+    override val userTier: StateFlow<UserTier?>
+        get() = localAccountStatsDataSource.userTier.stateIn(
             scope = scope,
             started = SharingStarted.Eagerly,
             initialValue = null

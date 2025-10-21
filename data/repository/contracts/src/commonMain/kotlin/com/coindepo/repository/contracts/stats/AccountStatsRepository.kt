@@ -24,6 +24,7 @@ import com.coindepo.domain.entities.stats.AccountStats
 import com.coindepo.domain.entities.stats.balance.AccountBalance
 import com.coindepo.domain.entities.stats.balance.BorrowBalance
 import com.coindepo.domain.entities.stats.coin.Coin
+import com.coindepo.domain.entities.stats.tier.UserTier
 import kotlinx.coroutines.flow.StateFlow
 
 interface AccountStatsRepository {
@@ -31,6 +32,7 @@ interface AccountStatsRepository {
 
     val accountBalance: StateFlow<AccountBalance?>
     val borrowBalance: StateFlow<BorrowBalance?>
+    val userTier: StateFlow<UserTier?>
     val coins: StateFlow<List<Coin>>
     val tokens: StateFlow<List<Coin>>
 

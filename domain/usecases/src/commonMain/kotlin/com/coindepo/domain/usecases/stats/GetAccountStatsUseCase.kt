@@ -24,6 +24,7 @@ import com.coindepo.domain.entities.stats.AccountStats
 import com.coindepo.domain.entities.stats.balance.AccountBalance
 import com.coindepo.domain.entities.stats.balance.BorrowBalance
 import com.coindepo.domain.entities.stats.coin.Coin
+import com.coindepo.domain.entities.stats.tier.UserTier
 import com.coindepo.domain.usecases.LoggedInUseCase
 import com.coindepo.domain.usecases.login.GetUserSessionUseCase
 import com.coindepo.domain.usecases.login.LogOutUseCase
@@ -39,6 +40,7 @@ class GetAccountStatsUseCase(
 
     val accountBalance: StateFlow<AccountBalance?> by lazy { accountStatsRepository.accountBalance }
     val borrowBalance: StateFlow<BorrowBalance?> by lazy { accountStatsRepository.borrowBalance }
+    val userTier: StateFlow<UserTier?> by lazy { accountStatsRepository.userTier }
     val coins: StateFlow<List<Coin>> by lazy { accountStatsRepository.coins }
     val tokens: StateFlow<List<Coin>> by lazy { accountStatsRepository.tokens }
 

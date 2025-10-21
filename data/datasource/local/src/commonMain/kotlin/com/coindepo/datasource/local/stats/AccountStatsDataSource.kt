@@ -24,6 +24,7 @@ import com.coindepo.domain.entities.stats.AccountStats
 import com.coindepo.domain.entities.stats.balance.AccountBalance
 import com.coindepo.domain.entities.stats.balance.BorrowBalance
 import com.coindepo.domain.entities.stats.coin.Coin
+import com.coindepo.domain.entities.stats.tier.UserTier
 import kotlinx.coroutines.flow.Flow
 
 class LocalAccountStatsDataSourceImpl(
@@ -36,6 +37,8 @@ class LocalAccountStatsDataSourceImpl(
         get() = coinDepoDataBase.accountBalance
     override val borrowBalance: Flow<BorrowBalance?>
         get() = coinDepoDataBase.borrowBalance
+    override val userTier: Flow<UserTier?>
+        get() = coinDepoDataBase.userTier
     override val coins: Flow<List<Coin>>
         get() = coinDepoDataBase.coins
     override val tokens: Flow<List<Coin>>

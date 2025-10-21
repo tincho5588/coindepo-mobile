@@ -39,6 +39,7 @@ import com.coindepo.datasource.local.database.dao.UserDetailsDao
 import com.coindepo.datasource.local.database.dao.UserDetailsEntity
 import com.coindepo.datasource.local.database.dao.UserSessionDao
 import com.coindepo.datasource.local.database.dao.UserSessionEntity
+import com.coindepo.datasource.local.database.dao.UserTierEntity
 import com.coindepo.datasource.local.database.dao.asAccountBalance
 import com.coindepo.datasource.local.database.dao.asAccountBalanceEntity
 import com.coindepo.datasource.local.database.dao.asAccountStats
@@ -55,11 +56,14 @@ import com.coindepo.datasource.local.database.dao.asUserDetails
 import com.coindepo.datasource.local.database.dao.asUserDetailsEntity
 import com.coindepo.datasource.local.database.dao.asUserSession
 import com.coindepo.datasource.local.database.dao.asUserSessionEntity
+import com.coindepo.datasource.local.database.dao.asUserTier
+import com.coindepo.datasource.local.database.dao.asUserTierEntity
 import com.coindepo.domain.entities.login.UserSession
 import com.coindepo.domain.entities.stats.AccountStats
 import com.coindepo.domain.entities.stats.balance.AccountBalance
 import com.coindepo.domain.entities.stats.balance.BorrowBalance
 import com.coindepo.domain.entities.stats.coin.Coin
+import com.coindepo.domain.entities.stats.tier.UserTier
 import com.coindepo.domain.entities.transactions.Transaction
 import com.coindepo.domain.entities.transactions.TransactionStatus
 import com.coindepo.domain.entities.userdetails.UserDetails
@@ -75,6 +79,7 @@ import kotlinx.coroutines.sync.withLock
         UserDetailsEntity::class,
         AccountBalanceEntity::class,
         BorrowBalanceEntity::class,
+        UserTierEntity::class,
         CoinDetailsEntity::class,
         CoinBalanceEntity::class,
         DepositPlanEntity::class,
@@ -122,6 +127,11 @@ abstract class CoinDepoDataBase : RoomDatabase() {
             check(it.size <= 1)
             it.firstOrNull()?.asBorrowBalance
         }
+    val userTier: Flow<UserTier?>
+        get() = accountStatsDao.getUserTierFlow().map {
+            check(it.size <= 1)
+            it.firstOrNull()?.asUserTier
+        }
     val coins: Flow<List<Coin>>
         get() = accountStatsDao.getCoinsFlow().map {
             it.map { it.asCoin }
@@ -148,6 +158,7 @@ abstract class CoinDepoDataBase : RoomDatabase() {
             accountStatsDao.saveAccountStats(
                 accountStats.accountBalance.asAccountBalanceEntity(userId),
                 accountStats.borrowBalance.asBorrowBalanceEntity(userId),
+                accountStats.userTier.asUserTierEntity(userId),
                 accountStats.coins.map { it.asCoinDetailsEntity(userId) } + accountStats.tokens.map { it.asCoinDetailsEntity(userId) },
                 accountStats.coins.mapNotNull { it.coinBalance?.asCoinBalanceEntity(it.coinId) } + accountStats.tokens.mapNotNull { it.coinBalance?.asCoinBalanceEntity(it.coinId) },
                 accountStats.coins.map { it.depositPlans.map { depositPlan -> depositPlan.asDepositPlanEntity(it.coinId) } }.flatten()

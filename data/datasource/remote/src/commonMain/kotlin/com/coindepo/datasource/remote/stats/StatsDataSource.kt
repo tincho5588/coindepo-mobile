@@ -26,6 +26,7 @@ import com.coindepo.datasource.remote.stats.data.BorrowStatsDTO
 import com.coindepo.datasource.remote.stats.data.SupportedCoinsDTO
 import com.coindepo.datasource.remote.stats.data.TokensStatsDTO
 import com.coindepo.datasource.remote.stats.data.asAccountType
+import com.coindepo.datasource.remote.stats.data.asUserTier
 import com.coindepo.datasource.remote.stats.data.logoUrl
 import com.coindepo.datasource.remote.stats.service.CoinsService
 import com.coindepo.datasource.remote.stats.service.StatsService
@@ -43,6 +44,8 @@ import com.coindepo.domain.entities.stats.coin.AvailableLoans
 import com.coindepo.domain.entities.stats.coin.Coin
 import com.coindepo.domain.entities.stats.coin.CoinBalance
 import com.coindepo.domain.entities.stats.coin.DepositPlan
+import com.coindepo.domain.entities.stats.tier.UserTier
+import korlibs.bignumber.BigNum
 
 class RemoteAccountStatsDataSourceImpl internal constructor(
     private val coinService: CoinsService,
@@ -123,6 +126,7 @@ private fun getAccountStats(
             )
         }
     ),
+    userTier = balanceStatsDTO.userTier?.asUserTier ?: UserTier(BigNum.ZERO, null),
     coins = supportedCoinsDTO.coinList.sortedBy { it.order }.map {
         Coin(
             coinId = it.coinId,
