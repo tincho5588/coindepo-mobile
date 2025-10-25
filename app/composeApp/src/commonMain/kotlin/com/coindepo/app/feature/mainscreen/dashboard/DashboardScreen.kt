@@ -20,6 +20,7 @@ package com.coindepo.app.feature.mainscreen.dashboard
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,6 +29,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -35,6 +37,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.outlined.AccountBalanceWallet
 import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.FileUpload
@@ -42,9 +45,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshState
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -91,10 +96,13 @@ import coindepo.app.composeapp.generated.resources.total_rewards_accrued_info
 import coindepo.app.composeapp.generated.resources.total_rewards_paid
 import coindepo.app.composeapp.generated.resources.total_rewards_paid_info
 import coindepo.app.composeapp.generated.resources.total_value_of_your_assets
+import com.coindepo.app.browser.openUrlInBrowser
 import com.coindepo.app.feature.common.BalanceIndicator
 import com.coindepo.app.feature.common.CoinDepoElevatedCard
+import com.coindepo.app.feature.common.TextIndicator
 import com.coindepo.app.feature.common.formatCrypto
 import com.coindepo.app.feature.common.formatCurrency
+import com.coindepo.app.feature.common.maskingRegex
 import com.coindepo.app.feature.mainscreen.AccountStatsViewModel
 import com.coindepo.app.feature.mainscreen.CoinId
 import com.coindepo.app.feature.mainscreen.DepositPlanId
@@ -104,6 +112,7 @@ import com.coindepo.domain.entities.stats.balance.AccountBalance
 import com.coindepo.domain.entities.stats.balance.BorrowBalance
 import com.coindepo.domain.entities.stats.coin.AvailableLoans
 import com.coindepo.domain.entities.stats.coin.Coin
+import com.coindepo.domain.entities.stats.tier.UserTier
 import com.coindepo.domain.entities.utils.asBigNum
 import korlibs.bignumber.BigNum
 import org.jetbrains.compose.resources.stringResource
@@ -137,6 +146,7 @@ fun DashboardScreen(
         DashboardScreenContent(
             accountStatsViewModel.accountBalance.collectAsState().value,
             accountStatsViewModel.borrowBalance.collectAsState().value,
+            accountStatsViewModel.userTier.collectAsState().value,
             accountStatsViewModel.coins.collectAsState().value,
             accountStatsViewModel.tokens.collectAsState().value,
             accountStatsViewModel.currency.collectAsState().value,
@@ -154,6 +164,7 @@ fun DashboardScreen(
 fun DashboardScreenContent(
     accountBalance: AccountBalance?,
     borrowBalance: BorrowBalance?,
+    userTier: UserTier?,
     coins: Collection<Coin>,
     tokens: Collection<Coin>,
     currency: Currency,
@@ -172,6 +183,8 @@ fun DashboardScreenContent(
             .background(MaterialTheme.colorScheme.surfaceContainerLow)
             .verticalScroll(state = scrollState)
     ) {
+        Spacer(Modifier.height(16.dp))
+        UserTierCard(currency, maskBalances, userTier, coins)
         Spacer(Modifier.height(16.dp))
         PortfolioBalancesCard(accountBalance, currency, maskBalances)
         Spacer(Modifier.height(16.dp))
@@ -193,6 +206,176 @@ fun DashboardScreenContent(
         Spacer(Modifier.height(16.dp))
         TotalValueCard(accountBalance, currency)
         Spacer(Modifier.height(16.dp))
+    }
+}
+
+@Composable
+fun UserTierCard(
+    currency: Currency,
+    maskBalance: Boolean,
+    userTier: UserTier?,
+    coins: Collection<Coin>
+) {
+    val coinDepoToken = coins.find { it.coinId == 1000 }
+    CoinDepoElevatedCard(
+        modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(horizontal = 16.dp)
+    ) {
+        Column(
+            modifier = Modifier.wrapContentHeight().fillMaxWidth().padding(top = 16.dp, start = 16.dp, end = 16.dp)
+        ) {
+            Text(
+                "COINDEPO TOKEN ADVANTAGE PROGRAM",
+                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
+            )
+            BalanceIndicator(
+                title = "Token Portfolio Balance",
+                balance = coinDepoToken?.coinBalance?.balanceCurrency ?: BigNum.ZERO,
+                currency = currency,
+                info = "The Token Portfolio Balance represents the current USD/EUR/GBP value of COINDEPO tokens in your Interest Accounts and is for informational purposes only. Actual account balances are denominated in COINDEPO tokens.",
+                maskBalance = maskBalance
+            )
+            TextIndicator(
+                title = "COINDEPO Token Amount",
+                text = (coinDepoToken?.coinBalance?.balance ?: BigNum.ZERO).toString().let {
+                    if (maskBalance) {
+                        it.replace(maskingRegex, "•")
+                    } else {
+                        it
+                    }
+                },
+                textColor = MaterialTheme.colorScheme.primary,
+                info = "The COINDEPO Token Amount is the current balance of COINDEPO tokens deposited in Compound Interest Accounts."
+            )
+            TextIndicator(
+                title = "Your Current Tier",
+                text = "TIER ${userTier?.tierId ?: 0}",
+                info = "Your Current Tier in the COINDEPO Token Advantage Program is calculated, assigned, and subject to change based on the value of the COINDEPO token share in your crypto portfolio on the platform."
+            )
+            TextIndicator(
+                title = "Token Share in Portfolio",
+                text = "${userTier?.coinDepoTokenPercentage?.convertToScale(2)?.toString() ?: 0.00.toString()}%",
+                textColor = MaterialTheme.colorScheme.primary,
+                info = "Token Share in Portfolio is the percentage of your CoinDepo portfolio value that is held in COINDEPO tokens. The portfolio value is regularly recalculated based on the market price of the digital assets included in it."
+            )
+            Spacer(Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(
+                    modifier = Modifier.weight(5.0f*(0.75f/15.0f)),
+                    text = "Tier 1",
+                    style = MaterialTheme.typography.bodyLarge.copy(Color(0xFFa19ead), fontWeight = FontWeight.Bold),
+                    textAlign = TextAlign.Center
+                )
+                Text(
+                    modifier = Modifier.weight(5.0f*(0.75f/15.0f)),
+                    text = "Tier 2",
+                    style = MaterialTheme.typography.bodyLarge.copy(Color(0xFFa19ead), fontWeight = FontWeight.Bold),
+                    textAlign = TextAlign.Center
+                )
+                Text(
+                    modifier = Modifier.weight(5.0f*(0.75f/15.0f)),
+                    text = "Tier 3",
+                    style = MaterialTheme.typography.bodyLarge.copy(Color(0xFFa19ead), fontWeight = FontWeight.Bold),
+                    textAlign = TextAlign.Center
+                )
+                Text(
+                    modifier = Modifier.weight(5.0f*(0.75f/15.0f)),
+                    text = "Tier 4",
+                    style = MaterialTheme.typography.bodyLarge.copy(Color(0xFFa19ead), fontWeight = FontWeight.Bold),
+                    textAlign = TextAlign.Center
+                )
+            }
+            Spacer(Modifier.height(4.dp))
+            LinearProgressIndicator(
+                modifier = Modifier.fillMaxWidth().height(16.dp),
+                progress = {
+                    userTier?.coinDepoTokenPercentage?.times(BigNum("0.75").div(BigNum("15.0")))?.toString()?.toFloatOrNull() ?: 20.0f
+                },
+                gapSize = 1.dp,
+                drawStopIndicator = {}
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    modifier = Modifier.weight(5.0f*(0.75f/15.0f)),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.End
+                    ) {
+                        VerticalDivider(
+                            modifier = Modifier.height(8.dp),
+                            thickness = 3.dp
+                        )
+                        Text(
+                            text = "5%",
+                            style = MaterialTheme.typography.bodyLarge.copy(Color(0xFFa19ead), fontWeight = FontWeight.Bold),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+                Row(
+                    modifier = Modifier.weight(5.0f*(0.75f/15.0f)),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.End
+                    ) {
+                        VerticalDivider(
+                            modifier = Modifier.height(8.dp),
+                            thickness = 3.dp
+                        )
+                        Text(
+                            text = "10%",
+                            style = MaterialTheme.typography.bodyLarge.copy(Color(0xFFa19ead), fontWeight = FontWeight.Bold),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+                Row(
+                    modifier = Modifier.weight(5.0f*(0.75f/15.0f)),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.End
+                    ) {
+                        VerticalDivider(
+                            modifier = Modifier.height(8.dp),
+                            thickness = 3.dp
+                        )
+                        Text(
+                            text = "15%+",
+                            style = MaterialTheme.typography.bodyLarge.copy(Color(0xFFa19ead), fontWeight = FontWeight.Bold),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+                Row(
+                    modifier = Modifier.weight(5.0f*(0.75f/15.0f)),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                }
+            }
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                TextButton(
+                    onClick = {
+                        openUrlInBrowser("https://coindepo.com/token?_gl=1*1nvqzj9*_gcl_au*MTY1MjM1MjE5Mi4xNzU2MTMwOTMz*_ga*OTUzNjY3NzI4LjE3NTYxMzA5MzQ.*_ga_D9J1SREE8G*czE3NjE0MDg4NjgkbzExMyRnMSR0MTc2MTQxMDAzNCRqNTgkbDAkaDQ4Mjg4MzU4OQ..#referfriends")
+                    }
+                ) {
+                    Text(text = "See Details",)
+                    Spacer(Modifier.width(8.dp))
+                    Icon(modifier = Modifier.size(16.dp), imageVector = Icons.Filled.Info, contentDescription = "")
+                }
+            }
+        }
     }
 }
 
@@ -623,6 +806,7 @@ fun DashboardScreenContentPreview() {
                     "10.0".asBigNum,
                     listOf(),
                 ),
+            UserTier(0.1209.asBigNum, 1),
                 listOf(
                     Coin(
                         coinId = 16,
@@ -696,6 +880,7 @@ fun DashboardScreenContentLightPreview() {
                     "10.0".asBigNum,
                     listOf(),
                 ),
+            UserTier(0.0.asBigNum, null),
                 listOf(
                     Coin(
                         coinId = 16,

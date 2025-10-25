@@ -24,6 +24,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -534,14 +535,23 @@ fun CoinPlanCard(
                         Spacer(Modifier.width(8.dp))
                         Text(stringResource(Res.string.compund_interest_pediod, depositPlan.accountType.periodDays), style = MaterialTheme.typography.titleMedium.copy(color = Color(0xFFa19ead), fontWeight = FontWeight.Medium))
                     }
-                    TextButton(
-                        onClick = {
-                            openUrlInBrowser("https://coindepo.com/legal/earn-terms?_gl=1*1cv7r58*_gcl_au*MTY1MjM1MjE5Mi4xNzU2MTMwOTMz*_ga*OTUzNjY3NzI4LjE3NTYxMzA5MzQ.*_ga_D9J1SREE8G*czE3NTc3NzcxNjgkbzQ5JGcxJHQxNzU3Nzc3MTc1JGo1MyRsMCRoMTQ0MjA0MDQ4OQ..#pOpenCD")
-                        }
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Text(stringResource(Res.string.interest_account_rules))
-                        Spacer(Modifier.width(8.dp))
-                        Icon(modifier = Modifier.size(16.dp), imageVector = Icons.Filled.Info, contentDescription = "")
+                        TextButton(
+                            onClick = {
+                                openUrlInBrowser("https://coindepo.com/legal/earn-terms?_gl=1*1cv7r58*_gcl_au*MTY1MjM1MjE5Mi4xNzU2MTMwOTMz*_ga*OTUzNjY3NzI4LjE3NTYxMzA5MzQ.*_ga_D9J1SREE8G*czE3NTc3NzcxNjgkbzQ5JGcxJHQxNzU3Nzc3MTc1JGo1MyRsMCRoMTQ0MjA0MDQ4OQ..#pOpenCD")
+                            }
+                        ) {
+                            Text(stringResource(Res.string.interest_account_rules))
+                            Spacer(Modifier.width(8.dp))
+                            Icon(
+                                modifier = Modifier.size(16.dp),
+                                imageVector = Icons.Filled.Info,
+                                contentDescription = ""
+                            )
+                        }
                     }
                 }
             }

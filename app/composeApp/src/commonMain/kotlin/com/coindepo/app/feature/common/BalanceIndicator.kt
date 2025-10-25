@@ -47,6 +47,23 @@ fun BalanceIndicator(
     maskBalance: Boolean,
     big: Boolean = false
 ) {
+    TextIndicator(
+        title = title,
+        text = formatCurrency(balance, currency, maskBalance),
+        textColor = balanceTextColor,
+        info = info,
+        big = big
+    )
+}
+
+@Composable
+fun TextIndicator(
+    title: String,
+    text: String,
+    textColor: Color? = null,
+    info: String,
+    big: Boolean = false
+) {
     val titleTextStyle = if (big) {
         MaterialTheme.typography.titleLarge
     } else {
@@ -75,9 +92,9 @@ fun BalanceIndicator(
         }
         Spacer(Modifier.height(4.dp))
         Text(
-            text = formatCurrency(balance, currency, maskBalance),
+            text = text,
             style = balanceTextStyle.copy(fontWeight = FontWeight.Bold)
-                .copy(color = balanceTextColor ?: TextStyle.Default.color)
+                .copy(color = textColor ?: TextStyle.Default.color)
         )
         if (big) Spacer(Modifier.height(4.dp))
     }
