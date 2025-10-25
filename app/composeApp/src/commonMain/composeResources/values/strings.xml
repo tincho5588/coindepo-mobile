@@ -55,9 +55,7 @@
     <string name="click_here">click here</string>
     <string name="verification_code_note_dialog_title">Didn't receive Email Verification Code?</string>
     <string name="verification_code_note_dialog_text_1">CoinDepo sent a code to your email. If you do not see our message in the INBOX folder after several attempts, please try:\n</string>
-    <string name="verification_code_note_dialog_text_2">1. Check the SPAM folder in your email. Messages could be considered as spam in rare cases.\n\n
-                                2. Please ensure your email address is %1$s\n\n
-                                3. Click \"Resend code\" after 30 seconds. If you still have not received the code, please contact our Support Team at support@coindepo.com</string>
+    <string name="verification_code_note_dialog_text_2">1. Check the SPAM folder in your email. Messages could be considered as spam in rare cases.\n\n2. Please ensure your email address is %1$s\n\n3. Click \"Resend code\" after 30 seconds. If you still have not received the code, please contact our Support Team at support@coindepo.com</string>
 
     <!-- Reset Password -->
     <string name="reset_your_password">Reset your password</string>
