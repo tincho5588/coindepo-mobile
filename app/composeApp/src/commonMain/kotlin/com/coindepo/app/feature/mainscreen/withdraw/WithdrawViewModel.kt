@@ -34,6 +34,7 @@ import com.coindepo.domain.usecases.withdraw.SendWithdrawEmailVerificationCodeUs
 import korlibs.bignumber.BigNum
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -51,6 +52,7 @@ class WithdrawViewModel(
     private val _withdrawProcessState = MutableStateFlow<WithdrawProcessState>(WithdrawProcessState.NotStarted)
     val withdrawProcessState: StateFlow<WithdrawProcessState> = _withdrawProcessState
 
+    private var countDownJob: Job? = null
     private val _resendVerificationCodeState = MutableStateFlow<ResendVerificationCodeState?>(null)
     val resendVerificationCodeState: StateFlow<ResendVerificationCodeState?> = _resendVerificationCodeState
 
@@ -118,14 +120,14 @@ class WithdrawViewModel(
     }
 
     private fun startResendVerificationCodeCountDown() {
-        viewModelScope.launch {
+        countDownJob = viewModelScope.launch {
             _resendVerificationCodeState.value = ResendVerificationCodeState(false, 30)
             while (isActive) {
                 delay(1.seconds.inWholeMilliseconds)
                 val newTimeRemaining = _resendVerificationCodeState.value!!.timeRemaining - 1
                 if (newTimeRemaining == 0) {
                     _resendVerificationCodeState.value = ResendVerificationCodeState(true, 0)
-                    return@launch
+                    countDownJob?.cancel()
                 } else {
                     _resendVerificationCodeState.value = ResendVerificationCodeState(false, newTimeRemaining)
                 }
