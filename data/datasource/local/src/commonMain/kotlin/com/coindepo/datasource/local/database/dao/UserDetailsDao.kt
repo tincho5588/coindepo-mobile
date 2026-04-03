@@ -75,7 +75,7 @@ data class UserDetailsEntity(
     val emailTrx: String,
     val emailNews: String,
     val emailSystem: String,
-    val avatar: List<Byte>,
+    val avatar: String?,
     val creditLineActive: String,
     val isAffiliate: String,
     val regCountry: String,

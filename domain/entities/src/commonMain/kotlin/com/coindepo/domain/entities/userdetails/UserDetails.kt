@@ -50,7 +50,7 @@ data class UserDetails(
     val emailTrx: String, // TODO: use an boolean here
     val emailNews: String, // TODO: use an boolean here
     val emailSystem: String, // TODO: use an boolean here
-    val avatar: List<Byte>,
+    val avatar: String?,
     val creditLineActive: String,
     val isAffiliate: String,  // TODO: use an boolean here
     val regCountry: String,

@@ -23,7 +23,6 @@ import com.coindepo.domain.entities.userdetails.ReferralCodes
 import com.coindepo.domain.entities.userdetails.UserDetails
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlin.io.encoding.Base64
 
 
 @Serializable
@@ -114,7 +113,7 @@ val UserDetailsResponseDTO.asUserDetails: UserDetails
         emailTrx = emailTrx!!,
         emailNews = emailNews!!,
         emailSystem = emailSystem!!,
-        avatar = avatar?.decodeAvatar ?: emptyList(),
+        avatar = avatar,
         creditLineActive = creditLineActive!!,
         isAffiliate = isAffiliate!!,
         regCountry = regCountry!!,
@@ -128,16 +127,3 @@ val ReferralCodesDTO.asReferralCodes: ReferralCodes
     get() = ReferralCodes(
         id, referral, type
     )
-
-val String.decodeAvatar: List<Byte>
-    get() {
-        // 1. Decode the Base64 String to a Byte Array
-        // Handle potential data URI prefix
-        val imageData = if (contains(",")) {
-            split(",")[1]
-        } else {
-            this
-        }.trim()
-
-        return Base64.decode(imageData).toList()
-    }

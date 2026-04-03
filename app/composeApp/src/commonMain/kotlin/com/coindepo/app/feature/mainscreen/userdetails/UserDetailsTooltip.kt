@@ -31,6 +31,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -63,25 +64,20 @@ import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.decodeToImageBitmap
-import androidx.compose.ui.graphics.drawscope.DrawScope.Companion.DefaultFilterQuality
-import androidx.compose.ui.graphics.painter.BitmapPainter
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.VectorPainter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import coindepo.app.composeapp.generated.resources.Res
 import coindepo.app.composeapp.generated.resources.bonuses
 import coindepo.app.composeapp.generated.resources.help_center
@@ -119,9 +115,6 @@ fun UserDetailsTooltip(
     onLogOut: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    val avatarPainter = userDetails?.avatar?.takeIf { it.isNotEmpty() }?.toByteArray()?.decodeToImageBitmap()
-        ?.let { remember(it) { BitmapPainter(it, filterQuality = DefaultFilterQuality) } }
-        ?: rememberVectorPainter(image = Icons.Filled.AccountCircle)
 
     TooltipBox(
         TooltipDefaults.rememberRichTooltipPositionProvider(),
@@ -131,7 +124,7 @@ fun UserDetailsTooltip(
                 colors = TooltipDefaults.richTooltipColors().copy(containerColor = MaterialTheme.colorScheme.background)
             ) {
                 UserDetailsTooltipContent(
-                    avatarPainter,
+                    userDetails?.avatar,
                     userDetails?.firstName?.lowercase()?.capitalizeEachWord(),
                     userDetails?.lastName?.lowercase()?.capitalizeEachWord(),
                     userDetails?.email,
@@ -147,7 +140,7 @@ fun UserDetailsTooltip(
             badge = {
                 userDetails?.status?.let { status ->
                     Badge(
-                        modifier = Modifier.padding(2.dp).size(14.dp).border(BorderStroke(2.dp, MaterialTheme.colorScheme.secondaryContainer), CircleShape),
+                        modifier = Modifier.padding(2.dp).size(14.dp).offset(x = (-4).dp, y = 4.dp).border(BorderStroke(3.dp, MaterialTheme.colorScheme.secondaryContainer), CircleShape),
                         containerColor = when(status) {
                             "confirmed" -> Color(0xFFFFA500)
                             "verified" -> Color(0xFF008000)
@@ -169,7 +162,7 @@ fun UserDetailsTooltip(
                 }
             ) {
                 AvatarImage(
-                    painter = avatarPainter,
+                    avatarSvg = userDetails?.avatar,
                     modifier = Modifier.fillMaxSize(),
                 )
             }
@@ -179,7 +172,7 @@ fun UserDetailsTooltip(
 
 @Composable
 fun UserDetailsTooltipContent(
-    avatarPainter: Painter,
+    avatarSvg: String?,
     firstName: String?,
     lastName: String?,
     email: String?,
@@ -192,7 +185,7 @@ fun UserDetailsTooltipContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AvatarImage(
-            painter = avatarPainter,
+            avatarSvg = avatarSvg,
             modifier = Modifier.width(90.dp).height(90.dp),
         )
 
@@ -265,15 +258,24 @@ fun UserDetailsTooltipContent(
 @Composable
 private fun AvatarImage(
     modifier: Modifier,
-    painter: Painter
+    avatarSvg: String?,
 ) {
-    Image(
-        painter = painter,
-        contentDescription = "",
-        contentScale = ContentScale.Fit,
-        modifier = modifier.clip(CircleShape),
-        colorFilter = if (painter is VectorPainter) ColorFilter.tint(MaterialTheme.colorScheme.onSecondaryContainer) else null
-    )
+    if (avatarSvg == null) {
+        Image(
+            painter = rememberVectorPainter(image = Icons.Filled.AccountCircle),
+            contentDescription = "",
+            contentScale = ContentScale.Fit,
+            modifier = modifier.clip(CircleShape),
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSecondaryContainer)
+        )
+    } else {
+        AsyncImage(
+            avatarSvg,
+            contentDescription = "",
+            contentScale = ContentScale.Fit,
+            modifier = modifier.clip(CircleShape),
+        )
+    }
 }
 
 @Composable
@@ -342,7 +344,7 @@ fun UserDetailsTooltipPreview() {
                     emailNews = "1",
                     emailSystem = "1",
                     creditLineActive = "disabled",
-                    avatar = emptyList(),
+                    avatar = null,
                     isAffiliate = "0",
                     regCountry = "AR",
                     hasPassword = "1",

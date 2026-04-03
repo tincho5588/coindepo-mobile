@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "e084eda6992c022e69d0b222790961bb",
+    "identityHash": "4b1ce2549609e227cfbd881c8ed36b58",
     "entities": [
       {
         "tableName": "user_session_data",
@@ -53,7 +53,7 @@
       },
       {
         "tableName": "user_details_data",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` INTEGER NOT NULL, `status` TEXT NOT NULL, `totp` INTEGER NOT NULL, `email` TEXT NOT NULL, `firstName` TEXT, `lastName` TEXT, `dateOfBirth` TEXT, `phone` TEXT, `country` TEXT, `address1` TEXT, `city` TEXT, `state` TEXT, `zip` TEXT, `documentCrc` TEXT, `documentCountry` TEXT, `documentType` TEXT, `documentNumber` TEXT, `documentExpiryDate` TEXT, `documentPhoto1` TEXT, `documentPhoto2` TEXT, `userType` TEXT NOT NULL, `sourceOfFunds` TEXT, `language` TEXT NOT NULL, `emailPromo` TEXT NOT NULL, `emailActivities` TEXT NOT NULL, `emailTrx` TEXT NOT NULL, `emailNews` TEXT NOT NULL, `emailSystem` TEXT NOT NULL, `avatar` TEXT NOT NULL, `creditLineActive` TEXT NOT NULL, `isAffiliate` TEXT NOT NULL, `regCountry` TEXT NOT NULL, `hasPassword` TEXT NOT NULL, `ipLock` TEXT NOT NULL, `referralCodes` TEXT NOT NULL, `affiliateCodes` TEXT NOT NULL, PRIMARY KEY(`userId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` INTEGER NOT NULL, `status` TEXT NOT NULL, `totp` INTEGER NOT NULL, `email` TEXT NOT NULL, `firstName` TEXT, `lastName` TEXT, `dateOfBirth` TEXT, `phone` TEXT, `country` TEXT, `address1` TEXT, `city` TEXT, `state` TEXT, `zip` TEXT, `documentCrc` TEXT, `documentCountry` TEXT, `documentType` TEXT, `documentNumber` TEXT, `documentExpiryDate` TEXT, `documentPhoto1` TEXT, `documentPhoto2` TEXT, `userType` TEXT NOT NULL, `sourceOfFunds` TEXT, `language` TEXT NOT NULL, `emailPromo` TEXT NOT NULL, `emailActivities` TEXT NOT NULL, `emailTrx` TEXT NOT NULL, `emailNews` TEXT NOT NULL, `emailSystem` TEXT NOT NULL, `avatar` TEXT, `creditLineActive` TEXT NOT NULL, `isAffiliate` TEXT NOT NULL, `regCountry` TEXT NOT NULL, `hasPassword` TEXT NOT NULL, `ipLock` TEXT NOT NULL, `referralCodes` TEXT NOT NULL, `affiliateCodes` TEXT NOT NULL, PRIMARY KEY(`userId`))",
         "fields": [
           {
             "fieldPath": "userId",
@@ -209,8 +209,7 @@
           {
             "fieldPath": "avatar",
             "columnName": "avatar",
-            "affinity": "TEXT",
-            "notNull": true
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "creditLineActive",
@@ -684,7 +683,7 @@
       },
       {
         "tableName": "coin_balance_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`coinId` INTEGER NOT NULL, `accruedInterest` TEXT NOT NULL, `accruedInterestCurrency` TEXT NOT NULL, `balance` TEXT NOT NULL, `balanceAvailable` TEXT NOT NULL, `balanceAvailableCurrency` TEXT NOT NULL, `balanceCurrency` TEXT NOT NULL, `binance24h` TEXT NOT NULL, `binance24hCurrency` TEXT NOT NULL, `freezedTrxBalance` TEXT NOT NULL, `freezedTrxBalanceCurrency` TEXT NOT NULL, `inTransit` TEXT NOT NULL, `inTransitCurrency` TEXT NOT NULL, `interest` TEXT NOT NULL, `interestCurrency` TEXT NOT NULL, `interestCurrencyCurrency` TEXT NOT NULL, `newTrxBalance` TEXT NOT NULL, `newTrxBalanceCurrency` TEXT NOT NULL, `pendingTrxBalance` TEXT NOT NULL, `pendingTrxBalanceCurrency` TEXT NOT NULL, `precision` INTEGER NOT NULL, `processingTrxBalance` TEXT NOT NULL, `processingTrxBalanceCurrency` TEXT NOT NULL, `queuedTrxBalance` TEXT NOT NULL, `queuedTrxBalanceCurrency` TEXT NOT NULL, `summaryBalance` TEXT NOT NULL, `summaryBalanceCurrency` TEXT NOT NULL, `displayOrder` INTEGER NOT NULL, PRIMARY KEY(`coinId`), FOREIGN KEY(`coinId`) REFERENCES `coin_details_table`(`coinId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`coinId` INTEGER NOT NULL, `accruedInterest` TEXT NOT NULL, `accruedInterestCurrency` TEXT NOT NULL, `balance` TEXT NOT NULL, `balanceAvailable` TEXT NOT NULL, `balanceAvailableCurrency` TEXT NOT NULL, `balanceCurrency` TEXT NOT NULL, `binance24h` TEXT NOT NULL, `binance24hCurrency` TEXT NOT NULL, `freezedTrxBalance` TEXT NOT NULL, `freezedTrxBalanceCurrency` TEXT, `inTransit` TEXT NOT NULL, `inTransitCurrency` TEXT, `interest` TEXT NOT NULL, `interestCurrency` TEXT NOT NULL, `interestCurrencyCurrency` TEXT, `newTrxBalance` TEXT NOT NULL, `newTrxBalanceCurrency` TEXT, `pendingTrxBalance` TEXT NOT NULL, `pendingTrxBalanceCurrency` TEXT, `precision` INTEGER NOT NULL, `processingTrxBalance` TEXT NOT NULL, `processingTrxBalanceCurrency` TEXT, `queuedTrxBalance` TEXT NOT NULL, `queuedTrxBalanceCurrency` TEXT, `summaryBalance` TEXT NOT NULL, `summaryBalanceCurrency` TEXT NOT NULL, `displayOrder` INTEGER NOT NULL, PRIMARY KEY(`coinId`), FOREIGN KEY(`coinId`) REFERENCES `coin_details_table`(`coinId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "coinId",
@@ -749,8 +748,7 @@
           {
             "fieldPath": "freezedTrxBalanceCurrency",
             "columnName": "freezedTrxBalanceCurrency",
-            "affinity": "TEXT",
-            "notNull": true
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "inTransit",
@@ -761,8 +759,7 @@
           {
             "fieldPath": "inTransitCurrency",
             "columnName": "inTransitCurrency",
-            "affinity": "TEXT",
-            "notNull": true
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "interest",
@@ -779,8 +776,7 @@
           {
             "fieldPath": "interestCurrencyCurrency",
             "columnName": "interestCurrencyCurrency",
-            "affinity": "TEXT",
-            "notNull": true
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "newTrxBalance",
@@ -791,8 +787,7 @@
           {
             "fieldPath": "newTrxBalanceCurrency",
             "columnName": "newTrxBalanceCurrency",
-            "affinity": "TEXT",
-            "notNull": true
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "pendingTrxBalance",
@@ -803,8 +798,7 @@
           {
             "fieldPath": "pendingTrxBalanceCurrency",
             "columnName": "pendingTrxBalanceCurrency",
-            "affinity": "TEXT",
-            "notNull": true
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "precision",
@@ -821,8 +815,7 @@
           {
             "fieldPath": "processingTrxBalanceCurrency",
             "columnName": "processingTrxBalanceCurrency",
-            "affinity": "TEXT",
-            "notNull": true
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "queuedTrxBalance",
@@ -833,8 +826,7 @@
           {
             "fieldPath": "queuedTrxBalanceCurrency",
             "columnName": "queuedTrxBalanceCurrency",
-            "affinity": "TEXT",
-            "notNull": true
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "summaryBalance",
@@ -1328,7 +1320,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e084eda6992c022e69d0b222790961bb')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4b1ce2549609e227cfbd881c8ed36b58')"
     ]
   }
 }

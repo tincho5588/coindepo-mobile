@@ -144,7 +144,7 @@ fun String.asInstant(): Instant {
         monthNumber()
         char('-')
         day()
-        char(' ')
+        char('T')
         hour()
         char(':')
         minute()
