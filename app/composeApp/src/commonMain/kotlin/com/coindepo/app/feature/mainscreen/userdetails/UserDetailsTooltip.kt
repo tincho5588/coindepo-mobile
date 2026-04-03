@@ -81,7 +81,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import coindepo.app.composeapp.generated.resources.Res
 import coindepo.app.composeapp.generated.resources.bonuses
@@ -129,7 +128,6 @@ fun UserDetailsTooltip(
         {
             RichTooltip(
                 modifier = Modifier.wrapContentSize(),
-                caretSize = DpSize(24.dp, 16.dp),
                 colors = TooltipDefaults.richTooltipColors().copy(containerColor = MaterialTheme.colorScheme.background)
             ) {
                 UserDetailsTooltipContent(
