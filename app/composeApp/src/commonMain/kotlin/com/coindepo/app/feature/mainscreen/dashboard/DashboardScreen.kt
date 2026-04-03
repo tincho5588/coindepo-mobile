@@ -73,6 +73,10 @@ import coindepo.app.composeapp.generated.resources.available_to_withdraw_info
 import coindepo.app.composeapp.generated.resources.available_to_withdraw_tokens_info
 import coindepo.app.composeapp.generated.resources.balance
 import coindepo.app.composeapp.generated.resources.buy
+import coindepo.app.composeapp.generated.resources.coindepo_token_advantage_program
+import coindepo.app.composeapp.generated.resources.coindepo_token_amount_info
+import coindepo.app.composeapp.generated.resources.coindepo_token_amount_title
+import coindepo.app.composeapp.generated.resources.coindepo_token_portfolio_balance_info
 import coindepo.app.composeapp.generated.resources.credit_line_limit
 import coindepo.app.composeapp.generated.resources.credit_line_limit_info
 import coindepo.app.composeapp.generated.resources.crypto
@@ -82,11 +86,22 @@ import coindepo.app.composeapp.generated.resources.interest_paid
 import coindepo.app.composeapp.generated.resources.portfolio_balance
 import coindepo.app.composeapp.generated.resources.portfolio_balance_info
 import coindepo.app.composeapp.generated.resources.price_24h_change
+import coindepo.app.composeapp.generated.resources.see_details
 import coindepo.app.composeapp.generated.resources.show_empty
 import coindepo.app.composeapp.generated.resources.stablecoins
 import coindepo.app.composeapp.generated.resources.tokens
 import coindepo.app.composeapp.generated.resources.tokens_portfolio_balance
 import coindepo.app.composeapp.generated.resources.tokens_portfolio_balance_info
+import coindepo.app.composeapp.generated.resources.tier_1
+import coindepo.app.composeapp.generated.resources.tier_2
+import coindepo.app.composeapp.generated.resources.tier_3
+import coindepo.app.composeapp.generated.resources.tier_4
+import coindepo.app.composeapp.generated.resources.tier_number_format
+import coindepo.app.composeapp.generated.resources.tier_threshold_10_percent
+import coindepo.app.composeapp.generated.resources.tier_threshold_15_plus_percent
+import coindepo.app.composeapp.generated.resources.tier_threshold_5_percent
+import coindepo.app.composeapp.generated.resources.token_share_in_portfolio_info
+import coindepo.app.composeapp.generated.resources.token_share_in_portfolio_title
 import coindepo.app.composeapp.generated.resources.total_interest_accrued
 import coindepo.app.composeapp.generated.resources.total_interest_accrued_info
 import coindepo.app.composeapp.generated.resources.total_interest_paid
@@ -96,6 +111,8 @@ import coindepo.app.composeapp.generated.resources.total_rewards_accrued_info
 import coindepo.app.composeapp.generated.resources.total_rewards_paid
 import coindepo.app.composeapp.generated.resources.total_rewards_paid_info
 import coindepo.app.composeapp.generated.resources.total_value_of_your_assets
+import coindepo.app.composeapp.generated.resources.your_current_tier_info
+import coindepo.app.composeapp.generated.resources.your_current_tier_title
 import com.coindepo.app.browser.openUrlInBrowser
 import com.coindepo.app.feature.common.BalanceIndicator
 import com.coindepo.app.feature.common.CoinDepoElevatedCard
@@ -224,20 +241,20 @@ fun UserTierCard(
             modifier = Modifier.wrapContentHeight().fillMaxWidth().padding(top = 16.dp, start = 16.dp, end = 16.dp)
         ) {
             Text(
-                "COINDEPO TOKEN ADVANTAGE PROGRAM",
+                stringResource(Res.string.coindepo_token_advantage_program),
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
             )
             BalanceIndicator(
-                title = "Token Portfolio Balance",
+                title = stringResource(Res.string.tokens_portfolio_balance),
                 balance = coinDepoToken?.coinBalance?.balanceCurrency ?: BigNum.ZERO,
                 currency = currency,
-                info = "The Token Portfolio Balance represents the current USD/EUR/GBP value of COINDEPO tokens in your Interest Accounts and is for informational purposes only. Actual account balances are denominated in COINDEPO tokens.",
+                info = stringResource(Res.string.coindepo_token_portfolio_balance_info),
                 maskBalance = maskBalance
             )
             TextIndicator(
-                title = "COINDEPO Token Amount",
+                title = stringResource(Res.string.coindepo_token_amount_title),
                 text = (coinDepoToken?.coinBalance?.balance ?: BigNum.ZERO).toString().let {
                     if (maskBalance) {
                         it.replace(maskingRegex, "•")
@@ -246,18 +263,18 @@ fun UserTierCard(
                     }
                 },
                 textColor = MaterialTheme.colorScheme.primary,
-                info = "The COINDEPO Token Amount is the current balance of COINDEPO tokens deposited in Compound Interest Accounts."
+                info = stringResource(Res.string.coindepo_token_amount_info)
             )
             TextIndicator(
-                title = "Your Current Tier",
-                text = "TIER ${userTier?.tierId ?: 0}",
-                info = "Your Current Tier in the COINDEPO Token Advantage Program is calculated, assigned, and subject to change based on the value of the COINDEPO token share in your crypto portfolio on the platform."
+                title = stringResource(Res.string.your_current_tier_title),
+                text = stringResource(Res.string.tier_number_format, userTier?.tierId ?: 0),
+                info = stringResource(Res.string.your_current_tier_info)
             )
             TextIndicator(
-                title = "Token Share in Portfolio",
+                title = stringResource(Res.string.token_share_in_portfolio_title),
                 text = "${userTier?.coinDepoTokenPercentage?.convertToScale(2)?.toString() ?: 0.00.toString()}%",
                 textColor = MaterialTheme.colorScheme.primary,
-                info = "Token Share in Portfolio is the percentage of your CoinDepo portfolio value that is held in COINDEPO tokens. The portfolio value is regularly recalculated based on the market price of the digital assets included in it."
+                info = stringResource(Res.string.token_share_in_portfolio_info)
             )
             Spacer(Modifier.height(8.dp))
             Row(
@@ -265,25 +282,25 @@ fun UserTierCard(
             ) {
                 Text(
                     modifier = Modifier.weight(5.0f*(0.75f/15.0f)),
-                    text = "Tier 1",
+                    text = stringResource(Res.string.tier_1),
                     style = MaterialTheme.typography.bodyLarge.copy(Color(0xFFa19ead), fontWeight = FontWeight.Bold),
                     textAlign = TextAlign.Center
                 )
                 Text(
                     modifier = Modifier.weight(5.0f*(0.75f/15.0f)),
-                    text = "Tier 2",
+                    text = stringResource(Res.string.tier_2),
                     style = MaterialTheme.typography.bodyLarge.copy(Color(0xFFa19ead), fontWeight = FontWeight.Bold),
                     textAlign = TextAlign.Center
                 )
                 Text(
                     modifier = Modifier.weight(5.0f*(0.75f/15.0f)),
-                    text = "Tier 3",
+                    text = stringResource(Res.string.tier_3),
                     style = MaterialTheme.typography.bodyLarge.copy(Color(0xFFa19ead), fontWeight = FontWeight.Bold),
                     textAlign = TextAlign.Center
                 )
                 Text(
                     modifier = Modifier.weight(5.0f*(0.75f/15.0f)),
-                    text = "Tier 4",
+                    text = stringResource(Res.string.tier_4),
                     style = MaterialTheme.typography.bodyLarge.copy(Color(0xFFa19ead), fontWeight = FontWeight.Bold),
                     textAlign = TextAlign.Center
                 )
@@ -313,7 +330,7 @@ fun UserTierCard(
                             thickness = 3.dp
                         )
                         Text(
-                            text = "5%",
+                            text = stringResource(Res.string.tier_threshold_5_percent),
                             style = MaterialTheme.typography.bodyLarge.copy(Color(0xFFa19ead), fontWeight = FontWeight.Bold),
                             textAlign = TextAlign.Center
                         )
@@ -331,7 +348,7 @@ fun UserTierCard(
                             thickness = 3.dp
                         )
                         Text(
-                            text = "10%",
+                            text = stringResource(Res.string.tier_threshold_10_percent),
                             style = MaterialTheme.typography.bodyLarge.copy(Color(0xFFa19ead), fontWeight = FontWeight.Bold),
                             textAlign = TextAlign.Center
                         )
@@ -349,7 +366,7 @@ fun UserTierCard(
                             thickness = 3.dp
                         )
                         Text(
-                            text = "15%+",
+                            text = stringResource(Res.string.tier_threshold_15_plus_percent),
                             style = MaterialTheme.typography.bodyLarge.copy(Color(0xFFa19ead), fontWeight = FontWeight.Bold),
                             textAlign = TextAlign.Center
                         )
@@ -370,7 +387,7 @@ fun UserTierCard(
                         openUrlInBrowser("https://coindepo.com/token?_gl=1*1nvqzj9*_gcl_au*MTY1MjM1MjE5Mi4xNzU2MTMwOTMz*_ga*OTUzNjY3NzI4LjE3NTYxMzA5MzQ.*_ga_D9J1SREE8G*czE3NjE0MDg4NjgkbzExMyRnMSR0MTc2MTQxMDAzNCRqNTgkbDAkaDQ4Mjg4MzU4OQ..#referfriends")
                     }
                 ) {
-                    Text(text = "See Details",)
+                    Text(text = stringResource(Res.string.see_details))
                     Spacer(Modifier.width(8.dp))
                     Icon(modifier = Modifier.size(16.dp), imageVector = Icons.Filled.Info, contentDescription = "")
                 }

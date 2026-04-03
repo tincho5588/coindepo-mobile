@@ -69,7 +69,7 @@
     <string name="check_email_note_line_1">If you do not see our message in the INBOX folder, please check the SPAM folder in your email</string>
     <string name="check_email_note_line_2">Messages could end up there in rare cases.</string>
     <string name="too_soon">Too Soon!</string>
-    <string name="too_soon_description">Seems like you are trying to recover your password too frequently. Try again later.</string>"
+    <string name="too_soon_description">Seems like you are trying to recover your password too frequently. Try again later.</string>
 
     <!-- Main Screen -->
     <string name="dashboard">Dashboard</string>
@@ -176,4 +176,115 @@
     <string name="failed">Failed</string>
     <string name="completed">Completed</string>
     <string name="canceled">Canceled</string>
+
+    <!-- Common actions / labels -->
+    <string name="confirm">Confirm</string>
+    <string name="retry">Retry</string>
+    <string name="clear_all">Clear All</string>
+    <string name="withdraw_action">Withdraw</string>
+    <string name="transfer_action">Transfer</string>
+    <string name="send_code">Send Code</string>
+    <string name="coming_soon">Coming soon</string>
+    <string name="coming_soon_with_coin_id">Coming soon, coin_id: %1$s</string>
+
+    <!-- Main / navigation placeholders -->
+    <string name="label_from">From</string>
+    <string name="label_to">To</string>
+    <string name="select_account">Select Account</string>
+    <string name="amount_available_suffix"> available</string>
+
+    <!-- Login / verification tooltips -->
+    <string name="resend_code_wait_tooltip">Haven\'t received code? Request new code in %1$d seconds. The code will expire after 30 minutes.</string>
+
+    <!-- Dashboard — COINDEPO Token Advantage -->
+    <string name="coindepo_token_advantage_program">COINDEPO TOKEN ADVANTAGE PROGRAM</string>
+    <string name="coindepo_token_portfolio_balance_info">The Token Portfolio Balance represents the current USD/EUR/GBP value of COINDEPO tokens in your Interest Accounts and is for informational purposes only. Actual account balances are denominated in COINDEPO tokens.</string>
+    <string name="coindepo_token_amount_title">COINDEPO Token Amount</string>
+    <string name="coindepo_token_amount_info">The COINDEPO Token Amount is the current balance of COINDEPO tokens deposited in Compound Interest Accounts.</string>
+    <string name="your_current_tier_title">Your Current Tier</string>
+    <string name="tier_number_format">TIER %1$d</string>
+    <string name="your_current_tier_info">Your Current Tier in the COINDEPO Token Advantage Program is calculated, assigned, and subject to change based on the value of the COINDEPO token share in your crypto portfolio on the platform.</string>
+    <string name="token_share_in_portfolio_title">Token Share in Portfolio</string>
+    <string name="token_share_in_portfolio_info">Token Share in Portfolio is the percentage of your CoinDepo portfolio value that is held in COINDEPO tokens. The portfolio value is regularly recalculated based on the market price of the digital assets included in it.</string>
+    <string name="tier_1">Tier 1</string>
+    <string name="tier_2">Tier 2</string>
+    <string name="tier_3">Tier 3</string>
+    <string name="tier_4">Tier 4</string>
+    <string name="tier_threshold_5_percent">5%</string>
+    <string name="tier_threshold_10_percent">10%</string>
+    <string name="tier_threshold_15_plus_percent">15%+</string>
+    <string name="see_details">See Details</string>
+
+    <!-- Transactions -->
+    <string name="transaction_history">Transaction History</string>
+    <string name="failed_load_transactions">Failed to load transactions.</string>
+    <string name="no_transactions_found">No transactions found</string>
+    <string name="transaction_cancelled_snackbar">Transaction cancelled</string>
+    <string name="failed_cancel_transaction">Failed while trying to cancel transaction. Try again later.</string>
+    <string name="cancellation_request_title">Cancellation Request</string>
+    <string name="cancellation_request_body">This withdrawal request is currently in progress. While the withdrawal is in the \"Pending\" status you can cancel it.\n\nYou will receive an email notification when the cancellation process is completed. This withdrawal will be displayed on the \"Transactions\" page as \"Canceled\".\n\nAre you sure you want to cancel this withdrawal?</string>
+    <string name="source_wallet_address">Source Wallet Address</string>
+    <string name="destination_wallet_address">Destination Wallet Address</string>
+    <string name="transaction_hash_label">Transaction Hash</string>
+    <string name="transaction_amount_line">%1$s %2$s</string>
+    <string name="filter_period">Period</string>
+    <string name="select_dates">Select Dates</string>
+    <string name="filter_asset_label">Asset</string>
+    <string name="all_assets">All Assets</string>
+    <string name="asset_description_and_ticker">%1$s (%2$s)</string>
+    <string name="filter_account_type">Account Type</string>
+    <string name="all_accounts">All Accounts</string>
+    <string name="filter_transaction_type">Transaction Type</string>
+    <string name="all_types">All Types</string>
+    <string name="filter_transaction_status">Transaction Status</string>
+    <string name="all_statuses">All Statuses</string>
+
+    <!-- Transfer -->
+    <string name="transfer_between_accounts_title">Transfer Between %1$s Accounts</string>
+    <string name="transfer_failed">Failed to transfer funds.</string>
+    <string name="transfer_failed_no_network">Failed to transfer funds. Check your internet connection and try again.</string>
+    <string name="transfer_confirmation_title">%1$s Transfer Confirmation</string>
+    <string name="transfer_confirm_part1">Please confirm your transfer of </string>
+    <string name="transfer_confirm_part2"> from </string>
+    <string name="transfer_confirm_part3"> to the </string>
+    <string name="transfer_amount_error_min">The amount must be at least %1$s %2$s</string>
+    <string name="transfer_amount_error_max">The amount cannot exceed %1$s %2$s</string>
+    <string name="transfer_amount_available_info">The amount available for transfer may differ from the account balance if you have already made a partial withdrawal of funds from this account and it is in the \"Pending\" status. Until the processing is completed, this amount is displayed on the account balance.</string>
+    <string name="warning_transfer_from_current_title">WARNING! When transferring from Current Interest Account</string>
+    <string name="warning_transfer_from_current_body">Please note that you can transfer funds from your Current Interest Account to your other Interest Accounts in two cases only:\n1) When the Payout Date of the Interest Account you are transferring funds to, is matching with the transfer date. For example, if today is 10th March and the Payout Date of the Weekly Interest Account is 10th March.\n2) When the start date of the compounding period is matching with the transfer date. For example, if you opened a Weekly Account on 10th March and today is 17th March, the next Payout Interest Date is 24th March. Today\'s date is considered as start date and you can transfer funds to this account.\nIf on the date of transfer, you do not have any Interest Accounts available for transfer, you can instantly open a new account with any compounding period using the function \"Add New Account\".\nThis limitation allows you to avoid misuse of your funds because if you fund your account before the end of the compounding period, Accrued Interest will be recalculated after the Payout Date.</string>
+    <string name="warning_transfer_to_current_title">WARNING! When transferring to Current Interest Account</string>
+    <string name="warning_transfer_to_current_body">You can transfer your asset from any Interest Account to the Current Interest Account at any time.\nFor example, if you open a Weekly Interest Account on 10th March and fund it with 10,000 USDT, on 17th March at 14:00 UTC you will receive Accrued Interest based on Account Balance of 10,000 USDT.\nIn another case, if during the compounding period, you transfer 2,000 USDT from the Weekly Account before the Interest Payout Date, the Accrued Interest will be recalculated. The Payout Date will not be changed and will remain as 17th March but Accrued Interest for the entire compounding period will be based on the Account Balance of 8,000 USDT.\nPlease note that if you choose to transfer funds to the Current Interest Account in full on the Payout Date but before 14:00 UTC, you will lose the Accrued Interest. On the Payout Date, transfer funds in full only after 14:00 UTC once the Accrued Interest has been added to your Account Balance. If the Account Balance after the transfer to the Current Account becomes zero, then this account is automatically closed.</string>
+    <string name="interest_account_dropdown_label">%1$s Interest Account %2$s</string>
+
+    <!-- Withdraw -->
+    <string name="withdraw_screen_title">Withdraw %1$s*</string>
+    <string name="withdraw_security_hold_note">*All withdrawals are subjected to a one business day security hold and will be processed no later than 19:00 UTC on the next business day.</string>
+    <string name="from_ticker_account">From %1$s Account</string>
+    <string name="withdrawal_address_label">Withdrawal Address</string>
+    <string name="withdraw_destination_tag_warning_title">WARNING! Please confirm if the Withdrawal Address requires a Destination Tag.</string>
+    <string name="withdraw_amount_available_info">The amount available for withdrawal may differ from the account balance in three cases:\n1) You have already initiated a partial withdrawal of funds from this account and it is in the \"Pending\" status. Until processing is completed, this amount is displayed on the account balance;\nand/or\n2) The account balance includes bonuses that are not available for withdrawal during a certain period, based on the terms of the promotion under which they were received;\nand/or\n3) The funds in this account, in whole or in part, are not available for withdrawal, as they are used as collateral to maintain the level of 50% LTV (Loan-to-Value) ratio for loans you have already received, along with accrued interest for using the loan.</string>
+    <string name="withdraw_amount_field_trailing">%1$s | Minimum %2$s</string>
+    <string name="daily_withdrawal_limit_tooltip">The daily withdrawal limit depends on your verification level. Once your identity verification is complete, you have no withdrawal limit.</string>
+    <string name="no_limit">No limit</string>
+    <string name="coindepo_fees_title">CoinDepo Fees</string>
+    <string name="coindepo_fees_description">CoinDepo does not charge any withdrawal fees.</string>
+    <string name="no_fees_label">NO FEES</string>
+    <string name="network_fees_title">Network Fees</string>
+    <string name="network_fees_description">Network Fee is required to confirm your transaction by the mining network and fluctuates depending on the network or volume of transactions.</string>
+    <string name="market_fees">Market fees</string>
+    <string name="receive_amount_title">Receive Amount</string>
+    <string name="receive_amount_description">The amount received may vary slightly, depending on network fees at the time the transaction is processed on the network.</string>
+    <string name="withdraw_network_warning_title">Withdraw %1$s using only the %2$s network.</string>
+    <string name="withdraw_network_warning_body">Please ensure that the %1$s Withdrawal Address is correct. CoinDepo is not responsible for any assets sent to the wrong address.</string>
+    <string name="withdraw_payout_interest_warning">Please note that if you withdraw funds in full from any Interest Account other than the Current Account on the Payout Date but before 14:00 UTC, you will lose the Accrued Interest. On the Payout Date, withdraw funds in full only after 14:00 UTC once the Accrued Interest has been added to your Account Balance. After the full withdrawal of funds, the Interest Account (except for the Current Account) is automatically closed.</string>
+    <string name="fee_estimation_failed_network">Fee estimation failed. Check your internet connection and try again.</string>
+    <string name="fee_estimation_failed">Fee estimation failed.</string>
+    <string name="withdraw_request_failed_network">Withdraw request failed. Check your internet connection and try again.</string>
+    <string name="withdraw_request_failed">Withdraw request failed.</string>
+    <string name="withdraw_success_snackbar">Withdraw request was successfully processed.</string>
+    <string name="withdraw_failed_snackbar">Failed to process withdraw request.</string>
+    <string name="address_label">Address</string>
+    <string name="network_label">Network</string>
+    <string name="e_mail_verification_code_header">E-mail Verification Code</string>
+    <string name="twofa_verification_header">2FA Verification Code</string>
 </resources>

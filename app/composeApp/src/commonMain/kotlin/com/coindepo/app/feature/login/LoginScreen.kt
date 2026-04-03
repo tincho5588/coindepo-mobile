@@ -82,6 +82,7 @@ import coindepo.app.composeapp.generated.resources.invalid_email_verification_li
 import coindepo.app.composeapp.generated.resources.log_in
 import coindepo.app.composeapp.generated.resources.password
 import coindepo.app.composeapp.generated.resources.resend_code
+import coindepo.app.composeapp.generated.resources.resend_code_wait_tooltip
 import coindepo.app.composeapp.generated.resources.security_verification
 import coindepo.app.composeapp.generated.resources.security_verification_description
 import coindepo.app.composeapp.generated.resources.show_password
@@ -388,7 +389,7 @@ fun EmailVerificationCodeInputCard(
                 if (!resendVerificationCodeState.enabled) {
                     Spacer(Modifier.width(8.dp))
                     InformationTooltip(
-                        "Haven't received code? Request new code in ${resendVerificationCodeState.timeRemaining} seconds. The code will expire after 30 minutes."
+                        stringResource(Res.string.resend_code_wait_tooltip, resendVerificationCodeState.timeRemaining)
                     )
                 }
             }

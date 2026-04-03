@@ -74,6 +74,8 @@ import androidx.navigation.navOptions
 import androidx.navigation.toRoute
 import coindepo.app.composeapp.generated.resources.Res
 import coindepo.app.composeapp.generated.resources.borrow
+import coindepo.app.composeapp.generated.resources.coming_soon
+import coindepo.app.composeapp.generated.resources.coming_soon_with_coin_id
 import coindepo.app.composeapp.generated.resources.dashboard
 import coindepo.app.composeapp.generated.resources.earn
 import coindepo.app.composeapp.generated.resources.ic_coin_depo_logo_36
@@ -259,7 +261,7 @@ fun MainScreen(
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
-                            "Coming soon",
+                            stringResource(Res.string.coming_soon),
                             style = MaterialTheme.typography.titleLarge,
                             textAlign = TextAlign.Center
                         )
@@ -272,7 +274,7 @@ fun MainScreen(
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
-                            "Coming soon, coin_id: ${route.initialCoinId}",
+                            stringResource(Res.string.coming_soon_with_coin_id, route.initialCoinId?.toString() ?: ""),
                             style = MaterialTheme.typography.titleLarge,
                             textAlign = TextAlign.Center
                         )

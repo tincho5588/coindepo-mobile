@@ -92,12 +92,29 @@ import androidx.paging.compose.itemKey
 import coil3.compose.AsyncImage
 import coindepo.app.composeapp.generated.resources.Res
 import coindepo.app.composeapp.generated.resources.affiliate_payment
+import coindepo.app.composeapp.generated.resources.all_accounts
+import coindepo.app.composeapp.generated.resources.all_assets
+import coindepo.app.composeapp.generated.resources.all_statuses
+import coindepo.app.composeapp.generated.resources.all_types
+import coindepo.app.composeapp.generated.resources.asset_description_and_ticker
 import coindepo.app.composeapp.generated.resources.between_my_accounts
+import coindepo.app.composeapp.generated.resources.cancellation_request_body
+import coindepo.app.composeapp.generated.resources.cancellation_request_title
+import coindepo.app.composeapp.generated.resources.clear_all
+import coindepo.app.composeapp.generated.resources.confirm
 import coindepo.app.composeapp.generated.resources.cancel
 import coindepo.app.composeapp.generated.resources.canceled
 import coindepo.app.composeapp.generated.resources.completed
 import coindepo.app.composeapp.generated.resources.deposit
+import coindepo.app.composeapp.generated.resources.destination_wallet_address
 import coindepo.app.composeapp.generated.resources.failed
+import coindepo.app.composeapp.generated.resources.failed_cancel_transaction
+import coindepo.app.composeapp.generated.resources.failed_load_transactions
+import coindepo.app.composeapp.generated.resources.filter_account_type
+import coindepo.app.composeapp.generated.resources.filter_asset_label
+import coindepo.app.composeapp.generated.resources.filter_period
+import coindepo.app.composeapp.generated.resources.filter_transaction_status
+import coindepo.app.composeapp.generated.resources.filter_transaction_type
 import coindepo.app.composeapp.generated.resources.instant_swap
 import coindepo.app.composeapp.generated.resources.interest_payment
 import coindepo.app.composeapp.generated.resources.loan_interest_repayment
@@ -105,12 +122,20 @@ import coindepo.app.composeapp.generated.resources.loan_liquidation
 import coindepo.app.composeapp.generated.resources.loan_repayment
 import coindepo.app.composeapp.generated.resources.loan_withdrawal
 import coindepo.app.composeapp.generated.resources.no
+import coindepo.app.composeapp.generated.resources.no_transactions_found
 import coindepo.app.composeapp.generated.resources.pending
 import coindepo.app.composeapp.generated.resources.processing
 import coindepo.app.composeapp.generated.resources.promo_bonus_payment
 import coindepo.app.composeapp.generated.resources.rebalance_withdrawal
 import coindepo.app.composeapp.generated.resources.referral_payment
 import coindepo.app.composeapp.generated.resources.rewards_payment
+import coindepo.app.composeapp.generated.resources.retry
+import coindepo.app.composeapp.generated.resources.select_dates
+import coindepo.app.composeapp.generated.resources.source_wallet_address
+import coindepo.app.composeapp.generated.resources.transaction_amount_line
+import coindepo.app.composeapp.generated.resources.transaction_cancelled_snackbar
+import coindepo.app.composeapp.generated.resources.transaction_hash_label
+import coindepo.app.composeapp.generated.resources.transaction_history
 import coindepo.app.composeapp.generated.resources.withdrawal
 import coindepo.app.composeapp.generated.resources.yes
 import com.coindepo.app.feature.common.CoinDepoElevatedCard
@@ -185,7 +210,7 @@ fun TransactionsScreenContent(
                 Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(modifier = Modifier.weight(1f), text = "Transaction History", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold))
+                Text(modifier = Modifier.weight(1f), text = stringResource(Res.string.transaction_history), style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold))
 
                 BadgedBox(
                     badge = {
@@ -259,9 +284,9 @@ fun TransactionsScreenContent(
 
                 if (items.loadState.mediator?.append is LoadState.Error) {
                     showSnackBar(
-                        "Failed to load transactions.",
+                        stringResource(Res.string.failed_load_transactions),
                         SnackbarDuration.Short,
-                        "Retry",
+                        stringResource(Res.string.retry),
                         { items.retry() }
                     )
                 }
@@ -269,9 +294,9 @@ fun TransactionsScreenContent(
                 when(items.loadState.mediator?.refresh) {
                     is LoadState.Error -> {
                         showSnackBar(
-                            "Failed to load transactions.",
+                            stringResource(Res.string.failed_load_transactions),
                             SnackbarDuration.Short,
-                            "Retry",
+                            stringResource(Res.string.retry),
                             { items.retry() }
                         )
                     }
@@ -288,7 +313,7 @@ fun TransactionsScreenContent(
                             Spacer(Modifier.height(8.dp))
                             Text(
                                 modifier = Modifier.fillMaxWidth().wrapContentHeight(),
-                                text = "No transactions found",
+                                text = stringResource(Res.string.no_transactions_found),
                                 textAlign = TextAlign.Center,
                                 style = MaterialTheme.typography.headlineLarge.copy(
                                     Color(0xFFa19ead),
@@ -317,12 +342,12 @@ fun TransactionsScreenContent(
                 )
             }
             is TransactionCancellationSuccess -> {
-                showSnackBar("Transaction cancelled", SnackbarDuration.Short, null, {})
+                showSnackBar(stringResource(Res.string.transaction_cancelled_snackbar), SnackbarDuration.Short, null, {})
                 clearTransactionCancellationState()
             }
             is TransactionCancellationFailure -> {
                 showSnackBar(
-                    "Failed while trying to cancel transaction. Try again later.",
+                    stringResource(Res.string.failed_cancel_transaction),
                     SnackbarDuration.Short,
                     null,
                     {}
@@ -393,12 +418,10 @@ fun TransactionCancellationDialog(
             }
         },
         title = {
-            Text(modifier = Modifier.fillMaxWidth(), text = "Cancellation Request", textAlign = TextAlign.Center)
+            Text(modifier = Modifier.fillMaxWidth(), text = stringResource(Res.string.cancellation_request_title), textAlign = TextAlign.Center)
         },
         text = {
-            Text("This withdrawal request is currently in progress. While the withdrawal is in the \"Pending\" status you can cancel it.\n\n" +
-            "You will receive an email notification when the cancellation process is completed. This withdrawal will be displayed on the \"Transactions\" page as \"Canceled\".\n\n" +
-            "Are you sure you want to cancel this withdrawal?", textAlign = TextAlign.Center)
+            Text(stringResource(Res.string.cancellation_request_body), textAlign = TextAlign.Center)
         }
     )
 }
@@ -451,17 +474,17 @@ fun TransactionItem(
             Column {
                 Spacer(Modifier.height(8.dp))
                 if (!transaction.sourceAddress.isNullOrEmpty()) {
-                    Text(modifier = Modifier.padding(start = 56.dp), text = "Source Wallet Address", style = MaterialTheme.typography.bodySmall.copy(Color(0xFFa19ead)))
+                    Text(modifier = Modifier.padding(start = 56.dp), text = stringResource(Res.string.source_wallet_address), style = MaterialTheme.typography.bodySmall.copy(Color(0xFFa19ead)))
                     Text(modifier = Modifier.padding(start = 56.dp), text = transaction.sourceAddress!!, style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold))
                 }
                 Spacer(Modifier.height(8.dp))
                 if (!transaction.destinationAddress.isNullOrEmpty()) {
-                    Text(modifier = Modifier.padding(start = 56.dp), text = "Destination Wallet Address", style = MaterialTheme.typography.bodySmall.copy(Color(0xFFa19ead)))
+                    Text(modifier = Modifier.padding(start = 56.dp), text = stringResource(Res.string.destination_wallet_address), style = MaterialTheme.typography.bodySmall.copy(Color(0xFFa19ead)))
                     Text(modifier = Modifier.padding(start = 56.dp), text = transaction.destinationAddress!!, style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold))
                 }
                 Spacer(Modifier.height(8.dp))
                 if (!transaction.txHash.isNullOrEmpty()) {
-                    Text(modifier = Modifier.padding(start = 56.dp), text = "Transaction Hash", style = MaterialTheme.typography.bodySmall.copy(Color(0xFFa19ead)))
+                    Text(modifier = Modifier.padding(start = 56.dp), text = stringResource(Res.string.transaction_hash_label), style = MaterialTheme.typography.bodySmall.copy(Color(0xFFa19ead)))
                     Text(modifier = Modifier.padding(start = 56.dp), text = transaction.txHash!!, style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold))
                 }
             }
@@ -471,7 +494,7 @@ fun TransactionItem(
             Operation.CREDIT -> "- "
             Operation.DEBIT -> "+ "
         } + transaction.amount.replace("+", "").replace("-", "")
-        Text("$displayAmount ${transaction.coinBinanceTicker}")
+        Text(stringResource(Res.string.transaction_amount_line, displayAmount, transaction.coinBinanceTicker))
         Spacer(Modifier.height(16.dp))
         Row(
             Modifier.fillMaxWidth().wrapContentHeight(),
@@ -479,13 +502,13 @@ fun TransactionItem(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             when(transaction.trxStatus) {
-                TransactionStatus.PROCESSING -> Text(modifier = Modifier.background(Color(0xFFF5F5DC), shape = CircleShape).padding(horizontal = 16.dp, vertical = 4.dp), text = "Processing", style = MaterialTheme.typography.bodyLarge.copy(color = Color(0xFFFFAA33), fontWeight = FontWeight.SemiBold), textAlign = TextAlign.Center)
+                TransactionStatus.PROCESSING -> Text(modifier = Modifier.background(Color(0xFFF5F5DC), shape = CircleShape).padding(horizontal = 16.dp, vertical = 4.dp), text = stringResource(Res.string.processing), style = MaterialTheme.typography.bodyLarge.copy(color = Color(0xFFFFAA33), fontWeight = FontWeight.SemiBold), textAlign = TextAlign.Center)
                 TransactionStatus.PENDING -> {
                     Row(
                         modifier = Modifier.background(Color(0xFFF5F5DC), shape = CircleShape).padding(horizontal = 16.dp, vertical = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = "Pending", style = MaterialTheme.typography.bodyLarge.copy(color = Color(0xFFFFAA33), fontWeight = FontWeight.SemiBold), textAlign = TextAlign.Center)
+                        Text(text = stringResource(Res.string.pending), style = MaterialTheme.typography.bodyLarge.copy(color = Color(0xFFFFAA33), fontWeight = FontWeight.SemiBold), textAlign = TextAlign.Center)
                         if (transaction.trxType == TransactionType.WITHDRAWAL) {
                             Spacer(Modifier.width(8.dp))
                             Icon(
@@ -497,9 +520,9 @@ fun TransactionItem(
                         }
                     }
                 }
-                TransactionStatus.COMPLETED -> Text(modifier = Modifier.background(Color(0xFFdfffec), shape = CircleShape).padding(horizontal = 16.dp, vertical = 4.dp), text = "Completed", style = MaterialTheme.typography.bodyLarge.copy(color = Color(0xFF1e7e34), fontWeight = FontWeight.SemiBold), textAlign = TextAlign.Center)
-                TransactionStatus.CANCELLED -> Text(modifier = Modifier.background(Color(0xffffe1df), shape = CircleShape).padding(horizontal = 16.dp, vertical = 4.dp), text = "Canceled", style = MaterialTheme.typography.bodyLarge.copy(color = Color.Red, fontWeight = FontWeight.SemiBold), textAlign = TextAlign.Center)
-                TransactionStatus.FAILED -> Text(modifier = Modifier.background(Color(0xffffe1df), shape = CircleShape).padding(horizontal = 16.dp, vertical = 4.dp), text = "Failed", style = MaterialTheme.typography.bodyLarge.copy(color = Color.Red, fontWeight = FontWeight.SemiBold), textAlign = TextAlign.Center)
+                TransactionStatus.COMPLETED -> Text(modifier = Modifier.background(Color(0xFFdfffec), shape = CircleShape).padding(horizontal = 16.dp, vertical = 4.dp), text = stringResource(Res.string.completed), style = MaterialTheme.typography.bodyLarge.copy(color = Color(0xFF1e7e34), fontWeight = FontWeight.SemiBold), textAlign = TextAlign.Center)
+                TransactionStatus.CANCELLED -> Text(modifier = Modifier.background(Color(0xffffe1df), shape = CircleShape).padding(horizontal = 16.dp, vertical = 4.dp), text = stringResource(Res.string.canceled), style = MaterialTheme.typography.bodyLarge.copy(color = Color.Red, fontWeight = FontWeight.SemiBold), textAlign = TextAlign.Center)
+                TransactionStatus.FAILED -> Text(modifier = Modifier.background(Color(0xffffe1df), shape = CircleShape).padding(horizontal = 16.dp, vertical = 4.dp), text = stringResource(Res.string.failed), style = MaterialTheme.typography.bodyLarge.copy(color = Color.Red, fontWeight = FontWeight.SemiBold), textAlign = TextAlign.Center)
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -579,7 +602,7 @@ fun FilterBottomSheetContent(
                     onDismissRequest()
                 }
             ) {
-                Text("Clear All")
+                Text(stringResource(Res.string.clear_all))
             }
             Spacer(Modifier.width(8.dp))
             Button(
@@ -589,7 +612,7 @@ fun FilterBottomSheetContent(
                     onDismissRequest()
                 }
             ) {
-                Text("Confirm")
+                Text(stringResource(Res.string.confirm))
             }
         }
         Spacer(Modifier.height(16.dp))
@@ -616,7 +639,7 @@ fun FilterDateComponent(
     )
     val showCalendar = remember { mutableStateOf(false) }
     Text(
-        text = "Period",
+        text = stringResource(Res.string.filter_period),
         style = MaterialTheme.typography.titleMedium.copy(
             Color(0xFFa19ead),
             fontWeight = FontWeight.Bold
@@ -651,7 +674,7 @@ fun FilterDateComponent(
                     "${Instant.fromEpochMilliseconds(selectedDateRange.startDateMillis).toLocalDateTime(
                         TimeZone.UTC).format(customFormat)} - ${Instant.fromEpochMilliseconds(selectedDateRange.endDateMillis).toLocalDateTime(
                         TimeZone.UTC).format(customFormat)}"
-                } else "Select Dates"
+                } else stringResource(Res.string.select_dates)
             )
             Icon(
                 imageVector = Icons.Filled.EditCalendar,
@@ -699,7 +722,7 @@ fun FilterDateComponent(
                         },
                         enabled = datePickerState.selectedStartDateMillis != null && datePickerState.selectedEndDateMillis != null
                     ) {
-                        Text("Confirm")
+                        Text(stringResource(Res.string.confirm))
                     }
                 }
             },
@@ -723,7 +746,7 @@ fun AssetsSelectionComponent(
 ) {
     val expanded = remember { mutableStateOf(false) }
     Text(
-        text = "Asset",
+        text = stringResource(Res.string.filter_asset_label),
         style = MaterialTheme.typography.titleMedium.copy(
             Color(0xFFa19ead),
             fontWeight = FontWeight.Bold
@@ -740,9 +763,9 @@ fun AssetsSelectionComponent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (selectedAsset == null) {
-                    Text("All Assets")
+                    Text(stringResource(Res.string.all_assets))
                 } else {
-                    Text("${selectedAsset.description} (${selectedAsset.binanceTicker})")
+                    Text(stringResource(Res.string.asset_description_and_ticker, selectedAsset.description, selectedAsset.binanceTicker))
                 }
                 Icon(imageVector = if (expanded.value) Icons.Filled.ArrowDropUp else Icons.Filled.ArrowDropDown, contentDescription = null)
             }
@@ -750,7 +773,7 @@ fun AssetsSelectionComponent(
         items = {
             DropdownMenuItem(
                 text = {
-                    Text("All Assets")
+                    Text(stringResource(Res.string.all_assets))
                 },
                 onClick = {
                     onAssetSelected(null)
@@ -761,7 +784,7 @@ fun AssetsSelectionComponent(
             assetsList.forEachIndexed { index, asset ->
                 DropdownMenuItem(
                     text = {
-                        Text("${asset.description} (${asset.binanceTicker})")
+                        Text(stringResource(Res.string.asset_description_and_ticker, asset.description, asset.binanceTicker))
                     },
                     onClick = {
                         onAssetSelected(asset)
@@ -780,7 +803,7 @@ fun AccountTypeSelectionComponent(
 ) {
     val expanded = remember { mutableStateOf(false) }
     Text(
-        text = "Account Type",
+        text = stringResource(Res.string.filter_account_type),
         style = MaterialTheme.typography.titleMedium.copy(
             Color(0xFFa19ead),
             fontWeight = FontWeight.Bold
@@ -797,7 +820,7 @@ fun AccountTypeSelectionComponent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (selectedAccountType == null) {
-                    Text("All Accounts")
+                    Text(stringResource(Res.string.all_accounts))
                 } else {
                     Text(stringResource(selectedAccountType.periodStringRes))
                 }
@@ -807,7 +830,7 @@ fun AccountTypeSelectionComponent(
         items = {
             DropdownMenuItem(
                 text = {
-                    Text("All Accounts")
+                    Text(stringResource(Res.string.all_accounts))
                 },
                 onClick = {
                     onAccountTypeSelected(null)
@@ -837,7 +860,7 @@ fun TransactionTypeSelectionComponent(
 ) {
     val expanded = remember { mutableStateOf(false) }
     Text(
-        text = "Transaction Type",
+        text = stringResource(Res.string.filter_transaction_type),
         style = MaterialTheme.typography.titleMedium.copy(
             Color(0xFFa19ead),
             fontWeight = FontWeight.Bold
@@ -854,7 +877,7 @@ fun TransactionTypeSelectionComponent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (selectedTransactionType == null) {
-                    Text("All Types")
+                    Text(stringResource(Res.string.all_types))
                 } else {
                     Text(stringResource(selectedTransactionType.stringRes))
                 }
@@ -864,7 +887,7 @@ fun TransactionTypeSelectionComponent(
         items = {
             DropdownMenuItem(
                 text = {
-                    Text("All Types")
+                    Text(stringResource(Res.string.all_types))
                 },
                 onClick = {
                     onTransactionTypeSelected(null)
@@ -894,7 +917,7 @@ fun TransactionStatusSelectionComponent(
 ) {
     val expanded = remember { mutableStateOf(false) }
     Text(
-        text = "Transaction Status",
+        text = stringResource(Res.string.filter_transaction_status),
         style = MaterialTheme.typography.titleMedium.copy(
             Color(0xFFa19ead),
             fontWeight = FontWeight.Bold
